@@ -206,7 +206,55 @@ def primes(int nb_primes):
 ```bash
 pip install cython
 pip install setuptools
+
 ```
+- This way, you can use setuptools to build your Cython module
+- Files can use endings *.pyx* or *.py*
+
+
+## Cython - hello world
+
+- We can start with the classic *Hello World* in the file ***hello.pyx***
+
+```python
+def say_hello_to(name):
+    print(f"Hello {name}!")
+```
+
+
+## Cython - setuptools
+- To build it, we'll need a *setup.py* script
+
+```python
+from setuptools import setup
+from Cython.Build import cythonize
+
+setup(
+    name='Hello World app',
+    ext_modules=cythonize("hello.pyx"),
+)
+```
+
+
+## Cython - building
+
+- To build it, you would use the command
+
+```bash
+python setup.py build_ext --inplace
+```
+
+- Then you can use it with
+
+```python
+from hello import say_hello_to
+
+say_hello_to('Joey')
+```
+
+## Cython - basics
+
+- You can
 
 
 ## Boost-y binding 1 - Nanobind
