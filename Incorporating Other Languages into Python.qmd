@@ -787,6 +787,8 @@ pip install hpy
 - Rust is more of a platform than C or C++
 - This requires more tooling to develop code
 - pyO3 can be used to call Rust in Python, or Python in Rust
+- Packages managed at https://crates.io
+- Searching for "science" gives 656 crates, environment is still being built out
 
 
 ## pyO3 - installation
@@ -858,6 +860,56 @@ maturin develop
 - The same ability to avoid the GIL is provided through ***pyO3***
 
 
+## pyO3 - example
+```rust
+use pyo3::prelude::*;
+
+#[pyfunction]
+fn double(x: usize) -> usize {
+    x * 2
+}
+
+#[pymodule]
+fn my_extension(m: &Bound<'_, PyModule>) -> PyResult<()> {
+    m.add_function(wrap_pyfunction!(double, m)?)
+}
+```
+
+
+## pyO3 - shorthand
+```rust
+use pyo3::prelude::*;
+
+#[pymodule]
+fn my_extension(m: &Bound<'_, PyModule>) -> PyResult<()> {
+    #[pyfn(m)]
+    fn double(x: usize) -> usize {
+	x * 2
+    }
+
+    Ok(())
+}
+```
+
+
 ## pyO3 - parallelism
 - Since the Rust code is running outside of Python, it can take advantage of true prallelism
 - There is a call (***Python::allow_threads***) that temporarily releases the GIL and allows other threads within Python to continue running
+
+
+
+## Conclusion
+- If you have started your project in Python, there are lots of ways of incrementally adding other languages for performance
+- If you have started in your code in C/C++ or some other language, there are lots of options to wrap your code in Python to make it easier to share
+
+
+
+## Resources
+- https://numba.pydata.org
+- https://cython.org
+- https://github.com/pybind/pybind11
+- https://github.com/wjakob/nanobind
+- https://github.com/python-cffi/cffi
+- https://hpyproject.org
+- https://www.swig.org
+- https://github.com/PyO3/pyo3

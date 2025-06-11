@@ -918,6 +918,8 @@ find_package(nanobind CONFIG REQUIRED)</code></pre>
 <li class="fragment">Rust is more of a platform than C or C++</li>
 <li class="fragment">This requires more tooling to develop code</li>
 <li class="fragment">pyO3 can be used to call Rust in Python, or Python in Rust</li>
+<li class="fragment">Packages managed at https://crates.io</li>
+<li class="fragment">Searching for “science” gives 656 crates, environment is still being built out</li>
 </ul>
 </section>
 <section id="pyo3---installation" class="slide level2">
@@ -987,11 +989,59 @@ find_package(nanobind CONFIG REQUIRED)</code></pre>
 <li class="fragment">The same ability to avoid the GIL is provided through <strong><em>pyO3</em></strong></li>
 </ul>
 </section>
+<section id="pyo3---example" class="slide level2">
+<h2>pyO3 - example</h2>
+<div class="sourceCode" id="cb45"><pre class="sourceCode numberSource rust number-lines code-with-copy"><code class="sourceCode rust"><span id="cb45-1"><a href=""></a><span class="kw">use</span> <span class="pp">pyo3::prelude::</span><span class="op">*;</span></span>
+<span id="cb45-2"><a href=""></a></span>
+<span id="cb45-3"><a href=""></a><span class="at">#[</span>pyfunction<span class="at">]</span></span>
+<span id="cb45-4"><a href=""></a><span class="kw">fn</span> double(x<span class="op">:</span> <span class="dt">usize</span>) <span class="op">-&gt;</span> <span class="dt">usize</span> <span class="op">{</span></span>
+<span id="cb45-5"><a href=""></a>    x <span class="op">*</span> <span class="dv">2</span></span>
+<span id="cb45-6"><a href=""></a><span class="op">}</span></span>
+<span id="cb45-7"><a href=""></a></span>
+<span id="cb45-8"><a href=""></a><span class="at">#[</span>pymodule<span class="at">]</span></span>
+<span id="cb45-9"><a href=""></a><span class="kw">fn</span> my_extension(m<span class="op">:</span> <span class="op">&amp;</span>Bound<span class="op">&lt;</span><span class="ot">'_</span><span class="op">,</span> PyModule<span class="op">&gt;</span>) <span class="op">-&gt;</span> PyResult<span class="op">&lt;</span>()<span class="op">&gt;</span> <span class="op">{</span></span>
+<span id="cb45-10"><a href=""></a>    m<span class="op">.</span>add_function(<span class="pp">wrap_pyfunction!</span>(double<span class="op">,</span> m)<span class="op">?</span>)</span>
+<span id="cb45-11"><a href=""></a><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="pyo3---shorthand" class="slide level2">
+<h2>pyO3 - shorthand</h2>
+<div class="sourceCode" id="cb46"><pre class="sourceCode numberSource rust number-lines code-with-copy"><code class="sourceCode rust"><span id="cb46-1"><a href=""></a><span class="kw">use</span> <span class="pp">pyo3::prelude::</span><span class="op">*;</span></span>
+<span id="cb46-2"><a href=""></a></span>
+<span id="cb46-3"><a href=""></a><span class="at">#[</span>pymodule<span class="at">]</span></span>
+<span id="cb46-4"><a href=""></a><span class="kw">fn</span> my_extension(m<span class="op">:</span> <span class="op">&amp;</span>Bound<span class="op">&lt;</span><span class="ot">'_</span><span class="op">,</span> PyModule<span class="op">&gt;</span>) <span class="op">-&gt;</span> PyResult<span class="op">&lt;</span>()<span class="op">&gt;</span> <span class="op">{</span></span>
+<span id="cb46-5"><a href=""></a>    <span class="at">#[</span>pyfn<span class="at">(</span>m<span class="at">)]</span></span>
+<span id="cb46-6"><a href=""></a>    <span class="kw">fn</span> double(x<span class="op">:</span> <span class="dt">usize</span>) <span class="op">-&gt;</span> <span class="dt">usize</span> <span class="op">{</span></span>
+<span id="cb46-7"><a href=""></a>    x <span class="op">*</span> <span class="dv">2</span></span>
+<span id="cb46-8"><a href=""></a>    <span class="op">}</span></span>
+<span id="cb46-9"><a href=""></a></span>
+<span id="cb46-10"><a href=""></a>    <span class="cn">Ok</span>(())</span>
+<span id="cb46-11"><a href=""></a><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
 <section id="pyo3---parallelism" class="slide level2">
 <h2>pyO3 - parallelism</h2>
 <ul>
 <li class="fragment">Since the Rust code is running outside of Python, it can take advantage of true prallelism</li>
 <li class="fragment">There is a call (<strong><em>Python::allow_threads</em></strong>) that temporarily releases the GIL and allows other threads within Python to continue running</li>
+</ul>
+</section>
+<section id="conclusion" class="slide level2">
+<h2>Conclusion</h2>
+<ul>
+<li class="fragment">If you have started your project in Python, there are lots of ways of incrementally adding other languages for performance</li>
+<li class="fragment">If you have started in your code in C/C++ or some other language, there are lots of options to wrap your code in Python to make it easier to share</li>
+</ul>
+</section>
+<section id="resources" class="slide level2">
+<h2>Resources</h2>
+<ul>
+<li class="fragment">https://numba.pydata.org</li>
+<li class="fragment">https://cython.org</li>
+<li class="fragment">https://github.com/pybind/pybind11</li>
+<li class="fragment">https://github.com/wjakob/nanobind</li>
+<li class="fragment">https://github.com/python-cffi/cffi</li>
+<li class="fragment">https://hpyproject.org</li>
+<li class="fragment">https://www.swig.org</li>
+<li class="fragment">https://github.com/PyO3/pyo3</li>
 </ul>
 
 </section>
