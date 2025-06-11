@@ -360,27 +360,26 @@ Joey Bernard
 <section id="numba---aot-example" class="slide level2">
 <h2>Numba - AOT example</h2>
 <div class="sourceCode" id="cb9"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href=""></a><span class="im">from</span> numba.pycc <span class="im">import</span> CC</span>
-<span id="cb9-2"><a href=""></a></span>
-<span id="cb9-3"><a href=""></a>cc <span class="op">=</span> CC(<span class="st">'my_module'</span>)</span>
-<span id="cb9-4"><a href=""></a></span>
-<span id="cb9-5"><a href=""></a><span class="at">@cc.export</span>(<span class="st">'multf'</span>, <span class="st">'f8(f8, f8)'</span>)</span>
-<span id="cb9-6"><a href=""></a><span class="at">@cc.export</span>(<span class="st">'multi'</span>, <span class="st">'i4(i4, i4)'</span>)</span>
-<span id="cb9-7"><a href=""></a><span class="kw">def</span> mult(a, b):</span>
-<span id="cb9-8"><a href=""></a>    <span class="cf">return</span> a <span class="op">*</span> b</span>
-<span id="cb9-9"><a href=""></a></span>
-<span id="cb9-10"><a href=""></a><span class="at">@cc.export</span>(<span class="st">'square'</span>, <span class="st">'f8(f8)'</span>)</span>
-<span id="cb9-11"><a href=""></a><span class="kw">def</span> square(a):</span>
-<span id="cb9-12"><a href=""></a>    <span class="cf">return</span> a <span class="op">**</span> <span class="dv">2</span></span>
-<span id="cb9-13"><a href=""></a></span>
-<span id="cb9-14"><a href=""></a><span class="cf">if</span> <span class="va">__name__</span> <span class="op">==</span> <span class="st">"__main__"</span>:</span>
-<span id="cb9-15"><a href=""></a>    cc.<span class="bu">compile</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb9-2"><a href=""></a>cc <span class="op">=</span> CC(<span class="st">'my_module'</span>)</span>
+<span id="cb9-3"><a href=""></a></span>
+<span id="cb9-4"><a href=""></a><span class="at">@cc.export</span>(<span class="st">'multf'</span>, <span class="st">'f8(f8, f8)'</span>)</span>
+<span id="cb9-5"><a href=""></a><span class="at">@cc.export</span>(<span class="st">'multi'</span>, <span class="st">'i4(i4, i4)'</span>)</span>
+<span id="cb9-6"><a href=""></a><span class="kw">def</span> mult(a, b):</span>
+<span id="cb9-7"><a href=""></a>    <span class="cf">return</span> a <span class="op">*</span> b</span>
+<span id="cb9-8"><a href=""></a></span>
+<span id="cb9-9"><a href=""></a><span class="at">@cc.export</span>(<span class="st">'square'</span>, <span class="st">'f8(f8)'</span>)</span>
+<span id="cb9-10"><a href=""></a><span class="kw">def</span> square(a):</span>
+<span id="cb9-11"><a href=""></a>    <span class="cf">return</span> a <span class="op">**</span> <span class="dv">2</span></span>
+<span id="cb9-12"><a href=""></a></span>
+<span id="cb9-13"><a href=""></a><span class="cf">if</span> <span class="va">__name__</span> <span class="op">==</span> <span class="st">"__main__"</span>:</span>
+<span id="cb9-14"><a href=""></a>    cc.<span class="bu">compile</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 <section id="numba---aot-compiling" class="slide level2">
 <h2>Numba - AOT compiling</h2>
 <ul>
 <li class="fragment">Running the above script generates a shared library that contains the compiled code</li>
-<li class="fragment">This won’t work for ufuncs</li>
-<li class="fragment">Exported function don’t check argument types</li>
+<li class="fragment">This won’t work for numpy ufuncs</li>
+<li class="fragment">Exported functions don’t check argument types</li>
 <li class="fragment">AOT produces generic architecture code, while JIT produces specific code</li>
 </ul>
 </section>
@@ -401,40 +400,52 @@ Joey Bernard
 <li class="fragment">This becomes easy to mess up under Windows - consider strongly using WSL</li>
 </ul>
 </section>
+<section id="cython---annotation" class="slide level2">
+<h2>Cython - annotation</h2>
+<ul>
+<li>Cython will compile pure Python</li>
+<li>Using static typing will give a decent initial speedup</li>
+<li>You can annotate so that it looks like</li>
+</ul>
+<div class="sourceCode" id="cb10"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href=""></a><span class="im">import</span> cython</span>
+<span id="cb10-2"><a href=""></a></span>
+<span id="cb10-3"><a href=""></a>i: cython.<span class="bu">int</span></span>
+<span id="cb10-4"><a href=""></a>j: cython.double</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
 <section id="cython---different-notation" class="slide level2">
 <h2>Cython - different notation</h2>
 <div class="columns">
 <div class="column" style="width:50%;">
 <p>Pure Python</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href=""></a><span class="kw">def</span> primes(nb_primes: cython.<span class="bu">int</span>):</span>
-<span id="cb10-2"><a href=""></a>    i: cython.<span class="bu">int</span></span>
-<span id="cb10-3"><a href=""></a>    p: cython.<span class="bu">int</span>[<span class="dv">1000</span>]</span>
-<span id="cb10-4"><a href=""></a></span>
-<span id="cb10-5"><a href=""></a>    <span class="cf">if</span> nb_primes <span class="op">&gt;</span> <span class="dv">1000</span>:</span>
-<span id="cb10-6"><a href=""></a>    nb_primes <span class="op">=</span> <span class="dv">1000</span></span>
-<span id="cb10-7"><a href=""></a>    <span class="co"># Only if regular Python is running</span></span>
-<span id="cb10-8"><a href=""></a>    <span class="cf">if</span> <span class="kw">not</span> cython.compiled:</span>
-<span id="cb10-9"><a href=""></a>    <span class="co"># Make p work almost like a C array</span></span>
-<span id="cb10-10"><a href=""></a>    p <span class="op">=</span> [<span class="dv">0</span>] <span class="op">*</span> <span class="dv">1000</span></span>
-<span id="cb10-11"><a href=""></a></span>
-<span id="cb10-12"><a href=""></a>    len_p: cython.<span class="bu">int</span> <span class="op">=</span> <span class="dv">0</span>  <span class="co"># The current number of elements in p.</span></span>
-<span id="cb10-13"><a href=""></a>    n: cython.<span class="bu">int</span> <span class="op">=</span> <span class="dv">2</span></span>
-<span id="cb10-14"><a href=""></a>    <span class="cf">while</span> len_p <span class="op">&lt;</span> nb_primes:</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div><div class="column" style="width:50%;">
-<p>Older Cython</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href=""></a><span class="kw">def</span> primes(<span class="bu">int</span> nb_primes):</span>
-<span id="cb11-2"><a href=""></a>    cdef <span class="bu">int</span> n, i, len_p</span>
-<span id="cb11-3"><a href=""></a>    cdef <span class="bu">int</span>[<span class="dv">1000</span>] p</span>
+<div class="sourceCode" id="cb11"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href=""></a><span class="kw">def</span> primes(nb_primes: cython.<span class="bu">int</span>):</span>
+<span id="cb11-2"><a href=""></a>    i: cython.<span class="bu">int</span></span>
+<span id="cb11-3"><a href=""></a>    p: cython.<span class="bu">int</span>[<span class="dv">1000</span>]</span>
 <span id="cb11-4"><a href=""></a></span>
 <span id="cb11-5"><a href=""></a>    <span class="cf">if</span> nb_primes <span class="op">&gt;</span> <span class="dv">1000</span>:</span>
 <span id="cb11-6"><a href=""></a>    nb_primes <span class="op">=</span> <span class="dv">1000</span></span>
-<span id="cb11-7"><a href=""></a></span>
-<span id="cb11-8"><a href=""></a></span>
-<span id="cb11-9"><a href=""></a></span>
-<span id="cb11-10"><a href=""></a>    <span class="co"># The current number of elements in p.</span></span>
-<span id="cb11-11"><a href=""></a>    len_p <span class="op">=</span> <span class="dv">0</span></span>
-<span id="cb11-12"><a href=""></a>    n <span class="op">=</span> <span class="dv">2</span></span>
-<span id="cb11-13"><a href=""></a>    <span class="cf">while</span> len_p <span class="op">&lt;</span> nb_primes:</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb11-7"><a href=""></a>    <span class="co"># Only if regular Python is running</span></span>
+<span id="cb11-8"><a href=""></a>    <span class="cf">if</span> <span class="kw">not</span> cython.compiled:</span>
+<span id="cb11-9"><a href=""></a>    <span class="co"># Make p work almost like a C array</span></span>
+<span id="cb11-10"><a href=""></a>    p <span class="op">=</span> [<span class="dv">0</span>] <span class="op">*</span> <span class="dv">1000</span></span>
+<span id="cb11-11"><a href=""></a></span>
+<span id="cb11-12"><a href=""></a>    len_p: cython.<span class="bu">int</span> <span class="op">=</span> <span class="dv">0</span>  <span class="co"># The current number of elements in p.</span></span>
+<span id="cb11-13"><a href=""></a>    n: cython.<span class="bu">int</span> <span class="op">=</span> <span class="dv">2</span></span>
+<span id="cb11-14"><a href=""></a>    <span class="cf">while</span> len_p <span class="op">&lt;</span> nb_primes:</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div><div class="column" style="width:50%;">
+<p>Older Cython</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href=""></a><span class="kw">def</span> primes(<span class="bu">int</span> nb_primes):</span>
+<span id="cb12-2"><a href=""></a>    cdef <span class="bu">int</span> n, i, len_p</span>
+<span id="cb12-3"><a href=""></a>    cdef <span class="bu">int</span>[<span class="dv">1000</span>] p</span>
+<span id="cb12-4"><a href=""></a></span>
+<span id="cb12-5"><a href=""></a>    <span class="cf">if</span> nb_primes <span class="op">&gt;</span> <span class="dv">1000</span>:</span>
+<span id="cb12-6"><a href=""></a>    nb_primes <span class="op">=</span> <span class="dv">1000</span></span>
+<span id="cb12-7"><a href=""></a></span>
+<span id="cb12-8"><a href=""></a></span>
+<span id="cb12-9"><a href=""></a></span>
+<span id="cb12-10"><a href=""></a>    <span class="co"># The current number of elements in p.</span></span>
+<span id="cb12-11"><a href=""></a>    len_p <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb12-12"><a href=""></a>    n <span class="op">=</span> <span class="dv">2</span></span>
+<span id="cb12-13"><a href=""></a>    <span class="cf">while</span> len_p <span class="op">&lt;</span> nb_primes:</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div></div>
 </section>
 <section id="cython---usage" class="slide level2">
@@ -442,8 +453,8 @@ Joey Bernard
 <ul>
 <li>The easiest way to build Cython code is to use setuptools</li>
 </ul>
-<div class="sourceCode" id="cb12"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb12-1"><a href=""></a><span class="ex">pip</span> install cython</span>
-<span id="cb12-2"><a href=""></a><span class="ex">pip</span> install setuptools</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb13"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb13-1"><a href=""></a><span class="ex">pip</span> install cython</span>
+<span id="cb13-2"><a href=""></a><span class="ex">pip</span> install setuptools</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <ul>
 <li>This way, you can use setuptools to build your Cython module</li>
 <li>Files can use endings <em>.pyx</em> or <em>.py</em></li>
@@ -454,34 +465,32 @@ Joey Bernard
 <ul>
 <li>We can start with the classic <em>Hello World</em> in the file <strong><em>hello.pyx</em></strong></li>
 </ul>
-<div class="sourceCode" id="cb13"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href=""></a><span class="kw">def</span> say_hello_to(name):</span>
-<span id="cb13-2"><a href=""></a>    <span class="bu">print</span>(<span class="ss">f"Hello </span><span class="sc">{</span>name<span class="sc">}</span><span class="ss">!"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb14"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href=""></a><span class="kw">def</span> say_hello_to(name):</span>
+<span id="cb14-2"><a href=""></a>    <span class="bu">print</span>(<span class="ss">f"Hello </span><span class="sc">{</span>name<span class="sc">}</span><span class="ss">!"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 <section id="cython---setuptools" class="slide level2">
 <h2>Cython - setuptools</h2>
 <ul>
 <li>To build it, we’ll need a <em>setup.py</em> script</li>
 </ul>
-<div class="sourceCode" id="cb14"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href=""></a><span class="im">from</span> setuptools <span class="im">import</span> setup</span>
-<span id="cb14-2"><a href=""></a><span class="im">from</span> Cython.Build <span class="im">import</span> cythonize</span>
-<span id="cb14-3"><a href=""></a></span>
-<span id="cb14-4"><a href=""></a>setup(</span>
-<span id="cb14-5"><a href=""></a>    name<span class="op">=</span><span class="st">'Hello World app'</span>,</span>
-<span id="cb14-6"><a href=""></a>    ext_modules<span class="op">=</span>cythonize(<span class="st">"hello.pyx"</span>),</span>
-<span id="cb14-7"><a href=""></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb15"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href=""></a><span class="im">from</span> setuptools <span class="im">import</span> setup</span>
+<span id="cb15-2"><a href=""></a><span class="im">from</span> Cython.Build <span class="im">import</span> cythonize</span>
+<span id="cb15-3"><a href=""></a></span>
+<span id="cb15-4"><a href=""></a>setup(</span>
+<span id="cb15-5"><a href=""></a>    name<span class="op">=</span><span class="st">'Hello World app'</span>,</span>
+<span id="cb15-6"><a href=""></a>    ext_modules<span class="op">=</span>cythonize(<span class="st">"hello.pyx"</span>),</span>
+<span id="cb15-7"><a href=""></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 <section id="cython---building" class="slide level2">
 <h2>Cython - building</h2>
 <ul>
 <li>To build it, you would use the command</li>
 </ul>
-<div class="sourceCode" id="cb15"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb15-1"><a href=""></a><span class="ex">python</span> setup.py build_ext <span class="at">--inplace</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb16"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb16-1"><a href=""></a><span class="ex">python</span> setup.py build_ext <span class="at">--inplace</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <ul>
 <li>Then you can use it with</li>
 </ul>
-<div class="sourceCode" id="cb16"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href=""></a><span class="im">from</span> hello <span class="im">import</span> say_hello_to</span>
-<span id="cb16-2"><a href=""></a></span>
-<span id="cb16-3"><a href=""></a>say_hello_to(<span class="st">'Joey'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb17"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href=""></a><span class="im">from</span> hello <span class="im">import</span> say_hello_to</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 <section id="cython---basics" class="slide level2">
 <h2>Cython - basics</h2>
@@ -491,6 +500,60 @@ Joey Bernard
 <li class="fragment">Writing Python wrappers allows your Python code to use C libraries</li>
 <li class="fragment">Your Cython code gets compiled down to C</li>
 </ul>
+</section>
+<section id="cython---stdlib-functions" class="slide level2">
+<h2>Cython - stdlib functions</h2>
+<ul>
+<li>You can import and use C functions from the standard library</li>
+</ul>
+<div class="sourceCode" id="cb18"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href=""></a><span class="im">from</span> cython.cimports.libc.stdlib <span class="im">import</span> atoi</span>
+<span id="cb18-2"><a href=""></a></span>
+<span id="cb18-3"><a href=""></a><span class="at">@cython.cfunc</span></span>
+<span id="cb18-4"><a href=""></a><span class="kw">def</span> parse_charptr_to_py_int(s: cython.p_char):</span>
+<span id="cb18-5"><a href=""></a>    <span class="cf">assert</span> s <span class="kw">is</span> <span class="kw">not</span> cython.NULL, <span class="st">"byte string value is NULL"</span></span>
+<span id="cb18-6"><a href=""></a>    <span class="cf">return</span> atoi(s)  <span class="co"># note: atoi() has no error detection!</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="cython---other-libraries" class="slide level2">
+<h2>Cython - other libraries</h2>
+<ul>
+<li class="fragment">You can also import from other libraries, e.g. *** from cython.cimports.libc.math import sin***</li>
+<li class="fragment">Some libraries (like math) are not automatically linked - you will have to add linking information to your <strong><em>setup.py</em></strong> file</li>
+</ul>
+</section>
+<section id="cython---external-libraries" class="slide level2">
+<h2>Cython - external libraries</h2>
+<ul>
+<li class="fragment">Using other external libraries isn’t quite so seemless</li>
+<li class="fragment">You will need to write a <strong><em>.pxd</em></strong> file to wrap the details from the header file for your external library</li>
+<li class="fragment">You then will need to write a Python wrapper class to encapsulate the calls to the C code</li>
+</ul>
+</section>
+<section id="cython---cqueue-pxd-file" class="slide level2">
+<h2>Cython - cqueue pxd file</h2>
+<div class="sourceCode" id="cb19"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href=""></a>cdef extern <span class="im">from</span> <span class="st">"c-algorithms/src/queue.h"</span>:</span>
+<span id="cb19-2"><a href=""></a>    ctypedef struct Queue:</span>
+<span id="cb19-3"><a href=""></a>    <span class="cf">pass</span></span>
+<span id="cb19-4"><a href=""></a>    ctypedef void<span class="op">*</span> QueueValue</span>
+<span id="cb19-5"><a href=""></a>    Queue<span class="op">*</span> queue_new()</span>
+<span id="cb19-6"><a href=""></a>    void queue_free(Queue<span class="op">*</span> queue)</span>
+<span id="cb19-7"><a href=""></a>    <span class="bu">int</span> queue_push_head(Queue<span class="op">*</span> queue, QueueValue data)</span>
+<span id="cb19-8"><a href=""></a>    QueueValue  queue_pop_head(Queue<span class="op">*</span> queue)</span>
+<span id="cb19-9"><a href=""></a>    QueueValue queue_peek_head(Queue<span class="op">*</span> queue)</span>
+<span id="cb19-10"><a href=""></a>    <span class="bu">int</span> queue_push_tail(Queue<span class="op">*</span> queue, QueueValue data)</span>
+<span id="cb19-11"><a href=""></a>    QueueValue queue_pop_tail(Queue<span class="op">*</span> queue)</span>
+<span id="cb19-12"><a href=""></a>    QueueValue queue_peek_tail(Queue<span class="op">*</span> queue)</span>
+<span id="cb19-13"><a href=""></a>    bint queue_is_empty(Queue<span class="op">*</span> queue)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="cython---wrapper-class-for-a-queue" class="slide level2">
+<h2>Cython - wrapper class for a queue</h2>
+<div class="sourceCode" id="cb20"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href=""></a><span class="im">from</span> cython.cimports <span class="im">import</span> cqueue</span>
+<span id="cb20-2"><a href=""></a></span>
+<span id="cb20-3"><a href=""></a><span class="at">@cython.cclass</span></span>
+<span id="cb20-4"><a href=""></a><span class="kw">class</span> Queue:</span>
+<span id="cb20-5"><a href=""></a>    _c_queue: cython.pointer[cqueue.Queue]</span>
+<span id="cb20-6"><a href=""></a></span>
+<span id="cb20-7"><a href=""></a>    <span class="kw">def</span> __cinit__(<span class="va">self</span>):</span>
+<span id="cb20-8"><a href=""></a>    <span class="va">self</span>._c_queue <span class="op">=</span> cqueue.queue_new()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 <section id="cython---strings" class="slide level2">
 <h2>Cython - strings</h2>
@@ -556,7 +619,7 @@ Joey Bernard
 <ul>
 <li>You can install <strong><em>pybind11</em></strong> through pip:</li>
 </ul>
-<div class="sourceCode" id="cb17"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb17-1"><a href=""></a><span class="ex">pip</span> install pybind11</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb21"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb21-1"><a href=""></a><span class="ex">pip</span> install pybind11</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <ul>
 <li>You also need a C++ compiler, along with the development package for Python</li>
 <li>You also need a build system (cmake, meson, setuptools)</li>
@@ -567,26 +630,26 @@ Joey Bernard
 <ul>
 <li>You will likely need the following two lines at the top of any of your C++ source code files</li>
 </ul>
-<div class="sourceCode" id="cb18"><pre class="sourceCode numberSource c number-lines code-with-copy"><code class="sourceCode c"><span id="cb18-1"><a href=""></a><span class="pp">#include </span><span class="im">&lt;pybind11/pybind11.h&gt;</span></span>
-<span id="cb18-2"><a href=""></a></span>
-<span id="cb18-3"><a href=""></a>namespace py <span class="op">=</span> pybind11<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb22"><pre class="sourceCode numberSource c number-lines code-with-copy"><code class="sourceCode c"><span id="cb22-1"><a href=""></a><span class="pp">#include </span><span class="im">&lt;pybind11/pybind11.h&gt;</span></span>
+<span id="cb22-2"><a href=""></a></span>
+<span id="cb22-3"><a href=""></a>namespace py <span class="op">=</span> pybind11<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <ul>
 <li>Now you can add binding code to your C++ source files</li>
 </ul>
 </section>
 <section id="pybind11---example-file" class="slide level2">
 <h2>pybind11 - example file</h2>
-<div class="sourceCode" id="cb19"><pre class="sourceCode numberSource c number-lines code-with-copy"><code class="sourceCode c"><span id="cb19-1"><a href=""></a><span class="pp">#include </span><span class="im">&lt;pybind11/pybind11.h&gt;</span></span>
-<span id="cb19-2"><a href=""></a></span>
-<span id="cb19-3"><a href=""></a><span class="dt">int</span> add<span class="op">(</span><span class="dt">int</span> i<span class="op">,</span> <span class="dt">int</span> j<span class="op">)</span> <span class="op">{</span></span>
-<span id="cb19-4"><a href=""></a>    <span class="cf">return</span> i <span class="op">+</span> j<span class="op">;</span></span>
-<span id="cb19-5"><a href=""></a><span class="op">}</span></span>
-<span id="cb19-6"><a href=""></a></span>
-<span id="cb19-7"><a href=""></a>PYBIND11_MODULE<span class="op">(</span>example<span class="op">,</span> m<span class="op">)</span> <span class="op">{</span></span>
-<span id="cb19-8"><a href=""></a>    m<span class="op">.</span>doc<span class="op">()</span> <span class="op">=</span> <span class="st">"pybind11 example plugin"</span><span class="op">;</span> <span class="co">// optional module docstring</span></span>
-<span id="cb19-9"><a href=""></a></span>
-<span id="cb19-10"><a href=""></a>    m<span class="op">.</span>def<span class="op">(</span><span class="st">"add"</span><span class="op">,</span> <span class="op">&amp;</span>add<span class="op">,</span> <span class="st">"A function that adds two numbers"</span><span class="op">);</span></span>
-<span id="cb19-11"><a href=""></a><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb23"><pre class="sourceCode numberSource c number-lines code-with-copy"><code class="sourceCode c"><span id="cb23-1"><a href=""></a><span class="pp">#include </span><span class="im">&lt;pybind11/pybind11.h&gt;</span></span>
+<span id="cb23-2"><a href=""></a></span>
+<span id="cb23-3"><a href=""></a><span class="dt">int</span> add<span class="op">(</span><span class="dt">int</span> i<span class="op">,</span> <span class="dt">int</span> j<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb23-4"><a href=""></a>    <span class="cf">return</span> i <span class="op">+</span> j<span class="op">;</span></span>
+<span id="cb23-5"><a href=""></a><span class="op">}</span></span>
+<span id="cb23-6"><a href=""></a></span>
+<span id="cb23-7"><a href=""></a>PYBIND11_MODULE<span class="op">(</span>example<span class="op">,</span> m<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb23-8"><a href=""></a>    m<span class="op">.</span>doc<span class="op">()</span> <span class="op">=</span> <span class="st">"pybind11 example plugin"</span><span class="op">;</span> <span class="co">// optional module docstring</span></span>
+<span id="cb23-9"><a href=""></a></span>
+<span id="cb23-10"><a href=""></a>    m<span class="op">.</span>def<span class="op">(</span><span class="st">"add"</span><span class="op">,</span> <span class="op">&amp;</span>add<span class="op">,</span> <span class="st">"A function that adds two numbers"</span><span class="op">);</span></span>
+<span id="cb23-11"><a href=""></a><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 <section id="pybind11---building" class="slide level2">
 <h2>pybind11 - building</h2>
@@ -595,7 +658,7 @@ Joey Bernard
 <li>This means that you don’t need to link to any extra library</li>
 <li>Building is done through compilation</li>
 </ul>
-<div class="sourceCode" id="cb20"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb20-1"><a href=""></a><span class="ex">$</span> c++ <span class="at">-O3</span> <span class="at">-Wall</span> <span class="at">-shared</span> <span class="at">-std</span><span class="op">=</span>c++11 <span class="at">-fPIC</span> <span class="va">$(</span><span class="ex">python3</span> <span class="at">-m</span> pybind11 <span class="at">--includes</span><span class="va">)</span> example.cpp <span class="at">-o</span> example<span class="va">$(</span><span class="ex">python3-config</span> <span class="at">--extension-suffix</span><span class="va">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb24"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb24-1"><a href=""></a><span class="ex">$</span> c++ <span class="at">-O3</span> <span class="at">-Wall</span> <span class="at">-shared</span> <span class="at">-std</span><span class="op">=</span>c++11 <span class="at">-fPIC</span> <span class="va">$(</span><span class="ex">python3</span> <span class="at">-m</span> pybind11 <span class="at">--includes</span><span class="va">)</span> example.cpp <span class="at">-o</span> example<span class="va">$(</span><span class="ex">python3-config</span> <span class="at">--extension-suffix</span><span class="va">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <ul>
 <li>You can now import the compiled module in Python the usual way</li>
 </ul>
@@ -606,21 +669,21 @@ Joey Bernard
 <li>In the exaple, the arguments are positional</li>
 <li>You need to add some code to allow for keyword arguments</li>
 </ul>
-<div class="sourceCode" id="cb21"><pre class="sourceCode numberSource c number-lines code-with-copy"><code class="sourceCode c"><span id="cb21-1"><a href=""></a>m<span class="op">.</span>def<span class="op">(</span><span class="st">"add"</span><span class="op">,</span> <span class="op">&amp;</span>add<span class="op">,</span> <span class="st">"A function which adds two numbers"</span><span class="op">,</span></span>
-<span id="cb21-2"><a href=""></a>      py<span class="op">::</span>arg<span class="op">(</span><span class="st">"i"</span><span class="op">),</span> py<span class="op">::</span>arg<span class="op">(</span><span class="st">"j"</span><span class="op">));</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb25"><pre class="sourceCode numberSource c number-lines code-with-copy"><code class="sourceCode c"><span id="cb25-1"><a href=""></a>m<span class="op">.</span>def<span class="op">(</span><span class="st">"add"</span><span class="op">,</span> <span class="op">&amp;</span>add<span class="op">,</span> <span class="st">"A function which adds two numbers"</span><span class="op">,</span></span>
+<span id="cb25-2"><a href=""></a>      py<span class="op">::</span>arg<span class="op">(</span><span class="st">"i"</span><span class="op">),</span> py<span class="op">::</span>arg<span class="op">(</span><span class="st">"j"</span><span class="op">));</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 <section id="pybind11---exporting-variables" class="slide level2">
 <h2>pybind11 - exporting variables</h2>
-<div class="sourceCode" id="cb22"><pre class="sourceCode numberSource c number-lines code-with-copy"><code class="sourceCode c"><span id="cb22-1"><a href=""></a>PYBIND11_MODULE<span class="op">(</span>example<span class="op">,</span> m<span class="op">)</span> <span class="op">{</span></span>
-<span id="cb22-2"><a href=""></a>    m<span class="op">.</span>attr<span class="op">(</span><span class="st">"the_answer"</span><span class="op">)</span> <span class="op">=</span> <span class="dv">42</span><span class="op">;</span></span>
-<span id="cb22-3"><a href=""></a>    py<span class="op">::</span>object world <span class="op">=</span> py<span class="op">::</span>cast<span class="op">(</span><span class="st">"World"</span><span class="op">);</span></span>
-<span id="cb22-4"><a href=""></a>    m<span class="op">.</span>attr<span class="op">(</span><span class="st">"what"</span><span class="op">)</span> <span class="op">=</span> world<span class="op">;</span></span>
-<span id="cb22-5"><a href=""></a><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="sourceCode" id="cb23"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href=""></a><span class="op">&gt;&gt;&gt;</span> <span class="im">import</span> example</span>
-<span id="cb23-2"><a href=""></a><span class="op">&gt;&gt;&gt;</span> example.the_answer</span>
-<span id="cb23-3"><a href=""></a><span class="dv">42</span></span>
-<span id="cb23-4"><a href=""></a><span class="op">&gt;&gt;&gt;</span> example.what</span>
-<span id="cb23-5"><a href=""></a><span class="co">'World'</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb26"><pre class="sourceCode numberSource c number-lines code-with-copy"><code class="sourceCode c"><span id="cb26-1"><a href=""></a>PYBIND11_MODULE<span class="op">(</span>example<span class="op">,</span> m<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb26-2"><a href=""></a>    m<span class="op">.</span>attr<span class="op">(</span><span class="st">"the_answer"</span><span class="op">)</span> <span class="op">=</span> <span class="dv">42</span><span class="op">;</span></span>
+<span id="cb26-3"><a href=""></a>    py<span class="op">::</span>object world <span class="op">=</span> py<span class="op">::</span>cast<span class="op">(</span><span class="st">"World"</span><span class="op">);</span></span>
+<span id="cb26-4"><a href=""></a>    m<span class="op">.</span>attr<span class="op">(</span><span class="st">"what"</span><span class="op">)</span> <span class="op">=</span> world<span class="op">;</span></span>
+<span id="cb26-5"><a href=""></a><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb27"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href=""></a><span class="op">&gt;&gt;&gt;</span> <span class="im">import</span> example</span>
+<span id="cb27-2"><a href=""></a><span class="op">&gt;&gt;&gt;</span> example.the_answer</span>
+<span id="cb27-3"><a href=""></a><span class="dv">42</span></span>
+<span id="cb27-4"><a href=""></a><span class="op">&gt;&gt;&gt;</span> example.what</span>
+<span id="cb27-5"><a href=""></a><span class="co">'World'</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 <section id="boost-y-binding-2---nanobind" class="slide level2">
 <h2>Boost-y binding 2 - Nanobind</h2>
@@ -634,7 +697,7 @@ Joey Bernard
 <ul>
 <li>Like everything else today, you can install using pip:</li>
 </ul>
-<div class="sourceCode" id="cb24"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb24-1"><a href=""></a><span class="ex">pip</span> install nanobind</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb28"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb28-1"><a href=""></a><span class="ex">pip</span> install nanobind</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <ul>
 <li>You will also need a C++ compiler</li>
 <li><strong><em>nanobind</em></strong> support various build systems (cmake, meson, bazel)</li>
@@ -645,16 +708,52 @@ Joey Bernard
 <ul>
 <li>A basic module looks like</li>
 </ul>
-<div class="sourceCode" id="cb25"><pre class="sourceCode numberSource c number-lines code-with-copy"><code class="sourceCode c"><span id="cb25-1"><a href=""></a><span class="pp">#include </span><span class="im">&lt;nanobind/nanobind.h&gt;</span></span>
-<span id="cb25-2"><a href=""></a></span>
-<span id="cb25-3"><a href=""></a><span class="dt">int</span> add<span class="op">(</span><span class="dt">int</span> a<span class="op">,</span> <span class="dt">int</span> b<span class="op">)</span> <span class="op">{</span> <span class="cf">return</span> a <span class="op">+</span> b<span class="op">;</span> <span class="op">}</span></span>
-<span id="cb25-4"><a href=""></a></span>
-<span id="cb25-5"><a href=""></a>NB_MODULE<span class="op">(</span>my_ext<span class="op">,</span> m<span class="op">)</span> <span class="op">{</span></span>
-<span id="cb25-6"><a href=""></a>    m<span class="op">.</span>def<span class="op">(</span><span class="st">"add"</span><span class="op">,</span> <span class="op">&amp;</span>add<span class="op">);</span></span>
-<span id="cb25-7"><a href=""></a><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb29"><pre class="sourceCode numberSource c number-lines code-with-copy"><code class="sourceCode c"><span id="cb29-1"><a href=""></a><span class="pp">#include </span><span class="im">&lt;nanobind/nanobind.h&gt;</span></span>
+<span id="cb29-2"><a href=""></a></span>
+<span id="cb29-3"><a href=""></a><span class="dt">int</span> add<span class="op">(</span><span class="dt">int</span> a<span class="op">,</span> <span class="dt">int</span> b<span class="op">)</span> <span class="op">{</span> <span class="cf">return</span> a <span class="op">+</span> b<span class="op">;</span> <span class="op">}</span></span>
+<span id="cb29-4"><a href=""></a></span>
+<span id="cb29-5"><a href=""></a>NB_MODULE<span class="op">(</span>my_ext<span class="op">,</span> m<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb29-6"><a href=""></a>    m<span class="op">.</span>def<span class="op">(</span><span class="st">"add"</span><span class="op">,</span> <span class="op">&amp;</span>add<span class="op">);</span></span>
+<span id="cb29-7"><a href=""></a><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <ul>
 <li>Building is through a <strong><em>CMakeLists.txt</em></strong></li>
 </ul>
+</section>
+<section id="nanobind---cmake-general" class="slide level2">
+<h2>nanobind - cmake general</h2>
+<pre><code>cmake_minimum_required(VERSION 3.15...3.27)
+project(my_project) # Replace 'my_project' with the name of your project
+
+if (CMAKE_VERSION VERSION_LESS 3.18)
+  set(DEV_MODULE Development)
+else()
+  set(DEV_MODULE Development.Module)
+endif()
+
+find_package(Python 3.8 COMPONENTS Interpreter ${DEV_MODULE} REQUIRED)</code></pre>
+</section>
+<section id="nanobind---cmake-specifics" class="slide level2">
+<h2>nanobind - cmake specifics</h2>
+<pre><code># Detect the installed nanobind package and import it into CMake
+execute_process(
+  COMMAND "${Python_EXECUTABLE}" -m nanobind --cmake_dir
+  OUTPUT_STRIP_TRAILING_WHITESPACE OUTPUT_VARIABLE nanobind_ROOT)
+find_package(nanobind CONFIG REQUIRED)</code></pre>
+<pre><code>nanobind_add_module(my_ext my_ext.cpp)</code></pre>
+</section>
+<section id="nanobind---example" class="slide level2">
+<h2>nanobind - example</h2>
+<div class="sourceCode" id="cb33"><pre class="sourceCode numberSource c number-lines code-with-copy"><code class="sourceCode c"><span id="cb33-1"><a href=""></a><span class="pp">#include </span><span class="im">&lt;nanobind/nanobind.h&gt;</span></span>
+<span id="cb33-2"><a href=""></a></span>
+<span id="cb33-3"><a href=""></a>namespace nb <span class="op">=</span> nanobind<span class="op">;</span></span>
+<span id="cb33-4"><a href=""></a>using namespace nb<span class="op">::</span>literals<span class="op">;</span></span>
+<span id="cb33-5"><a href=""></a></span>
+<span id="cb33-6"><a href=""></a><span class="dt">int</span> add<span class="op">(</span><span class="dt">int</span> a<span class="op">,</span> <span class="dt">int</span> b <span class="op">=</span> <span class="dv">1</span><span class="op">)</span> <span class="op">{</span> <span class="cf">return</span> a <span class="op">+</span> b<span class="op">;</span> <span class="op">}</span></span>
+<span id="cb33-7"><a href=""></a></span>
+<span id="cb33-8"><a href=""></a>NB_MODULE<span class="op">(</span>my_ext<span class="op">,</span> m<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb33-9"><a href=""></a>    m<span class="op">.</span>def<span class="op">(</span><span class="st">"add"</span><span class="op">,</span> <span class="op">&amp;</span>add<span class="op">,</span> <span class="st">"a"</span>_a<span class="op">,</span> <span class="st">"b"</span>_a <span class="op">=</span> <span class="dv">1</span><span class="op">,</span></span>
+<span id="cb33-10"><a href=""></a>      <span class="st">"This function adds two numbers and increments if only one is provided."</span><span class="op">);</span></span>
+<span id="cb33-11"><a href=""></a><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 <section id="cffi" class="slide level2">
 <h2>CFFI</h2>
@@ -669,7 +768,7 @@ Joey Bernard
 <ul>
 <li>Installation can be done through pip:</li>
 </ul>
-<div class="sourceCode" id="cb26"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb26-1"><a href=""></a><span class="ex">pip</span> install cffi</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb34"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb34-1"><a href=""></a><span class="ex">pip</span> install cffi</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <ul>
 <li>Includes a library (libffi) that can be messy to setup correctly on some platforms</li>
 </ul>
@@ -686,32 +785,88 @@ Joey Bernard
 </section>
 <section id="cffi---example" class="slide level2">
 <h2>CFFI - example</h2>
-<div class="sourceCode" id="cb27"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href=""></a><span class="im">from</span> cffi <span class="im">import</span> FFI</span>
-<span id="cb27-2"><a href=""></a>ffibuilder <span class="op">=</span> FFI()</span>
-<span id="cb27-3"><a href=""></a></span>
-<span id="cb27-4"><a href=""></a>ffibuilder.cdef(<span class="st">"""</span></span>
-<span id="cb27-5"><a href=""></a><span class="st">    float pi_approx(int n);</span></span>
-<span id="cb27-6"><a href=""></a><span class="st">"""</span>)</span>
-<span id="cb27-7"><a href=""></a></span>
-<span id="cb27-8"><a href=""></a>ffibuilder.set_source(<span class="st">"_pi_cffi"</span>,</span>
-<span id="cb27-9"><a href=""></a><span class="st">"""</span></span>
-<span id="cb27-10"><a href=""></a><span class="st">     #include "pi.h"   // the C header of the library</span></span>
-<span id="cb27-11"><a href=""></a><span class="st">"""</span>,</span>
-<span id="cb27-12"><a href=""></a>     libraries<span class="op">=</span>[<span class="st">'piapprox'</span>])   <span class="co"># library name, for the linker</span></span>
-<span id="cb27-13"><a href=""></a></span>
-<span id="cb27-14"><a href=""></a><span class="cf">if</span> <span class="va">__name__</span> <span class="op">==</span> <span class="st">"__main__"</span>:</span>
-<span id="cb27-15"><a href=""></a>    ffibuilder.<span class="bu">compile</span>(verbose<span class="op">=</span><span class="va">True</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb35"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb35-1"><a href=""></a><span class="im">from</span> cffi <span class="im">import</span> FFI</span>
+<span id="cb35-2"><a href=""></a>ffibuilder <span class="op">=</span> FFI()</span>
+<span id="cb35-3"><a href=""></a></span>
+<span id="cb35-4"><a href=""></a>ffibuilder.cdef(<span class="st">"""</span></span>
+<span id="cb35-5"><a href=""></a><span class="st">    float pi_approx(int n);</span></span>
+<span id="cb35-6"><a href=""></a><span class="st">"""</span>)</span>
+<span id="cb35-7"><a href=""></a></span>
+<span id="cb35-8"><a href=""></a>ffibuilder.set_source(<span class="st">"_pi_cffi"</span>,</span>
+<span id="cb35-9"><a href=""></a><span class="st">"""</span></span>
+<span id="cb35-10"><a href=""></a><span class="st">     #include "pi.h"   // the C header of the library</span></span>
+<span id="cb35-11"><a href=""></a><span class="st">"""</span>,</span>
+<span id="cb35-12"><a href=""></a>     libraries<span class="op">=</span>[<span class="st">'piapprox'</span>])   <span class="co"># library name, for the linker</span></span>
+<span id="cb35-13"><a href=""></a></span>
+<span id="cb35-14"><a href=""></a><span class="cf">if</span> <span class="va">__name__</span> <span class="op">==</span> <span class="st">"__main__"</span>:</span>
+<span id="cb35-15"><a href=""></a>    ffibuilder.<span class="bu">compile</span>(verbose<span class="op">=</span><span class="va">True</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 <section id="cffi---setup.py" class="slide level2">
 <h2>CFFI - setup.py</h2>
-<div class="sourceCode" id="cb28"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href=""></a><span class="im">from</span> setuptools <span class="im">import</span> setup</span>
-<span id="cb28-2"><a href=""></a></span>
-<span id="cb28-3"><a href=""></a>setup(</span>
-<span id="cb28-4"><a href=""></a>    ...</span>
-<span id="cb28-5"><a href=""></a>    setup_requires<span class="op">=</span>[<span class="st">"cffi&gt;=1.0.0"</span>],</span>
-<span id="cb28-6"><a href=""></a>    cffi_modules<span class="op">=</span>[<span class="st">"piapprox_build:ffibuilder"</span>], <span class="co"># "filename:global"</span></span>
-<span id="cb28-7"><a href=""></a>    install_requires<span class="op">=</span>[<span class="st">"cffi&gt;=1.0.0"</span>],</span>
-<span id="cb28-8"><a href=""></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb36"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb36-1"><a href=""></a><span class="im">from</span> setuptools <span class="im">import</span> setup</span>
+<span id="cb36-2"><a href=""></a></span>
+<span id="cb36-3"><a href=""></a>setup(</span>
+<span id="cb36-4"><a href=""></a>    ...</span>
+<span id="cb36-5"><a href=""></a>    setup_requires<span class="op">=</span>[<span class="st">"cffi&gt;=1.0.0"</span>],</span>
+<span id="cb36-6"><a href=""></a>    cffi_modules<span class="op">=</span>[<span class="st">"piapprox_build:ffibuilder"</span>], <span class="co"># "filename:global"</span></span>
+<span id="cb36-7"><a href=""></a>    install_requires<span class="op">=</span>[<span class="st">"cffi&gt;=1.0.0"</span>],</span>
+<span id="cb36-8"><a href=""></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="cffi---modes-of-use" class="slide level2">
+<h2>CFFI - modes of use</h2>
+<ul>
+<li class="fragment">ABI - Application Binary Interface</li>
+<li class="fragment">API - Application Programming Interface</li>
+<li class="fragment">in-line - everything is setup everytime you import your code</li>
+<li class="fragment">out-of-line - there is a separate step that compiles your code for import</li>
+</ul>
+</section>
+<section id="cffi---abi-in-line" class="slide level2">
+<h2>CFFI - ABI, in-line</h2>
+<div class="sourceCode" id="cb37"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb37-1"><a href=""></a><span class="im">from</span> cffi <span class="im">import</span> FFI</span>
+<span id="cb37-2"><a href=""></a>ffi <span class="op">=</span> FFI()</span>
+<span id="cb37-3"><a href=""></a>ffi.cdef(<span class="st">"""</span></span>
+<span id="cb37-4"><a href=""></a><span class="st">    int printf(const char *format, ...);</span></span>
+<span id="cb37-5"><a href=""></a><span class="st">"""</span>)</span>
+<span id="cb37-6"><a href=""></a><span class="co"># loads the entire C namespace</span></span>
+<span id="cb37-7"><a href=""></a>C <span class="op">=</span> ffi.dlopen(<span class="va">None</span>)</span>
+<span id="cb37-8"><a href=""></a><span class="co"># equivalent to C code: char arg[] = "world";</span></span>
+<span id="cb37-9"><a href=""></a>arg <span class="op">=</span> ffi.new(<span class="st">"char[]"</span>, <span class="st">b"world"</span>)</span>
+<span id="cb37-10"><a href=""></a>C.printf(<span class="st">b"hi there, %s.</span><span class="ch">\n</span><span class="st">"</span>, arg)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="cffi---api-out-of-line---1" class="slide level2">
+<h2>CFFI - API, out-of-line - 1</h2>
+<div class="sourceCode" id="cb38"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb38-1"><a href=""></a><span class="im">from</span> cffi <span class="im">import</span> FFI</span>
+<span id="cb38-2"><a href=""></a>ffibuilder <span class="op">=</span> FFI()</span>
+<span id="cb38-3"><a href=""></a></span>
+<span id="cb38-4"><a href=""></a>ffibuilder.cdef(<span class="st">"int foo(int *, int *, int);"</span>)</span>
+<span id="cb38-5"><a href=""></a></span>
+<span id="cb38-6"><a href=""></a>ffibuilder.set_source(<span class="st">"_example"</span>,</span>
+<span id="cb38-7"><a href=""></a><span class="vs">r"""</span></span>
+<span id="cb38-8"><a href=""></a><span class="vs">    static int foo</span><span class="kw">(</span><span class="vs">int </span><span class="op">*</span><span class="vs">buffer_in,</span></span>
+<span id="cb38-9"><a href=""></a><span class="vs">           int </span><span class="op">*</span><span class="vs">buffer_out, int x</span><span class="kw">)</span></span>
+<span id="cb38-10"><a href=""></a><span class="vs">    {</span></span>
+<span id="cb38-11"><a href=""></a><span class="vs">    /</span><span class="op">*</span><span class="vs"> some algorithm that is seriously</span></span>
+<span id="cb38-12"><a href=""></a><span class="vs">    faster in C than in Python </span><span class="op">*</span><span class="vs">/</span></span>
+<span id="cb38-13"><a href=""></a><span class="vs">    }</span></span>
+<span id="cb38-14"><a href=""></a><span class="vs">"""</span>)</span>
+<span id="cb38-15"><a href=""></a></span>
+<span id="cb38-16"><a href=""></a><span class="cf">if</span> <span class="va">__name__</span> <span class="op">==</span> <span class="st">"__main__"</span>:</span>
+<span id="cb38-17"><a href=""></a>    ffibuilder.<span class="bu">compile</span>(verbose<span class="op">=</span><span class="va">True</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="cffi---api-out-of-line---2" class="slide level2">
+<h2>CFFI - API, out-of-line - 2</h2>
+<div class="sourceCode" id="cb39"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb39-1"><a href=""></a><span class="im">from</span> _example <span class="im">import</span> ffi, lib</span>
+<span id="cb39-2"><a href=""></a></span>
+<span id="cb39-3"><a href=""></a>buffer_in <span class="op">=</span> ffi.new(<span class="st">"int[]"</span>, <span class="dv">1000</span>)</span>
+<span id="cb39-4"><a href=""></a><span class="co"># initialize buffer_in here...</span></span>
+<span id="cb39-5"><a href=""></a></span>
+<span id="cb39-6"><a href=""></a><span class="co"># easier to do all buffer allocations</span></span>
+<span id="cb39-7"><a href=""></a><span class="co"># in Python and pass them to C,</span></span>
+<span id="cb39-8"><a href=""></a><span class="co"># even for output-only arguments</span></span>
+<span id="cb39-9"><a href=""></a>buffer_out <span class="op">=</span> ffi.new(<span class="st">"int[]"</span>, <span class="dv">1000</span>)</span>
+<span id="cb39-10"><a href=""></a></span>
+<span id="cb39-11"><a href=""></a>result <span class="op">=</span> lib.foo(buffer_in, buffer_out, <span class="dv">1000</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 <section id="hpy" class="slide level2">
 <h2>HPy</h2>
@@ -726,7 +881,7 @@ Joey Bernard
 <ul>
 <li>Installation is through pip:</li>
 </ul>
-<div class="sourceCode" id="cb29"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb29-1"><a href=""></a><span class="ex">pip</span> install hpy</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb40"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb40-1"><a href=""></a><span class="ex">pip</span> install hpy</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <ul>
 <li>You need a C compiler</li>
 <li>You actually write C source code and compile it into a library that can be imported into Python</li>
@@ -770,55 +925,55 @@ Joey Bernard
 <ul>
 <li>The easiest way is to use <strong><em>maturin</em></strong> inside a virtual environment to initialize a project</li>
 </ul>
-<div class="sourceCode" id="cb30"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb30-1"><a href=""></a><span class="ex">pip</span> install maturin</span>
-<span id="cb30-2"><a href=""></a><span class="ex">maturin</span> init <span class="at">--bindings</span> pyo3</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb41"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb41-1"><a href=""></a><span class="ex">pip</span> install maturin</span>
+<span id="cb41-2"><a href=""></a><span class="ex">maturin</span> init <span class="at">--bindings</span> pyo3</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <ul>
 <li>This creates several project files, the most important of which are <strong><em>Cargo.toml</em></strong> and <strong><em>src/lib.rs</em></strong></li>
 </ul>
 </section>
 <section id="pyo3---cargo.toml" class="slide level2">
 <h2>pyO3 - Cargo.toml</h2>
-<div class="sourceCode" id="cb31"><pre class="sourceCode numberSource rust number-lines code-with-copy"><code class="sourceCode rust"><span id="cb31-1"><a href=""></a>[package]</span>
-<span id="cb31-2"><a href=""></a>name <span class="op">=</span> <span class="st">"string_sum"</span></span>
-<span id="cb31-3"><a href=""></a>version <span class="op">=</span> <span class="st">"0.1.0"</span></span>
-<span id="cb31-4"><a href=""></a>edition <span class="op">=</span> <span class="st">"2021"</span></span>
-<span id="cb31-5"><a href=""></a></span>
-<span id="cb31-6"><a href=""></a>[lib]</span>
-<span id="cb31-7"><a href=""></a># The name of the native library<span class="op">.</span></span>
-<span id="cb31-8"><a href=""></a>name <span class="op">=</span> <span class="st">"string_sum"</span></span>
-<span id="cb31-9"><a href=""></a># <span class="st">"cdylib"</span> is necessary to produce a shared library <span class="cf">for</span> Python to import from<span class="op">.</span></span>
-<span id="cb31-10"><a href=""></a><span class="kw">crate</span><span class="op">-</span><span class="kw">type</span> <span class="op">=</span> [<span class="st">"cdylib"</span>]</span>
-<span id="cb31-11"><a href=""></a></span>
-<span id="cb31-12"><a href=""></a>[dependencies]</span>
-<span id="cb31-13"><a href=""></a>pyo3 <span class="op">=</span> <span class="op">{</span> version <span class="op">=</span> <span class="st">"0.25.0"</span><span class="op">,</span> features <span class="op">=</span> [<span class="st">"extension-module"</span>] <span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb42"><pre class="sourceCode numberSource rust number-lines code-with-copy"><code class="sourceCode rust"><span id="cb42-1"><a href=""></a>[package]</span>
+<span id="cb42-2"><a href=""></a>name <span class="op">=</span> <span class="st">"string_sum"</span></span>
+<span id="cb42-3"><a href=""></a>version <span class="op">=</span> <span class="st">"0.1.0"</span></span>
+<span id="cb42-4"><a href=""></a>edition <span class="op">=</span> <span class="st">"2021"</span></span>
+<span id="cb42-5"><a href=""></a></span>
+<span id="cb42-6"><a href=""></a>[lib]</span>
+<span id="cb42-7"><a href=""></a># The name of the native library<span class="op">.</span></span>
+<span id="cb42-8"><a href=""></a>name <span class="op">=</span> <span class="st">"string_sum"</span></span>
+<span id="cb42-9"><a href=""></a># <span class="st">"cdylib"</span> is necessary to produce a shared library <span class="cf">for</span> Python to import from<span class="op">.</span></span>
+<span id="cb42-10"><a href=""></a><span class="kw">crate</span><span class="op">-</span><span class="kw">type</span> <span class="op">=</span> [<span class="st">"cdylib"</span>]</span>
+<span id="cb42-11"><a href=""></a></span>
+<span id="cb42-12"><a href=""></a>[dependencies]</span>
+<span id="cb42-13"><a href=""></a>pyo3 <span class="op">=</span> <span class="op">{</span> version <span class="op">=</span> <span class="st">"0.25.0"</span><span class="op">,</span> features <span class="op">=</span> [<span class="st">"extension-module"</span>] <span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 <section id="pyo3---lib.rs" class="slide level2">
 <h2>pyO3 - lib.rs</h2>
-<div class="sourceCode" id="cb32"><pre class="sourceCode numberSource rust number-lines code-with-copy"><code class="sourceCode rust"><span id="cb32-1"><a href=""></a><span class="kw">use</span> <span class="pp">pyo3::prelude::</span><span class="op">*;</span></span>
-<span id="cb32-2"><a href=""></a></span>
-<span id="cb32-3"><a href=""></a><span class="co">/// Formats the sum of two numbers as string.</span></span>
-<span id="cb32-4"><a href=""></a><span class="at">#[</span>pyfunction<span class="at">]</span></span>
-<span id="cb32-5"><a href=""></a><span class="kw">fn</span> sum_as_string(a<span class="op">:</span> <span class="dt">usize</span><span class="op">,</span> b<span class="op">:</span> <span class="dt">usize</span>) <span class="op">-&gt;</span> PyResult<span class="op">&lt;</span><span class="dt">String</span><span class="op">&gt;</span> <span class="op">{</span></span>
-<span id="cb32-6"><a href=""></a>    <span class="cn">Ok</span>((a <span class="op">+</span> b)<span class="op">.</span>to_string())</span>
-<span id="cb32-7"><a href=""></a><span class="op">}</span></span>
-<span id="cb32-8"><a href=""></a></span>
-<span id="cb32-9"><a href=""></a><span class="co">/// A Python module implemented in Rust.</span></span>
-<span id="cb32-10"><a href=""></a><span class="co">/// The name of this function must match</span></span>
-<span id="cb32-11"><a href=""></a><span class="co">/// the `lib.name` setting in the `Cargo.toml`,</span></span>
-<span id="cb32-12"><a href=""></a><span class="co">/// else Python will not be able to</span></span>
-<span id="cb32-13"><a href=""></a><span class="co">/// import the module.</span></span>
-<span id="cb32-14"><a href=""></a><span class="at">#[</span>pymodule<span class="at">]</span></span>
-<span id="cb32-15"><a href=""></a><span class="kw">fn</span> string_sum(m<span class="op">:</span> <span class="op">&amp;</span>Bound<span class="op">&lt;</span><span class="ot">'_</span><span class="op">,</span> PyModule<span class="op">&gt;</span>) <span class="op">-&gt;</span> PyResult<span class="op">&lt;</span>()<span class="op">&gt;</span> <span class="op">{</span></span>
-<span id="cb32-16"><a href=""></a>    m<span class="op">.</span>add_function(<span class="pp">wrap_pyfunction!</span>(sum_as_string<span class="op">,</span> m)<span class="op">?</span>)<span class="op">?;</span></span>
-<span id="cb32-17"><a href=""></a>    <span class="cn">Ok</span>(())</span>
-<span id="cb32-18"><a href=""></a><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb43"><pre class="sourceCode numberSource rust number-lines code-with-copy"><code class="sourceCode rust"><span id="cb43-1"><a href=""></a><span class="kw">use</span> <span class="pp">pyo3::prelude::</span><span class="op">*;</span></span>
+<span id="cb43-2"><a href=""></a></span>
+<span id="cb43-3"><a href=""></a><span class="co">/// Formats the sum of two numbers as string.</span></span>
+<span id="cb43-4"><a href=""></a><span class="at">#[</span>pyfunction<span class="at">]</span></span>
+<span id="cb43-5"><a href=""></a><span class="kw">fn</span> sum_as_string(a<span class="op">:</span> <span class="dt">usize</span><span class="op">,</span> b<span class="op">:</span> <span class="dt">usize</span>) <span class="op">-&gt;</span> PyResult<span class="op">&lt;</span><span class="dt">String</span><span class="op">&gt;</span> <span class="op">{</span></span>
+<span id="cb43-6"><a href=""></a>    <span class="cn">Ok</span>((a <span class="op">+</span> b)<span class="op">.</span>to_string())</span>
+<span id="cb43-7"><a href=""></a><span class="op">}</span></span>
+<span id="cb43-8"><a href=""></a></span>
+<span id="cb43-9"><a href=""></a><span class="co">/// A Python module implemented in Rust.</span></span>
+<span id="cb43-10"><a href=""></a><span class="co">/// The name of this function must match</span></span>
+<span id="cb43-11"><a href=""></a><span class="co">/// the `lib.name` setting in the `Cargo.toml`,</span></span>
+<span id="cb43-12"><a href=""></a><span class="co">/// else Python will not be able to</span></span>
+<span id="cb43-13"><a href=""></a><span class="co">/// import the module.</span></span>
+<span id="cb43-14"><a href=""></a><span class="at">#[</span>pymodule<span class="at">]</span></span>
+<span id="cb43-15"><a href=""></a><span class="kw">fn</span> string_sum(m<span class="op">:</span> <span class="op">&amp;</span>Bound<span class="op">&lt;</span><span class="ot">'_</span><span class="op">,</span> PyModule<span class="op">&gt;</span>) <span class="op">-&gt;</span> PyResult<span class="op">&lt;</span>()<span class="op">&gt;</span> <span class="op">{</span></span>
+<span id="cb43-16"><a href=""></a>    m<span class="op">.</span>add_function(<span class="pp">wrap_pyfunction!</span>(sum_as_string<span class="op">,</span> m)<span class="op">?</span>)<span class="op">?;</span></span>
+<span id="cb43-17"><a href=""></a>    <span class="cn">Ok</span>(())</span>
+<span id="cb43-18"><a href=""></a><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 <section id="pyo3---building" class="slide level2">
 <h2>pyO3 - building</h2>
 <ul>
 <li>To build code, use</li>
 </ul>
-<div class="sourceCode" id="cb33"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb33-1"><a href=""></a><span class="ex">maturin</span> develop</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb44"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb44-1"><a href=""></a><span class="ex">maturin</span> develop</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <ul>
 <li>This will build the library and install it into the virtual environment that we are currently in</li>
 </ul>

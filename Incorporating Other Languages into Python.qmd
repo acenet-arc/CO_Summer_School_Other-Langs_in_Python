@@ -184,8 +184,8 @@ if __name__ == "__main__":
 
 ## Numba - AOT compiling
 - Running the above script generates a shared library that contains the compiled code
-- This won't work for ufuncs
-- Exported function don't check argument types
+- This won't work for numpy ufuncs
+- Exported functions don't check argument types
 - AOT produces generic architecture code, while JIT produces specific code
 
 
@@ -208,6 +208,20 @@ if __name__ == "__main__":
 - You need to annotate your code in order to tell Cython what is expected
 - You will need to have your own C/C++ compiler - ideally the same as the compiler used for Python
 - This becomes easy to mess up under Windows - consider strongly using WSL
+
+
+## Cython - annotation
+::: {.nonincremental}
+- Cython will compile pure Python
+- Using static typing will give a decent initial speedup
+- You can annotate so that it looks like
+```python
+import cython
+
+i: cython.int
+j: cython.double
+```
+:::
 
 
 ## Cython - different notation
@@ -300,8 +314,6 @@ python setup.py build_ext --inplace
 - Then you can use it with
 ```python
 from hello import say_hello_to
-
-say_hello_to('Joey')
 ```
 :::
 
@@ -311,6 +323,64 @@ say_hello_to('Joey')
 - You have the ability to use static types
 - Writing Python wrappers allows your Python code to use C libraries
 - Your Cython code gets compiled down to C
+
+
+## Cython - stdlib functions
+::: {.nonincremental}
+- You can import and use C functions from the standard library
+```python
+from cython.cimports.libc.stdlib import atoi
+
+@cython.cfunc
+def parse_charptr_to_py_int(s: cython.p_char):
+    assert s is not cython.NULL, "byte string value is NULL"
+    return atoi(s)  # note: atoi() has no error detection!
+```
+:::
+
+
+
+## Cython - other libraries
+- You can also import from other libraries, e.g.
+*** from cython.cimports.libc.math import sin***
+- Some libraries (like math) are not automatically linked - you will have to add linking information to your ***setup.py*** file
+
+
+## Cython - external libraries
+- Using other external libraries isn't quite so seemless
+- You will need to write a ***.pxd*** file to wrap the details from the header file for your external library
+- You then will need to write a Python wrapper class to encapsulate the calls to the C code
+
+
+## Cython - cqueue pxd file
+```python
+cdef extern from "c-algorithms/src/queue.h":
+    ctypedef struct Queue:
+	pass
+    ctypedef void* QueueValue
+    Queue* queue_new()
+    void queue_free(Queue* queue)
+    int queue_push_head(Queue* queue, QueueValue data)
+    QueueValue  queue_pop_head(Queue* queue)
+    QueueValue queue_peek_head(Queue* queue)
+    int queue_push_tail(Queue* queue, QueueValue data)
+    QueueValue queue_pop_tail(Queue* queue)
+    QueueValue queue_peek_tail(Queue* queue)
+    bint queue_is_empty(Queue* queue)
+```
+
+
+## Cython - wrapper class for a queue
+```python
+from cython.cimports import cqueue
+
+@cython.cclass
+class Queue:
+    _c_queue: cython.pointer[cqueue.Queue]
+
+    def __cinit__(self):
+	self._c_queue = cqueue.queue_new()
+```
 
 
 ## Cython - strings
@@ -350,6 +420,11 @@ say_hello_to('Joey')
 - Cython allows you to statically type your code, along with other cythonic functionality
 - You can use an augmenting ***.pxd*** file to cythonize your ***.py*** file
 - You can explicitly mark code as needing or not needing the GIL - this helps the interpreter run parallel threads
+
+
+
+
+
 
 
 
@@ -443,6 +518,11 @@ PYBIND11_MODULE(example, m) {
 
 
 
+
+
+
+
+
 ## Boost-y binding 2 - Nanobind
 - ***nanobind*** is another Boost-y module, by the same person who wrote ***pybind11***
 - ***nanobind*** is even smaller, providing a subset of C++ functionality for your Python code
@@ -473,6 +553,55 @@ NB_MODULE(my_ext, m) {
 ```
 - Building is through a ***CMakeLists.txt***
 :::
+
+
+## nanobind - cmake general
+```
+cmake_minimum_required(VERSION 3.15...3.27)
+project(my_project) # Replace 'my_project' with the name of your project
+
+if (CMAKE_VERSION VERSION_LESS 3.18)
+  set(DEV_MODULE Development)
+else()
+  set(DEV_MODULE Development.Module)
+endif()
+
+find_package(Python 3.8 COMPONENTS Interpreter ${DEV_MODULE} REQUIRED)
+```
+
+
+## nanobind - cmake specifics
+```
+# Detect the installed nanobind package and import it into CMake
+execute_process(
+  COMMAND "${Python_EXECUTABLE}" -m nanobind --cmake_dir
+  OUTPUT_STRIP_TRAILING_WHITESPACE OUTPUT_VARIABLE nanobind_ROOT)
+find_package(nanobind CONFIG REQUIRED)
+```
+```
+nanobind_add_module(my_ext my_ext.cpp)
+```
+
+
+## nanobind - example
+```c
+#include <nanobind/nanobind.h>
+
+namespace nb = nanobind;
+using namespace nb::literals;
+
+int add(int a, int b = 1) { return a + b; }
+
+NB_MODULE(my_ext, m) {
+    m.def("add", &add, "a"_a, "b"_a = 1,
+	  "This function adds two numbers and increments if only one is provided.");
+}
+```
+
+
+
+
+
 
 
 
@@ -535,6 +664,70 @@ setup(
 ```
 
 
+## CFFI - modes of use
+- ABI - Application Binary Interface
+- API - Application Programming Interface
+- in-line - everything is setup everytime you import your code
+- out-of-line - there is a separate step that compiles your code for import
+
+
+## CFFI - ABI, in-line
+```python
+from cffi import FFI
+ffi = FFI()
+ffi.cdef("""
+    int printf(const char *format, ...);
+""")
+# loads the entire C namespace
+C = ffi.dlopen(None)
+# equivalent to C code: char arg[] = "world";
+arg = ffi.new("char[]", b"world")
+C.printf(b"hi there, %s.\n", arg)
+```
+
+
+## CFFI - API, out-of-line - 1
+```python
+from cffi import FFI
+ffibuilder = FFI()
+
+ffibuilder.cdef("int foo(int *, int *, int);")
+
+ffibuilder.set_source("_example",
+r"""
+    static int foo(int *buffer_in,
+		   int *buffer_out, int x)
+    {
+	/* some algorithm that is seriously
+	faster in C than in Python */
+    }
+""")
+
+if __name__ == "__main__":
+    ffibuilder.compile(verbose=True)
+```
+
+
+## CFFI - API, out-of-line - 2
+```python
+from _example import ffi, lib
+
+buffer_in = ffi.new("int[]", 1000)
+# initialize buffer_in here...
+
+# easier to do all buffer allocations
+# in Python and pass them to C,
+# even for output-only arguments
+buffer_out = ffi.new("int[]", 1000)
+
+result = lib.foo(buffer_in, buffer_out, 1000)
+```
+
+
+
+
+
+
 
 
 
@@ -558,6 +751,11 @@ pip install hpy
 
 
 
+
+
+
+
+
 ## swig - not just for Python
 - ***swig*** (Simplified Wrapper and Interface Generator) builds scripting language interfaces to C and C++
 - Works for languages like Python, Tcl, Perl and Guile
@@ -575,6 +773,11 @@ pip install hpy
 - Calling ***swig*** generates the needed wrapper C code
 - You then need to compile the C ocde and link it together into a shared library
 - This can then be imported into Python
+
+
+
+
+
 
 
 
