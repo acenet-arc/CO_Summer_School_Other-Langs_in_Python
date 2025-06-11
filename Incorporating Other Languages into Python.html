@@ -6,8 +6,8 @@
 <script src="Incorporating Other Languages into Python_files/libs/quarto-html/tippy.umd.min.js"></script>
 <link href="Incorporating Other Languages into Python_files/libs/quarto-html/tippy.css" rel="stylesheet">
 <link href="Incorporating Other Languages into Python_files/libs/quarto-html/light-border.css" rel="stylesheet">
-<link href="Incorporating Other Languages into Python_files/libs/quarto-html/quarto-syntax-highlighting-549806ee2085284f45b00abea8c6df48.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
-  <meta name="generator" content="quarto-1.6.40">
+<link href="Incorporating Other Languages into Python_files/libs/quarto-html/quarto-syntax-highlighting-dark-8ef56b68f8fa1e9d2ba328e99e439f80.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.7.31">
 
   <meta name="author" content="Joey Bernard">
   <title>Incorporating Other Languages into Python</title>
@@ -29,8 +29,9 @@
       vertical-align: middle;
     }
     /* CSS for syntax highlighting */
+    html { -webkit-text-size-adjust: 100%; }
     pre > code.sourceCode { white-space: pre; position: relative; }
-    pre > code.sourceCode > span { line-height: 1.25; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
     pre > code.sourceCode > span:empty { height: 1.2em; }
     .sourceCode { overflow: visible; }
     code.sourceCode > span { color: inherit; text-decoration: inherit; }
@@ -41,7 +42,7 @@
     }
     @media print {
     pre > code.sourceCode { white-space: pre-wrap; }
-    pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
     }
     pre.numberSource code
       { counter-reset: source-line 0; }
@@ -55,46 +56,46 @@
         -khtml-user-select: none; -moz-user-select: none;
         -ms-user-select: none; user-select: none;
         padding: 0 4px; width: 4em;
-        color: #aaaaaa;
       }
-    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    pre.numberSource { margin-left: 3em;  padding-left: 4px; }
     div.sourceCode
-      { color: #003b4f; background-color: #f1f3f5; }
+      { color: #f8f8f2;  }
     @media screen {
     pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
     }
-    code span { color: #003b4f; } /* Normal */
-    code span.al { color: #ad0000; } /* Alert */
-    code span.an { color: #5e5e5e; } /* Annotation */
-    code span.at { color: #657422; } /* Attribute */
-    code span.bn { color: #ad0000; } /* BaseN */
-    code span.bu { } /* BuiltIn */
-    code span.cf { color: #003b4f; font-weight: bold; } /* ControlFlow */
-    code span.ch { color: #20794d; } /* Char */
-    code span.cn { color: #8f5902; } /* Constant */
-    code span.co { color: #5e5e5e; } /* Comment */
-    code span.cv { color: #5e5e5e; font-style: italic; } /* CommentVar */
-    code span.do { color: #5e5e5e; font-style: italic; } /* Documentation */
-    code span.dt { color: #ad0000; } /* DataType */
-    code span.dv { color: #ad0000; } /* DecVal */
-    code span.er { color: #ad0000; } /* Error */
-    code span.ex { } /* Extension */
-    code span.fl { color: #ad0000; } /* Float */
-    code span.fu { color: #4758ab; } /* Function */
-    code span.im { color: #00769e; } /* Import */
-    code span.in { color: #5e5e5e; } /* Information */
-    code span.kw { color: #003b4f; font-weight: bold; } /* Keyword */
-    code span.op { color: #5e5e5e; } /* Operator */
-    code span.ot { color: #003b4f; } /* Other */
-    code span.pp { color: #ad0000; } /* Preprocessor */
-    code span.sc { color: #5e5e5e; } /* SpecialChar */
-    code span.ss { color: #20794d; } /* SpecialString */
-    code span.st { color: #20794d; } /* String */
-    code span.va { color: #111111; } /* Variable */
-    code span.vs { color: #20794d; } /* VerbatimString */
-    code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
+    code span { color: #f8f8f2; } /* Normal */
+    code span.al { color: #f07178; } /* Alert */
+    code span.an { color: #d4d0ab; } /* Annotation */
+    code span.at { color: #00e0e0; } /* Attribute */
+    code span.bn { color: #d4d0ab; } /* BaseN */
+    code span.bu { color: #abe338; } /* BuiltIn */
+    code span.cf { color: #ffa07a; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #abe338; } /* Char */
+    code span.cn { color: #ffd700; } /* Constant */
+    code span.co { color: #f8f8f2; font-style: italic; } /* Comment */
+    code span.cv { color: #ffd700; } /* CommentVar */
+    code span.do { color: #f8f8f2; } /* Documentation */
+    code span.dt { color: #ffa07a; } /* DataType */
+    code span.dv { color: #d4d0ab; } /* DecVal */
+    code span.er { color: #f07178; text-decoration: underline; } /* Error */
+    code span.ex { color: #00e0e0; font-weight: bold; } /* Extension */
+    code span.fl { color: #d4d0ab; } /* Float */
+    code span.fu { color: #ffa07a; } /* Function */
+    code span.im { color: #abe338; } /* Import */
+    code span.in { color: #d4d0ab; } /* Information */
+    code span.kw { color: #ffa07a; font-weight: bold; } /* Keyword */
+    code span.op { color: #ffa07a; } /* Operator */
+    code span.ot { color: #00e0e0; } /* Other */
+    code span.pp { color: #dcc6e0; } /* Preprocessor */
+    code span.re { color: #00e0e0; background-color: #f8f8f2; } /* RegionMarker */
+    code span.sc { color: #abe338; } /* SpecialChar */
+    code span.ss { color: #abe338; } /* SpecialString */
+    code span.st { color: #abe338; } /* String */
+    code span.va { color: #00e0e0; } /* Variable */
+    code span.vs { color: #abe338; } /* VerbatimString */
+    code span.wa { color: #dcc6e0; } /* Warning */
   </style>
-  <link rel="stylesheet" href="Incorporating Other Languages into Python_files/libs/revealjs/dist/theme/quarto-bbe7401fe57d4b791b917637bb662036.css">
+  <link rel="stylesheet" href="Incorporating Other Languages into Python_files/libs/revealjs/dist/theme/quarto-0c8acc74dca0c2faaedea4940f202713.css">
   <link href="Incorporating Other Languages into Python_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
   <link href="Incorporating Other Languages into Python_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
   <link href="Incorporating Other Languages into Python_files/libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
@@ -187,7 +188,7 @@
     }
   </style>
 </head>
-<body class="quarto-light">
+<body class="quarto-dark">
   <div class="reveal">
     <div class="slides">
 
@@ -206,34 +207,43 @@ Joey Bernard
 <section id="introduction" class="slide level2">
 <h2>Introduction</h2>
 <ul>
-<li>Python has become the default glue language for science</li>
-<li>It is not ideal for all cases</li>
-<li>We will look at how to offload issues to another language</li>
+<li class="fragment">Python has become the default glue language for science</li>
+<li class="fragment">It is not ideal for all cases</li>
+<li class="fragment">We will look at how to offload issues to another language</li>
 </ul>
 </section>
 <section id="installation" class="slide level2">
 <h2>Installation</h2>
 <ul>
-<li>We need several tools</li>
-<li>Everything we will discuss involves C/C++</li>
-<li>You will need Python plus a C/C+ compiler</li>
-<li>All of this work should be done in a virtual environment (now necessary under Ubuntu)</li>
+<li class="fragment">We need several tools</li>
+<li class="fragment">Almost everything we will discuss involves C/C++</li>
+<li class="fragment">You will need Python plus a C/C+ compiler</li>
+<li class="fragment">All of this work should be done in a virtual environment (now necessary under Ubuntu)</li>
+</ul>
+</section>
+<section id="software-options" class="slide level2">
+<h2>Software Options</h2>
+<ul>
+<li class="fragment">Most Linux distributions will have everything you need in their package management system</li>
+<li class="fragment">For Windows, you can use WSL to get a Linux environment</li>
+<li class="fragment">You can also use scoop (https://scoop.sh) to install Windows developer tools</li>
+<li class="fragment">For Apple Macs, you can use homebrew (https://brew.sh) to do the same thing</li>
 </ul>
 </section>
 <section id="pre-existing-examples" class="slide level2">
 <h2>Pre-existing Examples</h2>
 <ul>
-<li>Several of the high performance libraries already do this</li>
-<li>numpy uses C, C++ and FORTRAN (in order of usage)</li>
-<li>scipy uses C, FORTRAN and C++ (in order of usage)</li>
+<li class="fragment">Several of the high performance libraries already do this</li>
+<li class="fragment">numpy uses C, C++ and FORTRAN (in order of usage)</li>
+<li class="fragment">scipy uses C, FORTRAN and C++ (in order of usage)</li>
 </ul>
 </section>
 <section id="why-do-this" class="slide level2">
 <h2>Why do this</h2>
 <ul>
-<li>Python is an object oriented language, without static typing</li>
-<li>This means loops can be horrendous</li>
-<li>Also have the GIL, throttling multi-process work</li>
+<li class="fragment">Python is an object oriented language, without static typing</li>
+<li class="fragment">This means loops can be horrendous</li>
+<li class="fragment">Also have the GIL, throttling multi-process work</li>
 </ul>
 </section>
 <section id="virtual-environments" class="slide level2">
@@ -253,17 +263,20 @@ Joey Bernard
 </ul>
 <div class="sourceCode" id="cb3"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href=""></a><span class="ex">deactivate</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
+<section id="practical" class="slide level2">
+<h2>Practical</h2>
+</section>
 <section id="first-step---numba" class="slide level2">
 <h2>First step - Numba</h2>
 <ul>
-<li>In some cases, you just need a slightly faster Python</li>
-<li>Whenever you try to optimize, remember the quote - <strong><em>Early optimization is the root of all evil</em></strong></li>
-<li>You want to do the bare minimum to get the results that you actually need</li>
-<li>Numba allows for compiling portions of your Python code</li>
+<li class="fragment">In some cases, you just need a slightly faster Python</li>
+<li class="fragment">Whenever you try to optimize, remember the quote - <strong><em>Early optimization is the root of all evil</em></strong></li>
+<li class="fragment">You want to do the bare minimum to get the results that you actually need</li>
+<li class="fragment">Numba allows for compiling portions of your Python code</li>
 </ul>
 </section>
-<section id="numba---contd" class="slide level2">
-<h2>Numba - cont’d</h2>
+<section id="numba---installation" class="slide level2">
+<h2>Numba - installation</h2>
 <ul>
 <li>Numba is installed using the command</li>
 </ul>
@@ -273,21 +286,21 @@ Joey Bernard
 <li>This why you should use virtual environments - to keep your projects clean and isolated</li>
 </ul>
 </section>
-<section id="numba---contd-1" class="slide level2">
+<section id="numba---contd" class="slide level2">
 <h2>Numba - cont’d</h2>
 <ul>
-<li>Numba uses decorators to encapsulate your code</li>
-<li>The most common decorator is <code>@jit</code></li>
-<li>This decorator has loads of options, including whether to parallelize or whether to target a GPU</li>
+<li class="fragment">Numba uses decorators to encapsulate your code</li>
+<li class="fragment">The most common decorator is <code>@jit</code></li>
+<li class="fragment">This decorator has loads of options, including whether to parallelize or whether to target a GPU</li>
 </ul>
 </section>
 <section id="numba---options" class="slide level2">
 <h2>Numba - options</h2>
 <ul>
-<li><strong><em>nogil</em></strong> - whether to release the GIL when entering the compiled code</li>
-<li><strong><em>cache</em></strong> - whether to save off compiled code into a file cache to avoid the compiling step each time</li>
-<li><strong><em>parallel</em></strong> - whether to parallelize compiled code when possible (e.g.&nbsp;loops)</li>
-<li><strong><em>fastmath</em></strong> - whether to use strict IEEE 754 math (similar to the GCC flag)</li>
+<li class="fragment"><strong><em>nogil</em></strong> - whether to release the GIL when entering the compiled code</li>
+<li class="fragment"><strong><em>cache</em></strong> - whether to save off compiled code into a file cache to avoid the compiling step each time</li>
+<li class="fragment"><strong><em>parallel</em></strong> - whether to parallelize compiled code when possible (e.g.&nbsp;loops)</li>
+<li class="fragment"><strong><em>fastmath</em></strong> - whether to use strict IEEE 754 math (similar to the GCC flag)</li>
 </ul>
 </section>
 <section id="numba---explicit-typing" class="slide level2">
@@ -319,13 +332,73 @@ Joey Bernard
 <span id="cb7-2"><a href=""></a><span class="ex">OR</span></span>
 <span id="cb7-3"><a href=""></a><span class="ex">numba</span> my_code.py <span class="at">--dump_llvm</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
+<section id="numba---numpy-universal-functions" class="slide level2">
+<h2>Numba - numpy universal functions</h2>
+<ul>
+<li class="fragment">You can create numpy ufuncs by decorating your Python code</li>
+<li class="fragment">For scalar input arguments, using the <strong><em><span class="citation" data-cites="vectorize">@vectorize</span></em></strong> decorator for your function</li>
+<li class="fragment">For data structures, you can use the <strong><em><span class="citation" data-cites="guvectorize">@guvectorize</span></em></strong> decorator</li>
+<li class="fragment">While you could just use the <strong><em><span class="citation" data-cites="jit">@jit</span></em></strong> decorator with an iteration loop, but this method adds in the numpy features, like reduction, accumulation or broadcasting</li>
+</ul>
+</section>
+<section id="numba---numpy-example" class="slide level2">
+<h2>Numba - numpy example</h2>
+<div class="sourceCode" id="cb8"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href=""></a><span class="im">from</span> numba <span class="im">import</span> vectorize, float64</span>
+<span id="cb8-2"><a href=""></a></span>
+<span id="cb8-3"><a href=""></a><span class="at">@vectorize</span>([float64(float64, float64)])</span>
+<span id="cb8-4"><a href=""></a><span class="kw">def</span> f(x, y):</span>
+<span id="cb8-5"><a href=""></a>    <span class="cf">return</span> x <span class="op">+</span> y</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="numba---aot-compilation" class="slide level2">
+<h2>Numba - AOT compilation</h2>
+<ul>
+<li class="fragment">Usually numba compiles code at run-time</li>
+<li class="fragment">You can pre-compile your code before having to use it</li>
+<li class="fragment">This allows you to distribute the code to users who may not have numba installed</li>
+</ul>
+</section>
+<section id="numba---aot-example" class="slide level2">
+<h2>Numba - AOT example</h2>
+<div class="sourceCode" id="cb9"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href=""></a><span class="im">from</span> numba.pycc <span class="im">import</span> CC</span>
+<span id="cb9-2"><a href=""></a></span>
+<span id="cb9-3"><a href=""></a>cc <span class="op">=</span> CC(<span class="st">'my_module'</span>)</span>
+<span id="cb9-4"><a href=""></a></span>
+<span id="cb9-5"><a href=""></a><span class="at">@cc.export</span>(<span class="st">'multf'</span>, <span class="st">'f8(f8, f8)'</span>)</span>
+<span id="cb9-6"><a href=""></a><span class="at">@cc.export</span>(<span class="st">'multi'</span>, <span class="st">'i4(i4, i4)'</span>)</span>
+<span id="cb9-7"><a href=""></a><span class="kw">def</span> mult(a, b):</span>
+<span id="cb9-8"><a href=""></a>    <span class="cf">return</span> a <span class="op">*</span> b</span>
+<span id="cb9-9"><a href=""></a></span>
+<span id="cb9-10"><a href=""></a><span class="at">@cc.export</span>(<span class="st">'square'</span>, <span class="st">'f8(f8)'</span>)</span>
+<span id="cb9-11"><a href=""></a><span class="kw">def</span> square(a):</span>
+<span id="cb9-12"><a href=""></a>    <span class="cf">return</span> a <span class="op">**</span> <span class="dv">2</span></span>
+<span id="cb9-13"><a href=""></a></span>
+<span id="cb9-14"><a href=""></a><span class="cf">if</span> <span class="va">__name__</span> <span class="op">==</span> <span class="st">"__main__"</span>:</span>
+<span id="cb9-15"><a href=""></a>    cc.<span class="bu">compile</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="numba---aot-compiling" class="slide level2">
+<h2>Numba - AOT compiling</h2>
+<ul>
+<li class="fragment">Running the above script generates a shared library that contains the compiled code</li>
+<li class="fragment">This won’t work for ufuncs</li>
+<li class="fragment">Exported function don’t check argument types</li>
+<li class="fragment">AOT produces generic architecture code, while JIT produces specific code</li>
+</ul>
+</section>
+<section id="numba---jit_module" class="slide level2">
+<h2>Numba - jit_module</h2>
+<ul>
+<li class="fragment">In some cases, you may have an entire module worth of code that you want to pass through numba’s JIT</li>
+<li class="fragment">You can use the <strong><em>jit_module()</em></strong> function within your module code to apply the changes, rather than having decorate every function individually</li>
+<li class="fragment">Any functions that you do decorate will use those options, rather than the module level options</li>
+</ul>
+</section>
 <section id="next-step---cython" class="slide level2">
 <h2>Next step - Cython</h2>
 <ul>
-<li>Cython allows for adding C/C++ data types, and outputting compiled code</li>
-<li>You need to annotate your code in order to tell Cython what is expected</li>
-<li>You will need to have your own C/C++ compiler - ideally the same as the compiler used for Python</li>
-<li>This becomes easy to mess up under Windows - consider strongly using WSL</li>
+<li class="fragment">Cython allows for adding C/C++ data types, and outputting compiled code</li>
+<li class="fragment">You need to annotate your code in order to tell Cython what is expected</li>
+<li class="fragment">You will need to have your own C/C++ compiler - ideally the same as the compiler used for Python</li>
+<li class="fragment">This becomes easy to mess up under Windows - consider strongly using WSL</li>
 </ul>
 </section>
 <section id="cython---different-notation" class="slide level2">
@@ -333,63 +406,35 @@ Joey Bernard
 <div class="columns">
 <div class="column" style="width:50%;">
 <p>Pure Python</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href=""></a><span class="kw">def</span> primes(nb_primes: cython.<span class="bu">int</span>):</span>
-<span id="cb8-2"><a href=""></a>    i: cython.<span class="bu">int</span></span>
-<span id="cb8-3"><a href=""></a>    p: cython.<span class="bu">int</span>[<span class="dv">1000</span>]</span>
-<span id="cb8-4"><a href=""></a></span>
-<span id="cb8-5"><a href=""></a>    <span class="cf">if</span> nb_primes <span class="op">&gt;</span> <span class="dv">1000</span>:</span>
-<span id="cb8-6"><a href=""></a>    nb_primes <span class="op">=</span> <span class="dv">1000</span></span>
-<span id="cb8-7"><a href=""></a>    <span class="co"># Only if regular Python is running</span></span>
-<span id="cb8-8"><a href=""></a>    <span class="cf">if</span> <span class="kw">not</span> cython.compiled:</span>
-<span id="cb8-9"><a href=""></a>    <span class="co"># Make p work almost like a C array</span></span>
-<span id="cb8-10"><a href=""></a>    p <span class="op">=</span> [<span class="dv">0</span>] <span class="op">*</span> <span class="dv">1000</span></span>
-<span id="cb8-11"><a href=""></a></span>
-<span id="cb8-12"><a href=""></a>    len_p: cython.<span class="bu">int</span> <span class="op">=</span> <span class="dv">0</span>  <span class="co"># The current number of elements in p.</span></span>
-<span id="cb8-13"><a href=""></a>    n: cython.<span class="bu">int</span> <span class="op">=</span> <span class="dv">2</span></span>
-<span id="cb8-14"><a href=""></a>    <span class="cf">while</span> len_p <span class="op">&lt;</span> nb_primes:</span>
-<span id="cb8-15"><a href=""></a>    <span class="co"># Is n prime?</span></span>
-<span id="cb8-16"><a href=""></a>    <span class="cf">for</span> i <span class="kw">in</span> p[:len_p]:</span>
-<span id="cb8-17"><a href=""></a>        <span class="cf">if</span> n <span class="op">%</span> i <span class="op">==</span> <span class="dv">0</span>:</span>
-<span id="cb8-18"><a href=""></a>        <span class="cf">break</span></span>
-<span id="cb8-19"><a href=""></a></span>
-<span id="cb8-20"><a href=""></a>    <span class="co"># If no break occurred in the loop, we have a prime.</span></span>
-<span id="cb8-21"><a href=""></a>    <span class="cf">else</span>:</span>
-<span id="cb8-22"><a href=""></a>        p[len_p] <span class="op">=</span> n</span>
-<span id="cb8-23"><a href=""></a>        len_p <span class="op">+=</span> <span class="dv">1</span></span>
-<span id="cb8-24"><a href=""></a>    n <span class="op">+=</span> <span class="dv">1</span></span>
-<span id="cb8-25"><a href=""></a></span>
-<span id="cb8-26"><a href=""></a>    <span class="co"># Let's copy the result into a Python list:</span></span>
-<span id="cb8-27"><a href=""></a>    result_as_list <span class="op">=</span> [prime <span class="cf">for</span> prime <span class="kw">in</span> p[:len_p]]</span>
-<span id="cb8-28"><a href=""></a>    <span class="cf">return</span> result_as_list</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href=""></a><span class="kw">def</span> primes(nb_primes: cython.<span class="bu">int</span>):</span>
+<span id="cb10-2"><a href=""></a>    i: cython.<span class="bu">int</span></span>
+<span id="cb10-3"><a href=""></a>    p: cython.<span class="bu">int</span>[<span class="dv">1000</span>]</span>
+<span id="cb10-4"><a href=""></a></span>
+<span id="cb10-5"><a href=""></a>    <span class="cf">if</span> nb_primes <span class="op">&gt;</span> <span class="dv">1000</span>:</span>
+<span id="cb10-6"><a href=""></a>    nb_primes <span class="op">=</span> <span class="dv">1000</span></span>
+<span id="cb10-7"><a href=""></a>    <span class="co"># Only if regular Python is running</span></span>
+<span id="cb10-8"><a href=""></a>    <span class="cf">if</span> <span class="kw">not</span> cython.compiled:</span>
+<span id="cb10-9"><a href=""></a>    <span class="co"># Make p work almost like a C array</span></span>
+<span id="cb10-10"><a href=""></a>    p <span class="op">=</span> [<span class="dv">0</span>] <span class="op">*</span> <span class="dv">1000</span></span>
+<span id="cb10-11"><a href=""></a></span>
+<span id="cb10-12"><a href=""></a>    len_p: cython.<span class="bu">int</span> <span class="op">=</span> <span class="dv">0</span>  <span class="co"># The current number of elements in p.</span></span>
+<span id="cb10-13"><a href=""></a>    n: cython.<span class="bu">int</span> <span class="op">=</span> <span class="dv">2</span></span>
+<span id="cb10-14"><a href=""></a>    <span class="cf">while</span> len_p <span class="op">&lt;</span> nb_primes:</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div><div class="column" style="width:50%;">
 <p>Older Cython</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href=""></a><span class="kw">def</span> primes(<span class="bu">int</span> nb_primes):</span>
-<span id="cb9-2"><a href=""></a>    cdef <span class="bu">int</span> n, i, len_p</span>
-<span id="cb9-3"><a href=""></a>    cdef <span class="bu">int</span>[<span class="dv">1000</span>] p</span>
-<span id="cb9-4"><a href=""></a></span>
-<span id="cb9-5"><a href=""></a>    <span class="cf">if</span> nb_primes <span class="op">&gt;</span> <span class="dv">1000</span>:</span>
-<span id="cb9-6"><a href=""></a>    nb_primes <span class="op">=</span> <span class="dv">1000</span></span>
-<span id="cb9-7"><a href=""></a></span>
-<span id="cb9-8"><a href=""></a></span>
-<span id="cb9-9"><a href=""></a></span>
-<span id="cb9-10"><a href=""></a>    <span class="co"># The current number of elements in p.</span></span>
-<span id="cb9-11"><a href=""></a>    len_p <span class="op">=</span> <span class="dv">0</span></span>
-<span id="cb9-12"><a href=""></a>    n <span class="op">=</span> <span class="dv">2</span></span>
-<span id="cb9-13"><a href=""></a>    <span class="cf">while</span> len_p <span class="op">&lt;</span> nb_primes:</span>
-<span id="cb9-14"><a href=""></a>    <span class="co"># Is n prime?</span></span>
-<span id="cb9-15"><a href=""></a>    <span class="cf">for</span> i <span class="kw">in</span> p[:len_p]:</span>
-<span id="cb9-16"><a href=""></a>        <span class="cf">if</span> n <span class="op">%</span> i <span class="op">==</span> <span class="dv">0</span>:</span>
-<span id="cb9-17"><a href=""></a>        <span class="cf">break</span></span>
-<span id="cb9-18"><a href=""></a></span>
-<span id="cb9-19"><a href=""></a>    <span class="co"># If no break occurred in the loop, we have a prime.</span></span>
-<span id="cb9-20"><a href=""></a>    <span class="cf">else</span>:</span>
-<span id="cb9-21"><a href=""></a>        p[len_p] <span class="op">=</span> n</span>
-<span id="cb9-22"><a href=""></a>        len_p <span class="op">+=</span> <span class="dv">1</span></span>
-<span id="cb9-23"><a href=""></a>    n <span class="op">+=</span> <span class="dv">1</span></span>
-<span id="cb9-24"><a href=""></a></span>
-<span id="cb9-25"><a href=""></a>    <span class="co"># Let's copy the result into a Python list:</span></span>
-<span id="cb9-26"><a href=""></a>    result_as_list <span class="op">=</span> [prime <span class="cf">for</span> prime <span class="kw">in</span> p[:len_p]]</span>
-<span id="cb9-27"><a href=""></a>    <span class="cf">return</span> result_as_list</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href=""></a><span class="kw">def</span> primes(<span class="bu">int</span> nb_primes):</span>
+<span id="cb11-2"><a href=""></a>    cdef <span class="bu">int</span> n, i, len_p</span>
+<span id="cb11-3"><a href=""></a>    cdef <span class="bu">int</span>[<span class="dv">1000</span>] p</span>
+<span id="cb11-4"><a href=""></a></span>
+<span id="cb11-5"><a href=""></a>    <span class="cf">if</span> nb_primes <span class="op">&gt;</span> <span class="dv">1000</span>:</span>
+<span id="cb11-6"><a href=""></a>    nb_primes <span class="op">=</span> <span class="dv">1000</span></span>
+<span id="cb11-7"><a href=""></a></span>
+<span id="cb11-8"><a href=""></a></span>
+<span id="cb11-9"><a href=""></a></span>
+<span id="cb11-10"><a href=""></a>    <span class="co"># The current number of elements in p.</span></span>
+<span id="cb11-11"><a href=""></a>    len_p <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb11-12"><a href=""></a>    n <span class="op">=</span> <span class="dv">2</span></span>
+<span id="cb11-13"><a href=""></a>    <span class="cf">while</span> len_p <span class="op">&lt;</span> nb_primes:</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div></div>
 </section>
 <section id="cython---usage" class="slide level2">
@@ -397,8 +442,8 @@ Joey Bernard
 <ul>
 <li>The easiest way to build Cython code is to use setuptools</li>
 </ul>
-<div class="sourceCode" id="cb10"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb10-1"><a href=""></a><span class="ex">pip</span> install cython</span>
-<span id="cb10-2"><a href=""></a><span class="ex">pip</span> install setuptools</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb12-1"><a href=""></a><span class="ex">pip</span> install cython</span>
+<span id="cb12-2"><a href=""></a><span class="ex">pip</span> install setuptools</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <ul>
 <li>This way, you can use setuptools to build your Cython module</li>
 <li>Files can use endings <em>.pyx</em> or <em>.py</em></li>
@@ -409,101 +454,101 @@ Joey Bernard
 <ul>
 <li>We can start with the classic <em>Hello World</em> in the file <strong><em>hello.pyx</em></strong></li>
 </ul>
-<div class="sourceCode" id="cb11"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href=""></a><span class="kw">def</span> say_hello_to(name):</span>
-<span id="cb11-2"><a href=""></a>    <span class="bu">print</span>(<span class="ss">f"Hello </span><span class="sc">{</span>name<span class="sc">}</span><span class="ss">!"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb13"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href=""></a><span class="kw">def</span> say_hello_to(name):</span>
+<span id="cb13-2"><a href=""></a>    <span class="bu">print</span>(<span class="ss">f"Hello </span><span class="sc">{</span>name<span class="sc">}</span><span class="ss">!"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 <section id="cython---setuptools" class="slide level2">
 <h2>Cython - setuptools</h2>
 <ul>
 <li>To build it, we’ll need a <em>setup.py</em> script</li>
 </ul>
-<div class="sourceCode" id="cb12"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href=""></a><span class="im">from</span> setuptools <span class="im">import</span> setup</span>
-<span id="cb12-2"><a href=""></a><span class="im">from</span> Cython.Build <span class="im">import</span> cythonize</span>
-<span id="cb12-3"><a href=""></a></span>
-<span id="cb12-4"><a href=""></a>setup(</span>
-<span id="cb12-5"><a href=""></a>    name<span class="op">=</span><span class="st">'Hello World app'</span>,</span>
-<span id="cb12-6"><a href=""></a>    ext_modules<span class="op">=</span>cythonize(<span class="st">"hello.pyx"</span>),</span>
-<span id="cb12-7"><a href=""></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb14"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href=""></a><span class="im">from</span> setuptools <span class="im">import</span> setup</span>
+<span id="cb14-2"><a href=""></a><span class="im">from</span> Cython.Build <span class="im">import</span> cythonize</span>
+<span id="cb14-3"><a href=""></a></span>
+<span id="cb14-4"><a href=""></a>setup(</span>
+<span id="cb14-5"><a href=""></a>    name<span class="op">=</span><span class="st">'Hello World app'</span>,</span>
+<span id="cb14-6"><a href=""></a>    ext_modules<span class="op">=</span>cythonize(<span class="st">"hello.pyx"</span>),</span>
+<span id="cb14-7"><a href=""></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 <section id="cython---building" class="slide level2">
 <h2>Cython - building</h2>
 <ul>
 <li>To build it, you would use the command</li>
 </ul>
-<div class="sourceCode" id="cb13"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb13-1"><a href=""></a><span class="ex">python</span> setup.py build_ext <span class="at">--inplace</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb15"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb15-1"><a href=""></a><span class="ex">python</span> setup.py build_ext <span class="at">--inplace</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <ul>
 <li>Then you can use it with</li>
 </ul>
-<div class="sourceCode" id="cb14"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href=""></a><span class="im">from</span> hello <span class="im">import</span> say_hello_to</span>
-<span id="cb14-2"><a href=""></a></span>
-<span id="cb14-3"><a href=""></a>say_hello_to(<span class="st">'Joey'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb16"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href=""></a><span class="im">from</span> hello <span class="im">import</span> say_hello_to</span>
+<span id="cb16-2"><a href=""></a></span>
+<span id="cb16-3"><a href=""></a>say_hello_to(<span class="st">'Joey'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 <section id="cython---basics" class="slide level2">
 <h2>Cython - basics</h2>
 <ul>
-<li>You can call C functions from libraries</li>
-<li>You have the ability to use static types</li>
-<li>Writing Python wrappers allows your Python code to use C libraries</li>
-<li>Your Cython code gets compiled down to C</li>
+<li class="fragment">You can call C functions from libraries</li>
+<li class="fragment">You have the ability to use static types</li>
+<li class="fragment">Writing Python wrappers allows your Python code to use C libraries</li>
+<li class="fragment">Your Cython code gets compiled down to C</li>
 </ul>
 </section>
 <section id="cython---strings" class="slide level2">
 <h2>Cython - strings</h2>
 <ul>
-<li>Strings prove to be a bit of a mess</li>
-<li>Cython supports 4 types: <em>bytes</em>, <em>str</em>, <em>unicode</em> and <em>basestring</em></li>
-<li>Involves a decoding/encoding step when going back and forth between Python and C</li>
+<li class="fragment">Strings prove to be a bit of a mess</li>
+<li class="fragment">Cython supports 4 types: <em>bytes</em>, <em>str</em>, <em>unicode</em> and <em>basestring</em></li>
+<li class="fragment">Involves a decoding/encoding step when going back and forth between Python and C</li>
 </ul>
 </section>
 <section id="cython---memory-management" class="slide level2">
 <h2>Cython - memory management</h2>
 <ul>
-<li>Memory management on the Python side is a non-issue</li>
-<li>Objects are auto-created, and then cleaned up by the garbage collector</li>
-<li>Most simple objects move into C by being assigned to the stack</li>
-<li>Sometimes, you need to manually assign heap space for larger or more complex objects</li>
+<li class="fragment">Memory management on the Python side is a non-issue</li>
+<li class="fragment">Objects are auto-created, and then cleaned up by the garbage collector</li>
+<li class="fragment">Most simple objects move into C by being assigned to the stack</li>
+<li class="fragment">Sometimes, you need to manually assign heap space for larger or more complex objects</li>
 </ul>
 </section>
 <section id="cython---using-numpy" class="slide level2">
 <h2>Cython - using numpy</h2>
 <ul>
-<li>You are able to use numpy data types, especially arrays</li>
-<li>This allows faster access and indexing</li>
-<li><strong><em>ndarray</em></strong> allows near direct C-like access to data within numpy arrays</li>
+<li class="fragment">You are able to use numpy data types, especially arrays</li>
+<li class="fragment">This allows faster access and indexing</li>
+<li class="fragment"><strong><em>ndarray</em></strong> allows near direct C-like access to data within numpy arrays</li>
 </ul>
 </section>
 <section id="cython---parallelization" class="slide level2">
 <h2>Cython - parallelization</h2>
 <ul>
-<li>You can write code that uses OpenMP threaded parallelization</li>
-<li>This side-steps the GIL, so you get true concurrent parallel code</li>
-<li>This means that you can’t directly use Python objects, you need to move completely into C</li>
-<li>Your C compiler needs to support OpenMP (most do)</li>
+<li class="fragment">You can write code that uses OpenMP threaded parallelization</li>
+<li class="fragment">This side-steps the GIL, so you get true concurrent parallel code</li>
+<li class="fragment">This means that you can’t directly use Python objects, you need to move completely into C</li>
+<li class="fragment">Your C compiler needs to support OpenMP (most do)</li>
 </ul>
 </section>
 <section id="cython---c-options" class="slide level2">
 <h2>Cython - C++ options</h2>
 <ul>
-<li>There is also the ability to use C++</li>
-<li>The <strong><em>cython.cimports.libcpp</em></strong> sub-module provides for lots of C++ imports, like vectors</li>
-<li>This requires a native part of the module, specific to your infrastructure</li>
+<li class="fragment">There is also the ability to use C++</li>
+<li class="fragment">The <strong><em>cython.cimports.libcpp</em></strong> sub-module provides for lots of C++ imports, like vectors</li>
+<li class="fragment">This requires a native part of the module, specific to your infrastructure</li>
 </ul>
 </section>
 <section id="cython---pure-python" class="slide level2">
 <h2>Cython - pure Python</h2>
 <ul>
-<li>You may not have the ability to use a C compiler, but still want some performance help</li>
-<li>Cython allows you to statically type your code, along with other cythonic functionality</li>
-<li>You can use an augmenting <strong><em>.pxd</em></strong> file to cythonize your <strong><em>.py</em></strong> file</li>
-<li>You can explicitly mark code as needing or not needing the GIL - this helps the interpreter run parallel threads</li>
+<li class="fragment">You may not have the ability to use a C compiler, but still want some performance help</li>
+<li class="fragment">Cython allows you to statically type your code, along with other cythonic functionality</li>
+<li class="fragment">You can use an augmenting <strong><em>.pxd</em></strong> file to cythonize your <strong><em>.py</em></strong> file</li>
+<li class="fragment">You can explicitly mark code as needing or not needing the GIL - this helps the interpreter run parallel threads</li>
 </ul>
 </section>
 <section id="boost-y-binding-1---pybind11" class="slide level2">
 <h2>Boost-y binding 1 - pybind11</h2>
 <ul>
-<li>There is a <strong><em>Boost.Python</em></strong> library - unfortunately you have to use <strong><em>Boost</em></strong></li>
-<li><strong><em>pybind11</em></strong> provides a much smaller and focused library to pull C++ into Python</li>
-<li>Allows for C++ types, function calls, data structures, classes, etc</li>
+<li class="fragment">There is a <strong><em>Boost.Python</em></strong> library - unfortunately you have to use <strong><em>Boost</em></strong></li>
+<li class="fragment"><strong><em>pybind11</em></strong> provides a much smaller and focused library to pull C++ into Python</li>
+<li class="fragment">Allows for C++ types, function calls, data structures, classes, etc</li>
 </ul>
 </section>
 <section id="pybind11---installation" class="slide level2">
@@ -511,17 +556,77 @@ Joey Bernard
 <ul>
 <li>You can install <strong><em>pybind11</em></strong> through pip:</li>
 </ul>
-<div class="sourceCode" id="cb15"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb15-1"><a href=""></a><span class="ex">pip</span> install pybind11</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb17"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb17-1"><a href=""></a><span class="ex">pip</span> install pybind11</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <ul>
 <li>You also need a C++ compiler, along with the development package for Python</li>
 <li>You also need a build system (cmake, meson, setuptools)</li>
 </ul>
 </section>
+<section id="pybind11---boilerplate" class="slide level2">
+<h2>pybind11 - boilerplate</h2>
+<ul>
+<li>You will likely need the following two lines at the top of any of your C++ source code files</li>
+</ul>
+<div class="sourceCode" id="cb18"><pre class="sourceCode numberSource c number-lines code-with-copy"><code class="sourceCode c"><span id="cb18-1"><a href=""></a><span class="pp">#include </span><span class="im">&lt;pybind11/pybind11.h&gt;</span></span>
+<span id="cb18-2"><a href=""></a></span>
+<span id="cb18-3"><a href=""></a>namespace py <span class="op">=</span> pybind11<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ul>
+<li>Now you can add binding code to your C++ source files</li>
+</ul>
+</section>
+<section id="pybind11---example-file" class="slide level2">
+<h2>pybind11 - example file</h2>
+<div class="sourceCode" id="cb19"><pre class="sourceCode numberSource c number-lines code-with-copy"><code class="sourceCode c"><span id="cb19-1"><a href=""></a><span class="pp">#include </span><span class="im">&lt;pybind11/pybind11.h&gt;</span></span>
+<span id="cb19-2"><a href=""></a></span>
+<span id="cb19-3"><a href=""></a><span class="dt">int</span> add<span class="op">(</span><span class="dt">int</span> i<span class="op">,</span> <span class="dt">int</span> j<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb19-4"><a href=""></a>    <span class="cf">return</span> i <span class="op">+</span> j<span class="op">;</span></span>
+<span id="cb19-5"><a href=""></a><span class="op">}</span></span>
+<span id="cb19-6"><a href=""></a></span>
+<span id="cb19-7"><a href=""></a>PYBIND11_MODULE<span class="op">(</span>example<span class="op">,</span> m<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb19-8"><a href=""></a>    m<span class="op">.</span>doc<span class="op">()</span> <span class="op">=</span> <span class="st">"pybind11 example plugin"</span><span class="op">;</span> <span class="co">// optional module docstring</span></span>
+<span id="cb19-9"><a href=""></a></span>
+<span id="cb19-10"><a href=""></a>    m<span class="op">.</span>def<span class="op">(</span><span class="st">"add"</span><span class="op">,</span> <span class="op">&amp;</span>add<span class="op">,</span> <span class="st">"A function that adds two numbers"</span><span class="op">);</span></span>
+<span id="cb19-11"><a href=""></a><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="pybind11---building" class="slide level2">
+<h2>pybind11 - building</h2>
+<ul>
+<li>Since <strong><em>pybind11</em></strong> is based off of Boost, then it is also a header-only package</li>
+<li>This means that you don’t need to link to any extra library</li>
+<li>Building is done through compilation</li>
+</ul>
+<div class="sourceCode" id="cb20"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb20-1"><a href=""></a><span class="ex">$</span> c++ <span class="at">-O3</span> <span class="at">-Wall</span> <span class="at">-shared</span> <span class="at">-std</span><span class="op">=</span>c++11 <span class="at">-fPIC</span> <span class="va">$(</span><span class="ex">python3</span> <span class="at">-m</span> pybind11 <span class="at">--includes</span><span class="va">)</span> example.cpp <span class="at">-o</span> example<span class="va">$(</span><span class="ex">python3-config</span> <span class="at">--extension-suffix</span><span class="va">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ul>
+<li>You can now import the compiled module in Python the usual way</li>
+</ul>
+</section>
+<section id="pybind11---keyword-arguments" class="slide level2">
+<h2>pybind11 - keyword arguments</h2>
+<ul>
+<li>In the exaple, the arguments are positional</li>
+<li>You need to add some code to allow for keyword arguments</li>
+</ul>
+<div class="sourceCode" id="cb21"><pre class="sourceCode numberSource c number-lines code-with-copy"><code class="sourceCode c"><span id="cb21-1"><a href=""></a>m<span class="op">.</span>def<span class="op">(</span><span class="st">"add"</span><span class="op">,</span> <span class="op">&amp;</span>add<span class="op">,</span> <span class="st">"A function which adds two numbers"</span><span class="op">,</span></span>
+<span id="cb21-2"><a href=""></a>      py<span class="op">::</span>arg<span class="op">(</span><span class="st">"i"</span><span class="op">),</span> py<span class="op">::</span>arg<span class="op">(</span><span class="st">"j"</span><span class="op">));</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="pybind11---exporting-variables" class="slide level2">
+<h2>pybind11 - exporting variables</h2>
+<div class="sourceCode" id="cb22"><pre class="sourceCode numberSource c number-lines code-with-copy"><code class="sourceCode c"><span id="cb22-1"><a href=""></a>PYBIND11_MODULE<span class="op">(</span>example<span class="op">,</span> m<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb22-2"><a href=""></a>    m<span class="op">.</span>attr<span class="op">(</span><span class="st">"the_answer"</span><span class="op">)</span> <span class="op">=</span> <span class="dv">42</span><span class="op">;</span></span>
+<span id="cb22-3"><a href=""></a>    py<span class="op">::</span>object world <span class="op">=</span> py<span class="op">::</span>cast<span class="op">(</span><span class="st">"World"</span><span class="op">);</span></span>
+<span id="cb22-4"><a href=""></a>    m<span class="op">.</span>attr<span class="op">(</span><span class="st">"what"</span><span class="op">)</span> <span class="op">=</span> world<span class="op">;</span></span>
+<span id="cb22-5"><a href=""></a><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb23"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href=""></a><span class="op">&gt;&gt;&gt;</span> <span class="im">import</span> example</span>
+<span id="cb23-2"><a href=""></a><span class="op">&gt;&gt;&gt;</span> example.the_answer</span>
+<span id="cb23-3"><a href=""></a><span class="dv">42</span></span>
+<span id="cb23-4"><a href=""></a><span class="op">&gt;&gt;&gt;</span> example.what</span>
+<span id="cb23-5"><a href=""></a><span class="co">'World'</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
 <section id="boost-y-binding-2---nanobind" class="slide level2">
 <h2>Boost-y binding 2 - Nanobind</h2>
 <ul>
-<li><strong><em>nanobind</em></strong> is another Boost-y module, by the same person who wrote <strong><em>pybind11</em></strong></li>
-<li><strong><em>nanobind</em></strong> is even smaller, providing a subset of C++ functionality for your Python code</li>
+<li class="fragment"><strong><em>nanobind</em></strong> is another Boost-y module, by the same person who wrote <strong><em>pybind11</em></strong></li>
+<li class="fragment"><strong><em>nanobind</em></strong> is even smaller, providing a subset of C++ functionality for your Python code</li>
 </ul>
 </section>
 <section id="nanobind---installation" class="slide level2">
@@ -529,21 +634,42 @@ Joey Bernard
 <ul>
 <li>Like everything else today, you can install using pip:</li>
 </ul>
-<div class="sourceCode" id="cb16"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb16-1"><a href=""></a><span class="ex">pip</span> install nanobind<span class="kw">```</span></span>
-<span id="cb16-2"><a href=""></a><span class="ex">-</span> You will also need a C++ compiler</span>
-<span id="cb16-3"><a href=""></a><span class="ex">-</span> <span class="pp">***</span>nanobind<span class="pp">***</span> support various build systems <span class="er">(</span><span class="fu">cmake</span>, meson, bazel<span class="kw">)</span></span>
-<span id="cb16-4"><a href=""></a></span>
-<span id="cb16-5"><a href=""></a></span>
-<span id="cb16-6"><a href=""></a><span class="co">## CFFI</span></span>
-<span id="cb16-7"><a href=""></a><span class="ex">-</span> CFFI <span class="er">(</span><span class="ex">C</span> Foreign Function Interface<span class="kw">)</span> <span class="cf">for</span> Python <span class="ex">is</span> a more raw library</span>
-<span id="cb16-8"><a href=""></a><span class="ex">-</span> Unlike systems like Cython, CFFI doesn<span class="st">'t add extra syntax</span></span>
-<span id="cb16-9"><a href=""></a><span class="st">- You just need to know C and Python</span></span>
-<span id="cb16-10"><a href=""></a></span>
-<span id="cb16-11"><a href=""></a></span>
-<span id="cb16-12"><a href=""></a><span class="st">## CFFI - installation</span></span>
-<span id="cb16-13"><a href=""></a><span class="st">- Installation can be done through pip:</span></span>
-<span id="cb16-14"><a href=""></a><span class="st">```bash</span></span>
-<span id="cb16-15"><a href=""></a><span class="st">pip install cffi</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb24"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb24-1"><a href=""></a><span class="ex">pip</span> install nanobind</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ul>
+<li>You will also need a C++ compiler</li>
+<li><strong><em>nanobind</em></strong> support various build systems (cmake, meson, bazel)</li>
+</ul>
+</section>
+<section id="nanobind---basics" class="slide level2">
+<h2>nanobind - basics</h2>
+<ul>
+<li>A basic module looks like</li>
+</ul>
+<div class="sourceCode" id="cb25"><pre class="sourceCode numberSource c number-lines code-with-copy"><code class="sourceCode c"><span id="cb25-1"><a href=""></a><span class="pp">#include </span><span class="im">&lt;nanobind/nanobind.h&gt;</span></span>
+<span id="cb25-2"><a href=""></a></span>
+<span id="cb25-3"><a href=""></a><span class="dt">int</span> add<span class="op">(</span><span class="dt">int</span> a<span class="op">,</span> <span class="dt">int</span> b<span class="op">)</span> <span class="op">{</span> <span class="cf">return</span> a <span class="op">+</span> b<span class="op">;</span> <span class="op">}</span></span>
+<span id="cb25-4"><a href=""></a></span>
+<span id="cb25-5"><a href=""></a>NB_MODULE<span class="op">(</span>my_ext<span class="op">,</span> m<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb25-6"><a href=""></a>    m<span class="op">.</span>def<span class="op">(</span><span class="st">"add"</span><span class="op">,</span> <span class="op">&amp;</span>add<span class="op">);</span></span>
+<span id="cb25-7"><a href=""></a><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ul>
+<li>Building is through a <strong><em>CMakeLists.txt</em></strong></li>
+</ul>
+</section>
+<section id="cffi" class="slide level2">
+<h2>CFFI</h2>
+<ul>
+<li class="fragment">CFFI (C Foreign Function Interface) for Python is a more raw library</li>
+<li class="fragment">Unlike systems like Cython, CFFI doesn’t add extra syntax</li>
+<li class="fragment">You just need to know C and Python</li>
+</ul>
+</section>
+<section id="cffi---installation" class="slide level2">
+<h2>CFFI - installation</h2>
+<ul>
+<li>Installation can be done through pip:</li>
+</ul>
+<div class="sourceCode" id="cb26"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb26-1"><a href=""></a><span class="ex">pip</span> install cffi</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <ul>
 <li>Includes a library (libffi) that can be messy to setup correctly on some platforms</li>
 </ul>
@@ -551,19 +677,48 @@ Joey Bernard
 <section id="cffi---basics" class="slide level2">
 <h2>CFFI - basics</h2>
 <ul>
-<li>You start with an <strong><em>FFI()</em></strong> object</li>
-<li>You use the <em>cdef()</em> method to provide C declarations</li>
-<li>You use the <em>set_source()</em> method to define the Python extension module, along with the associated C code</li>
-<li>You use the <em>compile()</em> method to generate the compiled library</li>
-<li>You can then import this library like any other Python module</li>
+<li class="fragment">You start with an <strong><em>FFI()</em></strong> object</li>
+<li class="fragment">You use the <em>cdef()</em> method to provide C declarations</li>
+<li class="fragment">You use the <em>set_source()</em> method to define the Python extension module, along with the associated C code</li>
+<li class="fragment">You use the <em>compile()</em> method to generate the compiled library</li>
+<li class="fragment">You can then import this library like any other Python module</li>
 </ul>
+</section>
+<section id="cffi---example" class="slide level2">
+<h2>CFFI - example</h2>
+<div class="sourceCode" id="cb27"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href=""></a><span class="im">from</span> cffi <span class="im">import</span> FFI</span>
+<span id="cb27-2"><a href=""></a>ffibuilder <span class="op">=</span> FFI()</span>
+<span id="cb27-3"><a href=""></a></span>
+<span id="cb27-4"><a href=""></a>ffibuilder.cdef(<span class="st">"""</span></span>
+<span id="cb27-5"><a href=""></a><span class="st">    float pi_approx(int n);</span></span>
+<span id="cb27-6"><a href=""></a><span class="st">"""</span>)</span>
+<span id="cb27-7"><a href=""></a></span>
+<span id="cb27-8"><a href=""></a>ffibuilder.set_source(<span class="st">"_pi_cffi"</span>,</span>
+<span id="cb27-9"><a href=""></a><span class="st">"""</span></span>
+<span id="cb27-10"><a href=""></a><span class="st">     #include "pi.h"   // the C header of the library</span></span>
+<span id="cb27-11"><a href=""></a><span class="st">"""</span>,</span>
+<span id="cb27-12"><a href=""></a>     libraries<span class="op">=</span>[<span class="st">'piapprox'</span>])   <span class="co"># library name, for the linker</span></span>
+<span id="cb27-13"><a href=""></a></span>
+<span id="cb27-14"><a href=""></a><span class="cf">if</span> <span class="va">__name__</span> <span class="op">==</span> <span class="st">"__main__"</span>:</span>
+<span id="cb27-15"><a href=""></a>    ffibuilder.<span class="bu">compile</span>(verbose<span class="op">=</span><span class="va">True</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="cffi---setup.py" class="slide level2">
+<h2>CFFI - setup.py</h2>
+<div class="sourceCode" id="cb28"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href=""></a><span class="im">from</span> setuptools <span class="im">import</span> setup</span>
+<span id="cb28-2"><a href=""></a></span>
+<span id="cb28-3"><a href=""></a>setup(</span>
+<span id="cb28-4"><a href=""></a>    ...</span>
+<span id="cb28-5"><a href=""></a>    setup_requires<span class="op">=</span>[<span class="st">"cffi&gt;=1.0.0"</span>],</span>
+<span id="cb28-6"><a href=""></a>    cffi_modules<span class="op">=</span>[<span class="st">"piapprox_build:ffibuilder"</span>], <span class="co"># "filename:global"</span></span>
+<span id="cb28-7"><a href=""></a>    install_requires<span class="op">=</span>[<span class="st">"cffi&gt;=1.0.0"</span>],</span>
+<span id="cb28-8"><a href=""></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 <section id="hpy" class="slide level2">
 <h2>HPy</h2>
 <ul>
-<li>Technically still alpha (version 0.9.0)</li>
-<li>An attempt at modernizing how to incorporate C into Python</li>
-<li>It is much more like the C/API</li>
+<li class="fragment">Technically still alpha (version 0.9.0)</li>
+<li class="fragment">An attempt at modernizing how to incorporate C into Python</li>
+<li class="fragment">It is much more like the C/API</li>
 </ul>
 </section>
 <section id="hpy---installation" class="slide level2">
@@ -571,7 +726,7 @@ Joey Bernard
 <ul>
 <li>Installation is through pip:</li>
 </ul>
-<div class="sourceCode" id="cb17"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb17-1"><a href=""></a><span class="ex">pip</span> install hpy</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb29"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb29-1"><a href=""></a><span class="ex">pip</span> install hpy</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <ul>
 <li>You need a C compiler</li>
 <li>You actually write C source code and compile it into a library that can be imported into Python</li>
@@ -580,53 +735,115 @@ Joey Bernard
 <section id="swig---not-just-for-python" class="slide level2">
 <h2>swig - not just for Python</h2>
 <ul>
-<li><strong><em>swig</em></strong> (Simplified Wrapper and Interface Generator) builds scripting language interfaces to C and C++</li>
-<li>Works for languages like Python, Tcl, Perl and Guile</li>
+<li class="fragment"><strong><em>swig</em></strong> (Simplified Wrapper and Interface Generator) builds scripting language interfaces to C and C++</li>
+<li class="fragment">Works for languages like Python, Tcl, Perl and Guile</li>
 </ul>
 </section>
 <section id="swig---installation" class="slide level2">
 <h2>swig - installation</h2>
 <ul>
-<li>swig is not part of the Python community</li>
-<li>You can install it from source</li>
-<li>Check your platform package manager to see if it is already there</li>
+<li class="fragment">swig is not part of the Python community</li>
+<li class="fragment">You can install it from source</li>
+<li class="fragment">Check your platform package manager to see if it is already there</li>
 </ul>
 </section>
 <section id="swig---basics" class="slide level2">
 <h2>swig - basics</h2>
 <ul>
-<li>You write the C source code in its own file</li>
-<li>You create an interface file to declare what C functions are available</li>
-<li>Calling <strong><em>swig</em></strong> generates the needed wrapper C code</li>
-<li>You then need to compile the C ocde and link it together into a shared library</li>
-<li>This can then be imported into Python</li>
+<li class="fragment">You write the C source code in its own file</li>
+<li class="fragment">You create an interface file to declare what C functions are available</li>
+<li class="fragment">Calling <strong><em>swig</em></strong> generates the needed wrapper C code</li>
+<li class="fragment">You then need to compile the C ocde and link it together into a shared library</li>
+<li class="fragment">This can then be imported into Python</li>
 </ul>
 </section>
 <section id="pyo3---a-rust-option" class="slide level2">
 <h2>pyO3 - a Rust option</h2>
 <ul>
-<li>Rust is more of a platform than C or C++</li>
-<li>This requires more tooling to develop code</li>
-<li>pyO3 can be used to call Rust in Python, or Python in Rust</li>
+<li class="fragment">Rust is more of a platform than C or C++</li>
+<li class="fragment">This requires more tooling to develop code</li>
+<li class="fragment">pyO3 can be used to call Rust in Python, or Python in Rust</li>
 </ul>
 </section>
 <section id="pyo3---installation" class="slide level2">
 <h2>pyO3 - installation</h2>
 <ul>
-<li>The easiest way is to use <strong><em>maturin</em></strong> to initialize a project</li>
+<li>The easiest way is to use <strong><em>maturin</em></strong> inside a virtual environment to initialize a project</li>
 </ul>
-<div class="sourceCode" id="cb18"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb18-1"><a href=""></a><span class="ex">pip</span> install maturin</span>
-<span id="cb18-2"><a href=""></a><span class="ex">maturin</span> init <span class="at">--bindings</span> pyo3</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb30"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb30-1"><a href=""></a><span class="ex">pip</span> install maturin</span>
+<span id="cb30-2"><a href=""></a><span class="ex">maturin</span> init <span class="at">--bindings</span> pyo3</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ul>
+<li>This creates several project files, the most important of which are <strong><em>Cargo.toml</em></strong> and <strong><em>src/lib.rs</em></strong></li>
+</ul>
+</section>
+<section id="pyo3---cargo.toml" class="slide level2">
+<h2>pyO3 - Cargo.toml</h2>
+<div class="sourceCode" id="cb31"><pre class="sourceCode numberSource rust number-lines code-with-copy"><code class="sourceCode rust"><span id="cb31-1"><a href=""></a>[package]</span>
+<span id="cb31-2"><a href=""></a>name <span class="op">=</span> <span class="st">"string_sum"</span></span>
+<span id="cb31-3"><a href=""></a>version <span class="op">=</span> <span class="st">"0.1.0"</span></span>
+<span id="cb31-4"><a href=""></a>edition <span class="op">=</span> <span class="st">"2021"</span></span>
+<span id="cb31-5"><a href=""></a></span>
+<span id="cb31-6"><a href=""></a>[lib]</span>
+<span id="cb31-7"><a href=""></a># The name of the native library<span class="op">.</span></span>
+<span id="cb31-8"><a href=""></a>name <span class="op">=</span> <span class="st">"string_sum"</span></span>
+<span id="cb31-9"><a href=""></a># <span class="st">"cdylib"</span> is necessary to produce a shared library <span class="cf">for</span> Python to import from<span class="op">.</span></span>
+<span id="cb31-10"><a href=""></a><span class="kw">crate</span><span class="op">-</span><span class="kw">type</span> <span class="op">=</span> [<span class="st">"cdylib"</span>]</span>
+<span id="cb31-11"><a href=""></a></span>
+<span id="cb31-12"><a href=""></a>[dependencies]</span>
+<span id="cb31-13"><a href=""></a>pyo3 <span class="op">=</span> <span class="op">{</span> version <span class="op">=</span> <span class="st">"0.25.0"</span><span class="op">,</span> features <span class="op">=</span> [<span class="st">"extension-module"</span>] <span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="pyo3---lib.rs" class="slide level2">
+<h2>pyO3 - lib.rs</h2>
+<div class="sourceCode" id="cb32"><pre class="sourceCode numberSource rust number-lines code-with-copy"><code class="sourceCode rust"><span id="cb32-1"><a href=""></a><span class="kw">use</span> <span class="pp">pyo3::prelude::</span><span class="op">*;</span></span>
+<span id="cb32-2"><a href=""></a></span>
+<span id="cb32-3"><a href=""></a><span class="co">/// Formats the sum of two numbers as string.</span></span>
+<span id="cb32-4"><a href=""></a><span class="at">#[</span>pyfunction<span class="at">]</span></span>
+<span id="cb32-5"><a href=""></a><span class="kw">fn</span> sum_as_string(a<span class="op">:</span> <span class="dt">usize</span><span class="op">,</span> b<span class="op">:</span> <span class="dt">usize</span>) <span class="op">-&gt;</span> PyResult<span class="op">&lt;</span><span class="dt">String</span><span class="op">&gt;</span> <span class="op">{</span></span>
+<span id="cb32-6"><a href=""></a>    <span class="cn">Ok</span>((a <span class="op">+</span> b)<span class="op">.</span>to_string())</span>
+<span id="cb32-7"><a href=""></a><span class="op">}</span></span>
+<span id="cb32-8"><a href=""></a></span>
+<span id="cb32-9"><a href=""></a><span class="co">/// A Python module implemented in Rust.</span></span>
+<span id="cb32-10"><a href=""></a><span class="co">/// The name of this function must match</span></span>
+<span id="cb32-11"><a href=""></a><span class="co">/// the `lib.name` setting in the `Cargo.toml`,</span></span>
+<span id="cb32-12"><a href=""></a><span class="co">/// else Python will not be able to</span></span>
+<span id="cb32-13"><a href=""></a><span class="co">/// import the module.</span></span>
+<span id="cb32-14"><a href=""></a><span class="at">#[</span>pymodule<span class="at">]</span></span>
+<span id="cb32-15"><a href=""></a><span class="kw">fn</span> string_sum(m<span class="op">:</span> <span class="op">&amp;</span>Bound<span class="op">&lt;</span><span class="ot">'_</span><span class="op">,</span> PyModule<span class="op">&gt;</span>) <span class="op">-&gt;</span> PyResult<span class="op">&lt;</span>()<span class="op">&gt;</span> <span class="op">{</span></span>
+<span id="cb32-16"><a href=""></a>    m<span class="op">.</span>add_function(<span class="pp">wrap_pyfunction!</span>(sum_as_string<span class="op">,</span> m)<span class="op">?</span>)<span class="op">?;</span></span>
+<span id="cb32-17"><a href=""></a>    <span class="cn">Ok</span>(())</span>
+<span id="cb32-18"><a href=""></a><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="pyo3---building" class="slide level2">
+<h2>pyO3 - building</h2>
 <ul>
 <li>To build code, use</li>
 </ul>
-<div class="sourceCode" id="cb19"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb19-1"><a href=""></a><span class="ex">maturin</span> develop</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb33"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb33-1"><a href=""></a><span class="ex">maturin</span> develop</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ul>
+<li>This will build the library and install it into the virtual environment that we are currently in</li>
+</ul>
+</section>
+<section id="pyo3---functions" class="slide level2">
+<h2>pyO3 - functions</h2>
+<ul>
+<li class="fragment">As we saw in a previous slide, you can decorate a function in Rust so that it can be used in Python</li>
+<li class="fragment"><strong><em>pyO3</em></strong> actually creates a C wrapper that acts as an intermediate layer between Rust and Python</li>
+<li class="fragment">Most of the same concerns and functionalities from solutions like Cython also exist here</li>
+<li class="fragment">The same ability to avoid the GIL is provided through <strong><em>pyO3</em></strong></li>
+</ul>
+</section>
+<section id="pyo3---parallelism" class="slide level2">
+<h2>pyO3 - parallelism</h2>
+<ul>
+<li class="fragment">Since the Rust code is running outside of Python, it can take advantage of true prallelism</li>
+<li class="fragment">There is a call (<strong><em>Python::allow_threads</em></strong>) that temporarily releases the GIL and allows other threads within Python to continue running</li>
+</ul>
 
 </section>
     </div>
   <div class="quarto-auto-generated-content" style="display: none;">
 <div class="footer footer-default">
-
+<p>Compute Ontario/ACENET Summer School</p>
 </div>
 </div></div>
 
@@ -659,7 +876,7 @@ Joey Bernard
 'autoAnimateUnmatched': true,
 'jumpToSlide': true,
 'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.togglePdfExport(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleScrollView(event)\"><kbd>r</kbd> Scroll View Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"5\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true},
-'smaller': false,
+'smaller': true,
  
         // Display controls in the bottom right corner
         controls: false,
@@ -839,190 +1056,172 @@ Joey Bernard
       });
     </script>
     <script id="quarto-html-after-body" type="application/javascript">
-    window.document.addEventListener("DOMContentLoaded", function (event) {
-      const toggleBodyColorMode = (bsSheetEl) => {
-        const mode = bsSheetEl.getAttribute("data-mode");
-        const bodyEl = window.document.querySelector("body");
-        if (mode === "dark") {
-          bodyEl.classList.add("quarto-dark");
-          bodyEl.classList.remove("quarto-light");
-        } else {
-          bodyEl.classList.add("quarto-light");
-          bodyEl.classList.remove("quarto-dark");
-        }
-      }
-      const toggleBodyColorPrimary = () => {
-        const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
-        if (bsSheetEl) {
-          toggleBodyColorMode(bsSheetEl);
-        }
-      }
-      toggleBodyColorPrimary();  
-      const tabsets =  window.document.querySelectorAll(".panel-tabset-tabby")
-      tabsets.forEach(function(tabset) {
-        const tabby = new Tabby('#' + tabset.id);
-      });
-      const isCodeAnnotation = (el) => {
-        for (const clz of el.classList) {
-          if (clz.startsWith('code-annotation-')) {                     
-            return true;
-          }
-        }
-        return false;
-      }
-      const onCopySuccess = function(e) {
-        // button target
-        const button = e.trigger;
-        // don't keep focus
-        button.blur();
-        // flash "checked"
-        button.classList.add('code-copy-button-checked');
-        var currentTitle = button.getAttribute("title");
-        button.setAttribute("title", "Copied!");
-        let tooltip;
-        if (window.bootstrap) {
-          button.setAttribute("data-bs-toggle", "tooltip");
-          button.setAttribute("data-bs-placement", "left");
-          button.setAttribute("data-bs-title", "Copied!");
-          tooltip = new bootstrap.Tooltip(button, 
-            { trigger: "manual", 
-              customClass: "code-copy-button-tooltip",
-              offset: [0, -8]});
-          tooltip.show();    
-        }
-        setTimeout(function() {
-          if (tooltip) {
-            tooltip.hide();
-            button.removeAttribute("data-bs-title");
-            button.removeAttribute("data-bs-toggle");
-            button.removeAttribute("data-bs-placement");
-          }
-          button.setAttribute("title", currentTitle);
-          button.classList.remove('code-copy-button-checked');
-        }, 1000);
-        // clear code selection
-        e.clearSelection();
-      }
-      const getTextToCopy = function(trigger) {
-          const codeEl = trigger.previousElementSibling.cloneNode(true);
-          for (const childEl of codeEl.children) {
-            if (isCodeAnnotation(childEl)) {
-              childEl.remove();
+      window.document.addEventListener("DOMContentLoaded", function (event) {
+        const tabsets =  window.document.querySelectorAll(".panel-tabset-tabby")
+        tabsets.forEach(function(tabset) {
+          const tabby = new Tabby('#' + tabset.id);
+        });
+        const isCodeAnnotation = (el) => {
+          for (const clz of el.classList) {
+            if (clz.startsWith('code-annotation-')) {                     
+              return true;
             }
           }
-          return codeEl.innerText;
-      }
-      const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
-        text: getTextToCopy
-      });
-      clipboard.on('success', onCopySuccess);
-      if (window.document.getElementById('quarto-embedded-source-code-modal')) {
-        const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
-          text: getTextToCopy,
-          container: window.document.getElementById('quarto-embedded-source-code-modal')
-        });
-        clipboardModal.on('success', onCopySuccess);
-      }
-        var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
-        var mailtoRegex = new RegExp(/^mailto:/);
-          var filterRegex = new RegExp('/' + window.location.host + '/');
-        var isInternal = (href) => {
-            return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+          return false;
         }
-        // Inspect non-navigation links and adorn them if external
-     	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
-        for (var i=0; i<links.length; i++) {
-          const link = links[i];
-          if (!isInternal(link.href)) {
-            // undo the damage that might have been done by quarto-nav.js in the case of
-            // links that we want to consider external
-            if (link.dataset.originalHref !== undefined) {
-              link.href = link.dataset.originalHref;
+        const onCopySuccess = function(e) {
+          // button target
+          const button = e.trigger;
+          // don't keep focus
+          button.blur();
+          // flash "checked"
+          button.classList.add('code-copy-button-checked');
+          var currentTitle = button.getAttribute("title");
+          button.setAttribute("title", "Copied!");
+          let tooltip;
+          if (window.bootstrap) {
+            button.setAttribute("data-bs-toggle", "tooltip");
+            button.setAttribute("data-bs-placement", "left");
+            button.setAttribute("data-bs-title", "Copied!");
+            tooltip = new bootstrap.Tooltip(button, 
+              { trigger: "manual", 
+                customClass: "code-copy-button-tooltip",
+                offset: [0, -8]});
+            tooltip.show();    
+          }
+          setTimeout(function() {
+            if (tooltip) {
+              tooltip.hide();
+              button.removeAttribute("data-bs-title");
+              button.removeAttribute("data-bs-toggle");
+              button.removeAttribute("data-bs-placement");
             }
-          }
+            button.setAttribute("title", currentTitle);
+            button.classList.remove('code-copy-button-checked');
+          }, 1000);
+          // clear code selection
+          e.clearSelection();
         }
-      function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
-        const config = {
-          allowHTML: true,
-          maxWidth: 500,
-          delay: 100,
-          arrow: false,
-          appendTo: function(el) {
-              return el.closest('section.slide') || el.parentElement;
-          },
-          interactive: true,
-          interactiveBorder: 10,
-          theme: 'light-border',
-          placement: 'bottom-start',
-        };
-        if (contentFn) {
-          config.content = contentFn;
-        }
-        if (onTriggerFn) {
-          config.onTrigger = onTriggerFn;
-        }
-        if (onUntriggerFn) {
-          config.onUntrigger = onUntriggerFn;
-        }
-          config['offset'] = [0,0];
-          config['maxWidth'] = 700;
-        window.tippy(el, config); 
-      }
-      const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
-      for (var i=0; i<noterefs.length; i++) {
-        const ref = noterefs[i];
-        tippyHover(ref, function() {
-          // use id or data attribute instead here
-          let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
-          try { href = new URL(href).hash; } catch {}
-          const id = href.replace(/^#\/?/, "");
-          const note = window.document.getElementById(id);
-          if (note) {
-            return note.innerHTML;
-          } else {
-            return "";
-          }
-        });
-      }
-      const findCites = (el) => {
-        const parentEl = el.parentElement;
-        if (parentEl) {
-          const cites = parentEl.dataset.cites;
-          if (cites) {
-            return {
-              el,
-              cites: cites.split(' ')
-            };
-          } else {
-            return findCites(el.parentElement)
-          }
-        } else {
-          return undefined;
-        }
-      };
-      var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
-      for (var i=0; i<bibliorefs.length; i++) {
-        const ref = bibliorefs[i];
-        const citeInfo = findCites(ref);
-        if (citeInfo) {
-          tippyHover(citeInfo.el, function() {
-            var popup = window.document.createElement('div');
-            citeInfo.cites.forEach(function(cite) {
-              var citeDiv = window.document.createElement('div');
-              citeDiv.classList.add('hanging-indent');
-              citeDiv.classList.add('csl-entry');
-              var biblioDiv = window.document.getElementById('ref-' + cite);
-              if (biblioDiv) {
-                citeDiv.innerHTML = biblioDiv.innerHTML;
+        const getTextToCopy = function(trigger) {
+            const codeEl = trigger.previousElementSibling.cloneNode(true);
+            for (const childEl of codeEl.children) {
+              if (isCodeAnnotation(childEl)) {
+                childEl.remove();
               }
-              popup.appendChild(citeDiv);
-            });
-            return popup.innerHTML;
+            }
+            return codeEl.innerText;
+        }
+        const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+          text: getTextToCopy
+        });
+        clipboard.on('success', onCopySuccess);
+        if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+          const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+            text: getTextToCopy,
+            container: window.document.getElementById('quarto-embedded-source-code-modal')
+          });
+          clipboardModal.on('success', onCopySuccess);
+        }
+          var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+          var mailtoRegex = new RegExp(/^mailto:/);
+            var filterRegex = new RegExp('/' + window.location.host + '/');
+          var isInternal = (href) => {
+              return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+          }
+          // Inspect non-navigation links and adorn them if external
+         var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+          for (var i=0; i<links.length; i++) {
+            const link = links[i];
+            if (!isInternal(link.href)) {
+              // undo the damage that might have been done by quarto-nav.js in the case of
+              // links that we want to consider external
+              if (link.dataset.originalHref !== undefined) {
+                link.href = link.dataset.originalHref;
+              }
+            }
+          }
+        function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+          const config = {
+            allowHTML: true,
+            maxWidth: 500,
+            delay: 100,
+            arrow: false,
+            appendTo: function(el) {
+                return el.closest('section.slide') || el.parentElement;
+            },
+            interactive: true,
+            interactiveBorder: 10,
+            theme: 'light-border',
+            placement: 'bottom-start',
+          };
+          if (contentFn) {
+            config.content = contentFn;
+          }
+          if (onTriggerFn) {
+            config.onTrigger = onTriggerFn;
+          }
+          if (onUntriggerFn) {
+            config.onUntrigger = onUntriggerFn;
+          }
+            config['offset'] = [0,0];
+            config['maxWidth'] = 700;
+          window.tippy(el, config); 
+        }
+        const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+        for (var i=0; i<noterefs.length; i++) {
+          const ref = noterefs[i];
+          tippyHover(ref, function() {
+            // use id or data attribute instead here
+            let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+            try { href = new URL(href).hash; } catch {}
+            const id = href.replace(/^#\/?/, "");
+            const note = window.document.getElementById(id);
+            if (note) {
+              return note.innerHTML;
+            } else {
+              return "";
+            }
           });
         }
-      }
-    });
-    </script>
+        const findCites = (el) => {
+          const parentEl = el.parentElement;
+          if (parentEl) {
+            const cites = parentEl.dataset.cites;
+            if (cites) {
+              return {
+                el,
+                cites: cites.split(' ')
+              };
+            } else {
+              return findCites(el.parentElement)
+            }
+          } else {
+            return undefined;
+          }
+        };
+        var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+        for (var i=0; i<bibliorefs.length; i++) {
+          const ref = bibliorefs[i];
+          const citeInfo = findCites(ref);
+          if (citeInfo) {
+            tippyHover(citeInfo.el, function() {
+              var popup = window.document.createElement('div');
+              citeInfo.cites.forEach(function(cite) {
+                var citeDiv = window.document.createElement('div');
+                citeDiv.classList.add('hanging-indent');
+                citeDiv.classList.add('csl-entry');
+                var biblioDiv = window.document.getElementById('ref-' + cite);
+                if (biblioDiv) {
+                  citeDiv.innerHTML = biblioDiv.innerHTML;
+                }
+                popup.appendChild(citeDiv);
+              });
+              return popup.innerHTML;
+            });
+          }
+        }
+      });
+      </script>
     
 
 </body></html>
