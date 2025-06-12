@@ -15,6 +15,13 @@ format:
 ---
 
 
+
+## Land Acknowledgement
+
+
+## Housekeeping
+
+
 ## Introduction
 - Python has become the default glue language for science
 - It is not ideal for all cases
@@ -65,8 +72,6 @@ deactivate
 ```
 :::
 
-
-## Practical
 
 
 
