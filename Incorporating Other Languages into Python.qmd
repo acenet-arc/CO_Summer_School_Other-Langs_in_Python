@@ -239,11 +239,11 @@ def primes(nb_primes: cython.int):
     p: cython.int[1000]
 
     if nb_primes > 1000:
-	nb_primes = 1000
+        nb_primes = 1000
     # Only if regular Python is running
     if not cython.compiled:
-	# Make p work almost like a C array
-	p = [0] * 1000
+        # Make p work almost like a C array
+        p = [0] * 1000
 
     len_p: cython.int = 0  # The current number of elements in p.
     n: cython.int = 2
@@ -258,7 +258,7 @@ def primes(int nb_primes):
     cdef int[1000] p
 
     if nb_primes > 1000:
-	nb_primes = 1000
+        nb_primes = 1000
 
 
 
@@ -286,7 +286,7 @@ pip install setuptools
 
 ## Cython - hello world
 ::: {.nonincremental}
-- We can start with the classic *Hello World* in the file ***hello.pyx***
+- We can start with the classic **Hello World** in the file ***hello.pyx***
 
 ```python
 def say_hello_to(name):
@@ -347,12 +347,12 @@ def parse_charptr_to_py_int(s: cython.p_char):
 
 ## Cython - other libraries
 - You can also import from other libraries, e.g.
-*** from cython.cimports.libc.math import sin***
+***from cython.cimports.libc.math import sin***
 - Some libraries (like math) are not automatically linked - you will have to add linking information to your ***setup.py*** file
 
 
 ## Cython - external libraries
-- Using other external libraries isn't quite so seemless
+- Using other external libraries isn't quite so seamless
 - You will need to write a ***.pxd*** file to wrap the details from the header file for your external library
 - You then will need to write a Python wrapper class to encapsulate the calls to the C code
 
@@ -361,7 +361,7 @@ def parse_charptr_to_py_int(s: cython.p_char):
 ```python
 cdef extern from "c-algorithms/src/queue.h":
     ctypedef struct Queue:
-	pass
+        pass
     ctypedef void* QueueValue
     Queue* queue_new()
     void queue_free(Queue* queue)
@@ -384,7 +384,7 @@ class Queue:
     _c_queue: cython.pointer[cqueue.Queue]
 
     def __cinit__(self):
-	self._c_queue = cqueue.queue_new()
+        self._c_queue = cqueue.queue_new()
 ```
 
 
@@ -561,7 +561,7 @@ NB_MODULE(my_ext, m) {
 
 
 ## nanobind - cmake general
-```
+```bash
 cmake_minimum_required(VERSION 3.15...3.27)
 project(my_project) # Replace 'my_project' with the name of your project
 
@@ -576,14 +576,14 @@ find_package(Python 3.8 COMPONENTS Interpreter ${DEV_MODULE} REQUIRED)
 
 
 ## nanobind - cmake specifics
-```
+```bash
 # Detect the installed nanobind package and import it into CMake
 execute_process(
   COMMAND "${Python_EXECUTABLE}" -m nanobind --cmake_dir
   OUTPUT_STRIP_TRAILING_WHITESPACE OUTPUT_VARIABLE nanobind_ROOT)
 find_package(nanobind CONFIG REQUIRED)
 ```
-```
+```bash
 nanobind_add_module(my_ext my_ext.cpp)
 ```
 
@@ -898,7 +898,7 @@ fn my_extension(m: &Bound<'_, PyModule>) -> PyResult<()> {
 
 
 ## pyO3 - parallelism
-- Since the Rust code is running outside of Python, it can take advantage of true prallelism
+- Since the Rust code is running outside of Python, it can take advantage of true parallelism
 - There is a call (***Python::allow_threads***) that temporarily releases the GIL and allows other threads within Python to continue running
 
 
