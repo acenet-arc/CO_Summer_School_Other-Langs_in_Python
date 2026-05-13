@@ -1,0 +1,1079 @@
+#+TITLE: Incorporating Other Languages into Python
+#+AUTHOR: Joey Bernard
+#+OPTIONS: H:1 toc:nil
+#+LATEX_CLASS: beamer
+#+STARTUP: showall
+#+BEAMER_THEME: Madrid
+
+
+** Land Acknowledgement
+:PROPERTIES:
+:CUSTOM_ID: land-acknowledgement
+:END:
+We respectfully acknowledge that UNB stands on the unsurrendered and unceded traditional Wolastoqey (WOOL-US-TOOK-WAY) land. The lands of Wabanaki (WAH-BAH-NAH-KEE) people are recognized in a series of Peace and Friendship Treaties to establish an ongoing relationship of peace, friendship and mutual respect between equal nations. The river that runs by our university is known as Wolastoq (WOOL-LUSS-TOOK), along which live Wolastoqiyik (WOOL-US-TOO-GWEEG) - the people of the beautiful and bountiful river. Wolastoq (WOOL-LUSS-TOOK) is also called the St. John River.
+
+** Introduction
+:PROPERTIES:
+:CUSTOM_ID: introduction
+:END:
+- Python has become the default glue language for science
+- It is not ideal for all cases
+- We will look at how to offload issues to another language
+
+** Installation
+:PROPERTIES:
+:CUSTOM_ID: installation
+:END:
+- We need several tools
+- Almost everything we will discuss involves C/C++
+- You will need Python plus a C/C+ compiler
+- All of this work should be done in a virtual environment (now
+  necessary under Ubuntu)
+
+** Software Options
+:PROPERTIES:
+:CUSTOM_ID: software-options
+:END:
+- Most Linux distributions will have everything you need in their
+  package management system
+- For Windows, you can use WSL to get a Linux environment
+- You can also use scoop (https://scoop.sh) to install Windows developer
+  tools
+- For Apple Macs, you can use homebrew (https://brew.sh) to do the same
+  thing
+
+** Pre-existing Examples
+:PROPERTIES:
+:CUSTOM_ID: pre-existing-examples
+:END:
+- Several of the high performance libraries already do this
+- numpy uses C, C++ and FORTRAN (in order of usage)
+- scipy uses C, FORTRAN and C++ (in order of usage)
+
+** Why do this
+:PROPERTIES:
+:CUSTOM_ID: why-do-this
+:END:
+- Python is an object oriented language, without static typing
+- This means loops can be horrendous
+- Also have the GIL, throttling multi-process work (this is currently being worked on)
+
+** Virtual Environments
+:PROPERTIES:
+:CUSTOM_ID: virtual-environments
+:END:
+
+- The first step is creating a virtual environment
+
+#+begin_src sh
+python -m venv python_project1
+#+end_src
+
+- This creates a new directory for your project
+- You can activate it with
+
+#+begin_src sh
+cd ./python_project1
+. ./bin/activate
+#+end_src
+
+- When you are done, you can simply run the command
+
+#+begin_src sh
+deactivate
+#+end_src
+
+** First step - Numba
+:PROPERTIES:
+:CUSTOM_ID: first-step---numba
+:END:
+- In some cases, you just need a slightly faster Python
+- Whenever you try to optimize, remember the quote - */Early
+  optimization is the root of all evil/*
+- You want to do the bare minimum to get the results that you actually
+  need
+- Numba allows for compiling portions of your Python code
+
+** Numba - installation
+:PROPERTIES:
+:CUSTOM_ID: numba---installation
+:END:
+
+- Numba is installed using the command
+
+#+begin_src sh
+pip install numba
+#+end_src
+
+- This will install the numba module, along with llvmlite
+- This why you should use virtual environments - to keep your projects
+  clean and isolated
+
+** Numba - cont'd
+:PROPERTIES:
+:CUSTOM_ID: numba---contd
+:END:
+- Numba uses decorators to encapsulate your code
+- The most common decorator is =@jit=
+- This decorator has loads of options, including whether to parallelize
+  or whether to target a GPU
+
+** Numba - options
+:PROPERTIES:
+:CUSTOM_ID: numba---options
+:END:
+- */nogil/* - whether to release the GIL when entering the compiled code
+- */cache/* - whether to save off compiled code into a file cache to
+  avoid the compiling step each time
+- */parallel/* - whether to parallelize compiled code when possible
+  (e.g. loops)
+- */fastmath/* - whether to use strict IEEE 754 math (similar to the GCC
+  flag)
+
+** Numba - explicit typing
+:PROPERTIES:
+:CUSTOM_ID: numba---explicit-typing
+:END:
+
+- One issue with Python is that variables are untyped
+- You can assign a type signature as part of the jit decorator
+- For example
+
+#+begin_src python
+from numba import jit
+
+@jit(int32(int32,int32))
+def my_func(val1, val2):
+    return val1 + val2
+#+end_src
+
+- This allows numba to know what the data types are and to compile away
+  the usual checks that Python has to do
+
+** Numba - usage
+:PROPERTIES:
+:CUSTOM_ID: numba---usage
+:END:
+
+- Compiling your code is as easy as
+
+#+begin_src sh
+numba my_code.py
+#+end_src
+
+- You can also output debugging information with options like
+
+#+begin_src sh
+numba my_code.py --annotate
+OR
+numba my_code.py --dump_llvm
+#+end_src
+
+** Numba - numpy universal functions
+:PROPERTIES:
+:CUSTOM_ID: numba---numpy-universal-functions
+:END:
+- You can create numpy ufuncs by decorating your Python code
+- For scalar input arguments, using the \textit{@vectorize}
+  decorator for your function
+- For data structures, you can use the \textit{@guvectorize}
+  decorator
+- While you could just use the \textit{@jit} decorator with an
+  iteration loop, but this method adds in the numpy features, like
+  reduction, accumulation or broadcasting
+
+** Numba - numpy example
+:PROPERTIES:
+:CUSTOM_ID: numba---numpy-example
+:END:
+#+begin_src python
+from numba import vectorize, float64
+
+@vectorize([float64(float64, float64)])
+def f(x, y):
+    return x + y
+#+end_src
+
+** Numba - AOT compilation
+:PROPERTIES:
+:CUSTOM_ID: numba---aot-compilation
+:END:
+- Usually numba compiles code at run-time
+- You can pre-compile your code before having to use it
+- This allows you to distribute the code to users who may not have numba
+  installed
+
+** Numba - AOT example
+:PROPERTIES:
+:CUSTOM_ID: numba---aot-example
+:END:
+#+begin_src python
+from numba.pycc import CC
+cc = CC('my_module')
+
+@cc.export('multf', 'f8(f8, f8)')
+@cc.export('multi', 'i4(i4, i4)')
+def mult(a, b):
+    return a * b
+
+@cc.export('square', 'f8(f8)')
+def square(a):
+    return a ** 2
+
+if __name__ == "__main__":
+    cc.compile()
+#+end_src
+
+** Numba - AOT compiling
+:PROPERTIES:
+:CUSTOM_ID: numba---aot-compiling
+:END:
+- Running the above script generates a shared library that contains the
+  compiled code
+- This won't work for numpy ufuncs
+- Exported functions don't check argument types
+- AOT produces generic architecture code, while JIT produces specific
+  code
+
+** Numba - jit\textunderscore module
+:PROPERTIES:
+:CUSTOM_ID: numba---jit_module
+:END:
+- In some cases, you may have an entire module worth of code that you
+  want to pass through numba's JIT
+  - You can use the \textit{jit\textunderscore module()} function within your module code to
+    apply the changes, rather than having decorate every function
+    individually
+- Any functions that you do decorate will use those options, rather than
+  the module level options
+
+** Next step - Cython
+:PROPERTIES:
+:CUSTOM_ID: next-step---cython
+:END:
+- Cython allows for adding C/C++ data types, and outputting compiled
+  code
+- You need to annotate your code in order to tell Cython what is
+  expected
+- You will need to have your own C/C++ compiler - ideally the same as
+  the compiler used for Python
+- This becomes easy to mess up under Windows - consider strongly using
+  WSL
+
+** Cython - annotation
+:PROPERTIES:
+:CUSTOM_ID: cython---annotation
+:END:
+
+- Cython will compile pure Python
+- Using static typing will give a decent initial speedup
+- You can annotate so that it looks like
+
+#+begin_src python
+import cython
+
+i: cython.int
+j: cython.double
+#+end_src
+
+** Cython - different notation
+:PROPERTIES:
+:CUSTOM_ID: cython---different-notation
+:END:
+
+Pure Python
+
+#+begin_src python
+def primes(nb_primes: cython.int):
+    i: cython.int
+    p: cython.int[1000]
+
+    if nb_primes > 1000:
+        nb_primes = 1000
+    # Only if regular Python is running
+    if not cython.compiled:
+        # Make p work almost like a C array
+        p = [0] * 1000
+
+    len_p: cython.int = 0  # The current number of elements in p.
+    n: cython.int = 2
+    while len_p < nb_primes:
+#+end_src
+
+** Cython - different notation continued
+Older Cython
+
+#+begin_src python
+def primes(int nb_primes):
+    cdef int n, i, len_p
+    cdef int[1000] p
+
+    if nb_primes > 1000:
+        nb_primes = 1000
+
+
+
+    # The current number of elements in p.
+    len_p = 0
+    n = 2
+    while len_p < nb_primes:
+#+end_src
+
+** Cython - usage
+:PROPERTIES:
+:CUSTOM_ID: cython---usage
+:END:
+
+- The easiest way to build Cython code is to use setuptools
+
+#+begin_src sh
+pip install cython
+pip install setuptools
+#+end_src
+
+- This way, you can use setuptools to build your Cython module
+- Files can use endings /.pyx/ or /.py/
+
+** Cython - hello world
+:PROPERTIES:
+:CUSTOM_ID: cython---hello-world
+:END:
+
+- We can start with the classic *Hello World* in the file */hello.pyx/*
+
+#+begin_src python
+def say_hello_to(name):
+    print(f"Hello {name}!")
+#+end_src
+
+** Cython - setuptools
+:PROPERTIES:
+:CUSTOM_ID: cython---setuptools
+:END:
+
+- To build it, we'll need a /setup.py/ script
+
+#+begin_src python
+from setuptools import setup
+from Cython.Build import cythonize
+
+setup(
+    name='Hello World app',
+    ext_modules=cythonize("hello.pyx"),
+)
+#+end_src
+
+** Cython - building
+:PROPERTIES:
+:CUSTOM_ID: cython---building
+:END:
+
+- To build it, you would use the command
+
+#+begin_src sh
+python setup.py build_ext --inplace
+#+end_src
+
+- Then you can use it with
+
+#+begin_src python
+from hello import say_hello_to
+#+end_src
+
+** Cython - basics
+:PROPERTIES:
+:CUSTOM_ID: cython---basics
+:END:
+- You can call C functions from libraries
+- You have the ability to use static types
+- Writing Python wrappers allows your Python code to use C libraries
+- Your Cython code gets compiled down to C
+
+** Cython - stdlib functions
+:PROPERTIES:
+:CUSTOM_ID: cython---stdlib-functions
+:END:
+
+- You can import and use C functions from the standard library
+
+#+begin_src python
+from cython.cimports.libc.stdlib import atoi
+
+@cython.cfunc
+def parse_charptr_to_py_int(s: cython.p_char):
+    assert s is not cython.NULL, "byte string value is NULL"
+    return atoi(s)  # note: atoi() has no error detection!
+#+end_src
+
+** Cython - other libraries
+:PROPERTIES:
+:CUSTOM_ID: cython---other-libraries
+:END:
+- You can also import from other libraries, e.g.
+   - */from cython.cimports.libc.math import sin/*
+- Some libraries (like math) are not automatically linked - you will
+  have to add linking information to your */setup.py/* file
+
+** Cython - external libraries
+:PROPERTIES:
+:CUSTOM_ID: cython---external-libraries
+:END:
+- Using other external libraries isn't quite so seamless
+- You will need to write a */.pxd/* file to wrap the details from the
+  header file for your external library
+- You then will need to write a Python wrapper class to encapsulate the
+  calls to the C code
+
+** Cython - cqueue pxd file
+:PROPERTIES:
+:CUSTOM_ID: cython---cqueue-pxd-file
+:END:
+#+begin_src python
+cdef extern from "c-algorithms/src/queue.h":
+    ctypedef struct Queue:
+        pass
+    ctypedef void* QueueValue
+    Queue* queue_new()
+    void queue_free(Queue* queue)
+    int queue_push_head(Queue* queue, QueueValue data)
+    QueueValue  queue_pop_head(Queue* queue)
+    QueueValue queue_peek_head(Queue* queue)
+    int queue_push_tail(Queue* queue, QueueValue data)
+    QueueValue queue_pop_tail(Queue* queue)
+    QueueValue queue_peek_tail(Queue* queue)
+    bint queue_is_empty(Queue* queue)
+#+end_src
+
+** Cython - wrapper class for a queue
+:PROPERTIES:
+:CUSTOM_ID: cython---wrapper-class-for-a-queue
+:END:
+#+begin_src python
+from cython.cimports import cqueue
+
+@cython.cclass
+class Queue:
+    _c_queue: cython.pointer[cqueue.Queue]
+
+    def __cinit__(self):
+        self._c_queue = cqueue.queue_new()
+#+end_src
+
+** Cython - strings
+:PROPERTIES:
+:CUSTOM_ID: cython---strings
+:END:
+- Strings prove to be a bit of a mess
+- Cython supports 4 types: /bytes/, /str/, /unicode/ and /basestring/
+- Involves a decoding/encoding step when going back and forth between
+  Python and C
+
+** Cython - memory management
+:PROPERTIES:
+:CUSTOM_ID: cython---memory-management
+:END:
+- Memory management on the Python side is a non-issue
+- Objects are auto-created, and then cleaned up by the garbage collector
+- Most simple objects move into C by being assigned to the stack
+- Sometimes, you need to manually assign heap space for larger or more
+  complex objects
+
+** Cython - using numpy
+:PROPERTIES:
+:CUSTOM_ID: cython---using-numpy
+:END:
+- You are able to use numpy data types, especially arrays
+- This allows faster access and indexing
+- */ndarray/* allows near direct C-like access to data within numpy
+  arrays
+
+** Cython - parallelization
+:PROPERTIES:
+:CUSTOM_ID: cython---parallelization
+:END:
+- You can write code that uses OpenMP threaded parallelization
+- This side-steps the GIL, so you get true concurrent parallel code
+- This means that you can't directly use Python objects, you need to
+  move completely into C
+- Your C compiler needs to support OpenMP (most do)
+
+** Cython - C++ options
+:PROPERTIES:
+:CUSTOM_ID: cython---c-options
+:END:
+- There is also the ability to use C++
+- The */cython.cimports.libcpp/* sub-module provides for lots of C++
+  imports, like vectors
+- This requires a native part of the module, specific to your
+  infrastructure
+
+** Cython - pure Python
+:PROPERTIES:
+:CUSTOM_ID: cython---pure-python
+:END:
+- You may not have the ability to use a C compiler, but still want some
+  performance help
+- Cython allows you to statically type your code, along with other
+  cythonic functionality
+- You can use an augmenting */.pxd/* file to cythonize your */.py/* file
+- You can explicitly mark code as needing or not needing the GIL - this
+  helps the interpreter run parallel threads
+
+** Boost-y binding 1 - pybind11
+:PROPERTIES:
+:CUSTOM_ID: boost-y-binding-1---pybind11
+:END:
+- There is a */Boost.Python/* library - unfortunately you have to use
+  */Boost/*
+- */pybind11/* provides a much smaller and focused library to pull C++
+  into Python
+- Allows for C++ types, function calls, data structures, classes, etc
+
+** pybind11 - installation
+:PROPERTIES:
+:CUSTOM_ID: pybind11---installation
+:END:
+
+- You can install */pybind11/* through pip:
+
+#+begin_src sh
+pip install pybind11
+#+end_src
+
+- You also need a C++ compiler, along with the development package for
+  Python
+- You also need a build system (cmake, meson, setuptools)
+
+** pybind11 - boilerplate
+:PROPERTIES:
+:CUSTOM_ID: pybind11---boilerplate
+:END:
+
+- You will likely need the following two lines at the top of any of your
+  C++ source code files
+
+#+begin_src C
+#include <pybind11/pybind11.h>
+
+namespace py = pybind11;
+#+end_src
+
+- Now you can add binding code to your C++ source files
+
+** pybind11 - example file
+:PROPERTIES:
+:CUSTOM_ID: pybind11---example-file
+:END:
+#+begin_src C
+#include <pybind11/pybind11.h>
+
+int add(int i, int j) {
+    return i + j;
+}
+
+PYBIND11_MODULE(example, m) {
+    m.doc() = "pybind11 example plugin"; //optional module doc
+
+    m.def("add", &add, "A function that adds two numbers");
+}
+#+end_src
+
+** pybind11 - building
+:PROPERTIES:
+:CUSTOM_ID: pybind11---building
+:END:
+
+- Since */pybind11/* is based off of Boost, then it is also a
+  header-only package
+- This means that you don't need to link to any extra library
+- Building is done through compilation
+
+#+begin_src sh
+$ c++ -O3 -Wall -shared -std=c++11 \\
+   -fPIC $(python3 -m pybind11 --includes) example.cpp \\
+   -o example$(python3-config --extension-suffix)
+#+end_src
+
+- You can now import the compiled module in Python the usual way
+
+** pybind11 - keyword arguments
+:PROPERTIES:
+:CUSTOM_ID: pybind11---keyword-arguments
+:END:
+
+- In the exaple, the arguments are positional
+- You need to add some code to allow for keyword arguments
+
+#+begin_src C
+m.def("add", &add, "A function which adds two numbers",
+      py::arg("i"), py::arg("j"));
+#+end_src
+
+** pybind11 - exporting variables
+:PROPERTIES:
+:CUSTOM_ID: pybind11---exporting-variables
+:END:
+#+begin_src C
+PYBIND11_MODULE(example, m) {
+    m.attr("the_answer") = 42;
+    py::object world = py::cast("World");
+    m.attr("what") = world;
+}
+#+end_src
+
+#+begin_src python
+>>> import example
+>>> example.the_answer
+42
+>>> example.what
+'World'
+#+end_src
+
+** Boost-y binding 2 - Nanobind
+:PROPERTIES:
+:CUSTOM_ID: boost-y-binding-2---nanobind
+:END:
+- */nanobind/* is another Boost-y module, by the same person who wrote
+  */pybind11/*
+- */nanobind/* is even smaller, providing a subset of C++ functionality
+  for your Python code
+
+** nanobind - installation
+:PROPERTIES:
+:CUSTOM_ID: nanobind---installation
+:END:
+
+- Like everything else today, you can install using pip:
+
+#+begin_src sh
+pip install nanobind
+#+end_src
+
+- You will also need a C++ compiler
+- */nanobind/* supports various build systems (cmake, meson, bazel)
+
+** nanobind - basics
+:PROPERTIES:
+:CUSTOM_ID: nanobind---basics
+:END:
+
+- A basic module looks like
+
+#+begin_src C
+#include <nanobind/nanobind.h>
+
+int add(int a, int b) { return a + b; }
+
+NB_MODULE(my_ext, m) {
+    m.def("add", &add);
+}
+#+end_src
+
+- Building is through a */CMakeLists.txt/*
+
+** nanobind - cmake general
+:PROPERTIES:
+:CUSTOM_ID: nanobind---cmake-general
+:END:
+#+begin_src sh
+cmake_minimum_required(VERSION 3.15...3.27)
+# Replace 'my_project' with the name of your project
+project(my_project)
+
+if (CMAKE_VERSION VERSION_LESS 3.18)
+  set(DEV_MODULE Development)
+else()
+  set(DEV_MODULE Development.Module)
+endif()
+
+find_package(Python 3.8 COMPONENTS Interpreter
+             ${DEV_MODULE} REQUIRED)
+#+end_src
+
+** nanobind - cmake specifics
+:PROPERTIES:
+:CUSTOM_ID: nanobind---cmake-specifics
+:END:
+#+begin_src sh
+# Detect the installed nanobind package and import it
+# into CMake
+execute_process(
+  COMMAND "${Python_EXECUTABLE}" -m nanobind --cmake_dir
+  OUTPUT_STRIP_TRAILING_WHITESPACE OUTPUT_VARIABLE
+  nanobind_ROOT)
+find_package(nanobind CONFIG REQUIRED)
+#+end_src
+
+#+begin_src sh
+nanobind_add_module(my_ext my_ext.cpp)
+#+end_src
+
+** nanobind - example
+:PROPERTIES:
+:CUSTOM_ID: nanobind---example
+:END:
+#+begin_src C
+#include <nanobind/nanobind.h>
+
+namespace nb = nanobind;
+using namespace nb::literals;
+
+int add(int a, int b = 1) { return a + b; }
+
+NB_MODULE(my_ext, m) {
+    m.def("add", &add, "a"_a, "b"_a = 1,
+      "This function adds two numbers and increments if only
+          one is provided.");
+}
+#+end_src
+
+** CFFI
+:PROPERTIES:
+:CUSTOM_ID: cffi
+:END:
+- CFFI (C Foreign Function Interface) for Python is a more raw library
+- Unlike systems like Cython, CFFI doesn't add extra syntax
+- You just need to know C and Python
+
+** CFFI - installation
+:PROPERTIES:
+:CUSTOM_ID: cffi---installation
+:END:
+
+- Installation can be done through pip:
+
+#+begin_src sh
+pip install cffi
+#+end_src
+
+- Includes a library (libffi) that can be messy to setup correctly on
+  some platforms
+
+** CFFI - basics
+:PROPERTIES:
+:CUSTOM_ID: cffi---basics
+:END:
+- You start with an */FFI()/* object
+- You use the /cdef()/ method to provide C declarations
+- You use the /set\textunderscore source()/ method to define the Python extension
+  module, along with the associated C code
+- You use the /compile()/ method to generate the compiled library
+- You can then import this library like any other Python module
+
+** CFFI - example
+:PROPERTIES:
+:CUSTOM_ID: cffi---example
+:END:
+#+begin_src python
+from cffi import FFI
+ffibuilder = FFI()
+
+ffibuilder.cdef("""
+    float pi_approx(int n);
+""")
+
+ffibuilder.set_source("_pi_cffi",
+"""
+     #include "pi.h"   // the C header of the library
+""",
+     libraries=['piapprox'])   # library name, for the linker
+
+if __name__ == "__main__":
+    ffibuilder.compile(verbose=True)
+#+end_src
+
+** CFFI - setup.py
+:PROPERTIES:
+:CUSTOM_ID: cffi---setup.py
+:END:
+#+begin_src python
+from setuptools import setup
+
+setup(
+    ...
+    setup_requires=["cffi>=1.0.0"],
+    cffi_modules=["piapprox_build:ffibuilder"],
+    install_requires=["cffi>=1.0.0"],
+)
+#+end_src
+
+** CFFI - modes of use
+:PROPERTIES:
+:CUSTOM_ID: cffi---modes-of-use
+:END:
+- ABI - Application Binary Interface
+- API - Application Programming Interface
+- in-line - everything is setup everytime you import your code
+- out-of-line - there is a separate step that compiles your code for
+  import
+
+** CFFI - ABI, in-line
+:PROPERTIES:
+:CUSTOM_ID: cffi---abi-in-line
+:END:
+#+begin_src python
+from cffi import FFI
+ffi = FFI()
+ffi.cdef("""
+    int printf(const char *format, ...);
+""")
+# loads the entire C namespace
+C = ffi.dlopen(None)
+# equivalent to C code: char arg[] = "world";
+arg = ffi.new("char[]", b"world")
+C.printf(b"hi there, %s.\n", arg)
+#+end_src
+
+** CFFI - API, out-of-line - 1
+:PROPERTIES:
+:CUSTOM_ID: cffi---api-out-of-line---1
+:END:
+#+begin_src python
+from cffi import FFI
+ffibuilder = FFI()
+
+ffibuilder.cdef("int foo(int *, int *, int);")
+ffibuilder.set_source("_example",
+r"""
+    static int foo(int *buffer_in,
+           int *buffer_out, int x)
+    {
+    /* some algorithm that is seriously
+    faster in C than in Python */
+    }
+""")
+if __name__ == "__main__":
+    ffibuilder.compile(verbose=True)
+#+end_src
+
+** CFFI - API, out-of-line - 2
+:PROPERTIES:
+:CUSTOM_ID: cffi---api-out-of-line---2
+:END:
+#+begin_src python
+from _example import ffi, lib
+
+buffer_in = ffi.new("int[]", 1000)
+# initialize buffer_in here...
+
+# easier to do all buffer allocations
+# in Python and pass them to C,
+# even for output-only arguments
+buffer_out = ffi.new("int[]", 1000)
+
+result = lib.foo(buffer_in, buffer_out, 1000)
+#+end_src
+
+** HPy
+:PROPERTIES:
+:CUSTOM_ID: hpy
+:END:
+- Technically still alpha (version 0.9.0)
+- An attempt at modernizing how to incorporate C into Python
+- It is much more like the C/API
+
+** HPy - installation
+:PROPERTIES:
+:CUSTOM_ID: hpy---installation
+:END:
+
+- Installation is through pip:
+
+#+begin_src sh
+pip install hpy
+#+end_src
+
+- You need a C compiler
+- You actually write C source code and compile it into a library that
+  can be imported into Python
+
+** swig - not just for Python
+:PROPERTIES:
+:CUSTOM_ID: swig---not-just-for-python
+:END:
+- */swig/* (Simplified Wrapper and Interface Generator) builds scripting
+  language interfaces to C and C++
+- Works for languages like Python, Tcl, Perl and Guile
+
+** swig - installation
+:PROPERTIES:
+:CUSTOM_ID: swig---installation
+:END:
+- swig is not part of the Python community
+- You can install it from source
+- Check your platform package manager to see if it is already there
+
+** swig - basics
+:PROPERTIES:
+:CUSTOM_ID: swig---basics
+:END:
+- You write the C source code in its own file
+- You create an interface file to declare what C functions are available
+- Calling */swig/* generates the needed wrapper C code
+- You then need to compile the C ocde and link it together into a shared
+  library
+- This can then be imported into Python
+
+** pyO3 - a Rust option
+:PROPERTIES:
+:CUSTOM_ID: pyo3---a-rust-option
+:END:
+- Rust is more of a platform than C or C++
+- This requires more tooling to develop code
+- pyO3 can be used to call Rust in Python, or Python in Rust
+- Packages managed at https://crates.io
+- Searching for "science" gives 656 crates, environment is still being
+  built out
+
+** pyO3 - installation
+:PROPERTIES:
+:CUSTOM_ID: pyo3---installation
+:END:
+
+- The easiest way is to use */maturin/* inside a virtual environment to
+  initialize a project
+
+#+begin_src sh
+pip install maturin
+maturin init --bindings pyo3
+#+end_src
+
+- This creates several project files, the most important of which are
+  */Cargo.toml/* and */src/lib.rs/*
+
+** pyO3 - Cargo.toml
+:PROPERTIES:
+:CUSTOM_ID: pyo3---cargo.toml
+:END:
+#+begin_src rust
+[package]
+name = "string_sum"
+version = "0.1.0"
+edition = "2021"
+
+[lib]
+# The name of the native library.
+name = "string_sum"
+# "cdylib" is necessary to produce a shared library for
+# Python to import from.
+crate-type = ["cdylib"]
+
+[dependencies]
+pyo3 = { version = "0.25.0", features = ["extension-module"] }
+#+end_src
+
+** pyO3 - lib.rs
+:PROPERTIES:
+:CUSTOM_ID: pyo3---lib.rs
+:END:
+#+begin_src rust
+use pyo3::prelude::*;
+/// Formats the sum of two numbers as string.
+#[pyfunction]
+fn sum_as_string(a: usize, b: usize) -> PyResult<String> {
+    Ok((a + b).to_string())
+}
+/// A Python module implemented in Rust.
+/// The name of this function must match
+/// the `lib.name` setting in the `Cargo.toml`,
+/// else Python will not be able to import the module.
+#[pymodule]
+fn string_sum(m: &Bound<'_, PyModule>) -> PyResult<()> {
+    m.add_function(wrap_pyfunction!(sum_as_string, m)?)?;
+    Ok(())
+}
+#+end_src
+
+** pyO3 - building
+:PROPERTIES:
+:CUSTOM_ID: pyo3---building
+:END:
+
+- To build code, use
+
+#+begin_src sh
+maturin develop
+#+end_src
+
+- This will build the library and install it into the virtual
+  environment that we are currently in
+
+** pyO3 - functions
+:PROPERTIES:
+:CUSTOM_ID: pyo3---functions
+:END:
+- As we saw in a previous slide, you can decorate a function in Rust so
+  that it can be used in Python
+- */pyO3/* actually creates a C wrapper that acts as an intermediate
+  layer between Rust and Python
+- Most of the same concerns and functionalities from solutions like
+  Cython also exist here
+- The same ability to avoid the GIL is provided through */pyO3/*
+
+** pyO3 - example
+:PROPERTIES:
+:CUSTOM_ID: pyo3---example
+:END:
+#+begin_src rust
+use pyo3::prelude::*;
+
+#[pyfunction]
+fn double(x: usize) -> usize {
+    x * 2
+}
+
+#[pymodule]
+fn my_extension(m: &Bound<'_, PyModule>) -> PyResult<()> {
+    m.add_function(wrap_pyfunction!(double, m)?)
+}
+#+end_src
+
+** pyO3 - shorthand
+:PROPERTIES:
+:CUSTOM_ID: pyo3---shorthand
+:END:
+#+begin_src rust
+use pyo3::prelude::*;
+
+#[pymodule]
+fn my_extension(m: &Bound<'_, PyModule>) -> PyResult<()> {
+    #[pyfn(m)]
+    fn double(x: usize) -> usize {
+    x * 2
+    }
+
+    Ok(())
+}
+#+end_src
+
+** pyO3 - parallelism
+:PROPERTIES:
+:CUSTOM_ID: pyo3---parallelism
+:END:
+- Since the Rust code is running outside of Python, it can take
+  advantage of true parallelism
+- There is a call (*/Python::allow\textunderscore threads/*) that temporarily releases
+  the GIL and allows other threads within Python to continue running
+
+** Conclusion
+:PROPERTIES:
+:CUSTOM_ID: conclusion
+:END:
+- If you have started your project in Python, there are lots of ways of
+  incrementally adding other languages for performance
+- If you have started in your code in C/C++ or some other language,
+  there are lots of options to wrap your code in Python to make it
+  easier to share
+
+** Resources
+:PROPERTIES:
+:CUSTOM_ID: resources
+:END:
+- https://numba.pydata.org
+- https://cython.org
+- https://github.com/pybind/pybind11
+- https://github.com/wjakob/nanobind
+- https://github.com/python-cffi/cffi
+- https://hpyproject.org
+- https://www.swig.org
+- https://github.com/PyO3/pyo3

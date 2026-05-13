@@ -1,0 +1,1001 @@
+% Created 2026-05-13 Wed 20:28
+% Intended LaTeX compiler: pdflatex
+\documentclass[presentation]{beamer}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{graphicx}
+\usepackage{longtable}
+\usepackage{wrapfig}
+\usepackage{rotating}
+\usepackage[normalem]{ulem}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{capt-of}
+\usepackage{hyperref}
+\usetheme{Madrid}
+\author{Joey Bernard}
+\date{\today}
+\title{Incorporating Other Languages into Python}
+\hypersetup{
+ pdfauthor={Joey Bernard},
+ pdftitle={Incorporating Other Languages into Python},
+ pdfkeywords={},
+ pdfsubject={},
+ pdfcreator={},
+ pdflang={English}}
+\begin{document}
+
+\maketitle
+\begin{frame}[label=land-acknowledgement]{Land Acknowledgement}
+We respectfully acknowledge that UNB stands on the unsurrendered and unceded traditional Wolastoqey (WOOL-US-TOOK-WAY) land. The lands of Wabanaki (WAH-BAH-NAH-KEE) people are recognized in a series of Peace and Friendship Treaties to establish an ongoing relationship of peace, friendship and mutual respect between equal nations. The river that runs by our university is known as Wolastoq (WOOL-LUSS-TOOK), along which live Wolastoqiyik (WOOL-US-TOO-GWEEG) - the people of the beautiful and bountiful river. Wolastoq (WOOL-LUSS-TOOK) is also called the St. John River.
+\end{frame}
+\begin{frame}[label=introduction]{Introduction}
+\begin{itemize}
+\item Python has become the default glue language for science
+\item It is not ideal for all cases
+\item We will look at how to offload issues to another language
+\end{itemize}
+\end{frame}
+\begin{frame}[label=installation]{Installation}
+\begin{itemize}
+\item We need several tools
+\item Almost everything we will discuss involves C/C++
+\item You will need Python plus a C/C+ compiler
+\item All of this work should be done in a virtual environment (now
+necessary under Ubuntu)
+\end{itemize}
+\end{frame}
+\begin{frame}[label=software-options]{Software Options}
+\begin{itemize}
+\item Most Linux distributions will have everything you need in their
+package management system
+\item For Windows, you can use WSL to get a Linux environment
+\item You can also use scoop (\url{https://scoop.sh}) to install Windows developer
+tools
+\item For Apple Macs, you can use homebrew (\url{https://brew.sh}) to do the same
+thing
+\end{itemize}
+\end{frame}
+\begin{frame}[label=pre-existing-examples]{Pre-existing Examples}
+\begin{itemize}
+\item Several of the high performance libraries already do this
+\item numpy uses C, C++ and FORTRAN (in order of usage)
+\item scipy uses C, FORTRAN and C++ (in order of usage)
+\end{itemize}
+\end{frame}
+\begin{frame}[label=why-do-this]{Why do this}
+\begin{itemize}
+\item Python is an object oriented language, without static typing
+\item This means loops can be horrendous
+\item Also have the GIL, throttling multi-process work (this is currently being worked on)
+\end{itemize}
+\end{frame}
+\begin{frame}[label=virtual-environments,fragile]{Virtual Environments}
+ \begin{itemize}
+\item The first step is creating a virtual environment
+\end{itemize}
+
+\begin{verbatim}
+python -m venv python_project1
+\end{verbatim}
+
+\begin{itemize}
+\item This creates a new directory for your project
+\item You can activate it with
+\end{itemize}
+
+\begin{verbatim}
+cd ./python_project1
+. ./bin/activate
+\end{verbatim}
+
+\begin{itemize}
+\item When you are done, you can simply run the command
+\end{itemize}
+
+\begin{verbatim}
+deactivate
+\end{verbatim}
+\end{frame}
+\begin{frame}[label=first-step---numba]{First step - Numba}
+\begin{itemize}
+\item In some cases, you just need a slightly faster Python
+\item Whenever you try to optimize, remember the quote - \alert{\emph{Early
+optimization is the root of all evil}}
+\item You want to do the bare minimum to get the results that you actually
+need
+\item Numba allows for compiling portions of your Python code
+\end{itemize}
+\end{frame}
+\begin{frame}[label=numba---installation,fragile]{Numba - installation}
+ \begin{itemize}
+\item Numba is installed using the command
+\end{itemize}
+
+\begin{verbatim}
+pip install numba
+\end{verbatim}
+
+\begin{itemize}
+\item This will install the numba module, along with llvmlite
+\item This why you should use virtual environments - to keep your projects
+clean and isolated
+\end{itemize}
+\end{frame}
+\begin{frame}[label=numba---contd,fragile]{Numba - cont'd}
+ \begin{itemize}
+\item Numba uses decorators to encapsulate your code
+\item The most common decorator is \texttt{@jit}
+\item This decorator has loads of options, including whether to parallelize
+or whether to target a GPU
+\end{itemize}
+\end{frame}
+\begin{frame}[label=numba---options]{Numba - options}
+\begin{itemize}
+\item \alert{\emph{nogil}} - whether to release the GIL when entering the compiled code
+\item \alert{\emph{cache}} - whether to save off compiled code into a file cache to
+avoid the compiling step each time
+\item \alert{\emph{parallel}} - whether to parallelize compiled code when possible
+(e.g. loops)
+\item \alert{\emph{fastmath}} - whether to use strict IEEE 754 math (similar to the GCC
+flag)
+\end{itemize}
+\end{frame}
+\begin{frame}[label=numba---explicit-typing,fragile]{Numba - explicit typing}
+ \begin{itemize}
+\item One issue with Python is that variables are untyped
+\item You can assign a type signature as part of the jit decorator
+\item For example
+\end{itemize}
+
+\begin{verbatim}
+from numba import jit
+
+@jit(int32(int32,int32))
+def my_func(val1, val2):
+    return val1 + val2
+\end{verbatim}
+
+\begin{itemize}
+\item This allows numba to know what the data types are and to compile away
+the usual checks that Python has to do
+\end{itemize}
+\end{frame}
+\begin{frame}[label=numba---usage,fragile]{Numba - usage}
+ \begin{itemize}
+\item Compiling your code is as easy as
+\end{itemize}
+
+\begin{verbatim}
+numba my_code.py
+\end{verbatim}
+
+\begin{itemize}
+\item You can also output debugging information with options like
+\end{itemize}
+
+\begin{verbatim}
+numba my_code.py --annotate
+OR
+numba my_code.py --dump_llvm
+\end{verbatim}
+\end{frame}
+\begin{frame}[label=numba---numpy-universal-functions]{Numba - numpy universal functions}
+\begin{itemize}
+\item You can create numpy ufuncs by decorating your Python code
+\item For scalar input arguments, using the \textit{@vectorize}
+decorator for your function
+\item For data structures, you can use the \textit{@guvectorize}
+decorator
+\item While you could just use the \textit{@jit} decorator with an
+iteration loop, but this method adds in the numpy features, like
+reduction, accumulation or broadcasting
+\end{itemize}
+\end{frame}
+\begin{frame}[label=numba---numpy-example,fragile]{Numba - numpy example}
+ \begin{verbatim}
+from numba import vectorize, float64
+
+@vectorize([float64(float64, float64)])
+def f(x, y):
+    return x + y
+\end{verbatim}
+\end{frame}
+\begin{frame}[label=numba---aot-compilation]{Numba - AOT compilation}
+\begin{itemize}
+\item Usually numba compiles code at run-time
+\item You can pre-compile your code before having to use it
+\item This allows you to distribute the code to users who may not have numba
+installed
+\end{itemize}
+\end{frame}
+\begin{frame}[label=numba---aot-example,fragile]{Numba - AOT example}
+ \begin{verbatim}
+from numba.pycc import CC
+cc = CC('my_module')
+
+@cc.export('multf', 'f8(f8, f8)')
+@cc.export('multi', 'i4(i4, i4)')
+def mult(a, b):
+    return a * b
+
+@cc.export('square', 'f8(f8)')
+def square(a):
+    return a ** 2
+
+if __name__ == "__main__":
+    cc.compile()
+\end{verbatim}
+\end{frame}
+\begin{frame}[label=numba---aot-compiling]{Numba - AOT compiling}
+\begin{itemize}
+\item Running the above script generates a shared library that contains the
+compiled code
+\item This won't work for numpy ufuncs
+\item Exported functions don't check argument types
+\item AOT produces generic architecture code, while JIT produces specific
+code
+\end{itemize}
+\end{frame}
+\begin{frame}[label=numba---jit_module]{Numba - jit\textunderscore module}
+\begin{itemize}
+\item In some cases, you may have an entire module worth of code that you
+want to pass through numba's JIT
+\begin{itemize}
+\item You can use the \textit{jit\textunderscore module()} function within your module code to
+apply the changes, rather than having decorate every function
+individually
+\end{itemize}
+\item Any functions that you do decorate will use those options, rather than
+the module level options
+\end{itemize}
+\end{frame}
+\begin{frame}[label=next-step---cython]{Next step - Cython}
+\begin{itemize}
+\item Cython allows for adding C/C++ data types, and outputting compiled
+code
+\item You need to annotate your code in order to tell Cython what is
+expected
+\item You will need to have your own C/C++ compiler - ideally the same as
+the compiler used for Python
+\item This becomes easy to mess up under Windows - consider strongly using
+WSL
+\end{itemize}
+\end{frame}
+\begin{frame}[label=cython---annotation,fragile]{Cython - annotation}
+ \begin{itemize}
+\item Cython will compile pure Python
+\item Using static typing will give a decent initial speedup
+\item You can annotate so that it looks like
+\end{itemize}
+
+\begin{verbatim}
+import cython
+
+i: cython.int
+j: cython.double
+\end{verbatim}
+\end{frame}
+\begin{frame}[label=cython---different-notation,fragile]{Cython - different notation}
+ Pure Python
+
+\begin{verbatim}
+def primes(nb_primes: cython.int):
+    i: cython.int
+    p: cython.int[1000]
+
+    if nb_primes > 1000:
+        nb_primes = 1000
+    # Only if regular Python is running
+    if not cython.compiled:
+        # Make p work almost like a C array
+        p = [0] * 1000
+
+    len_p: cython.int = 0  # The current number of elements in p.
+    n: cython.int = 2
+    while len_p < nb_primes:
+\end{verbatim}
+\end{frame}
+\begin{frame}[label={sec:org1a531ac},fragile]{Cython - different notation continued}
+ Older Cython
+
+\begin{verbatim}
+def primes(int nb_primes):
+    cdef int n, i, len_p
+    cdef int[1000] p
+
+    if nb_primes > 1000:
+        nb_primes = 1000
+
+
+
+    # The current number of elements in p.
+    len_p = 0
+    n = 2
+    while len_p < nb_primes:
+\end{verbatim}
+\end{frame}
+\begin{frame}[label=cython---usage,fragile]{Cython - usage}
+ \begin{itemize}
+\item The easiest way to build Cython code is to use setuptools
+\end{itemize}
+
+\begin{verbatim}
+pip install cython
+pip install setuptools
+\end{verbatim}
+
+\begin{itemize}
+\item This way, you can use setuptools to build your Cython module
+\item Files can use endings \emph{.pyx} or \emph{.py}
+\end{itemize}
+\end{frame}
+\begin{frame}[label=cython---hello-world,fragile]{Cython - hello world}
+ \begin{itemize}
+\item We can start with the classic \alert{Hello World} in the file \alert{\emph{hello.pyx}}
+\end{itemize}
+
+\begin{verbatim}
+def say_hello_to(name):
+    print(f"Hello {name}!")
+\end{verbatim}
+\end{frame}
+\begin{frame}[label=cython---setuptools,fragile]{Cython - setuptools}
+ \begin{itemize}
+\item To build it, we'll need a \emph{setup.py} script
+\end{itemize}
+
+\begin{verbatim}
+from setuptools import setup
+from Cython.Build import cythonize
+
+setup(
+    name='Hello World app',
+    ext_modules=cythonize("hello.pyx"),
+)
+\end{verbatim}
+\end{frame}
+\begin{frame}[label=cython---building,fragile]{Cython - building}
+ \begin{itemize}
+\item To build it, you would use the command
+\end{itemize}
+
+\begin{verbatim}
+python setup.py build_ext --inplace
+\end{verbatim}
+
+\begin{itemize}
+\item Then you can use it with
+\end{itemize}
+
+\begin{verbatim}
+from hello import say_hello_to
+\end{verbatim}
+\end{frame}
+\begin{frame}[label=cython---basics]{Cython - basics}
+\begin{itemize}
+\item You can call C functions from libraries
+\item You have the ability to use static types
+\item Writing Python wrappers allows your Python code to use C libraries
+\item Your Cython code gets compiled down to C
+\end{itemize}
+\end{frame}
+\begin{frame}[label=cython---stdlib-functions,fragile]{Cython - stdlib functions}
+ \begin{itemize}
+\item You can import and use C functions from the standard library
+\end{itemize}
+
+\begin{verbatim}
+from cython.cimports.libc.stdlib import atoi
+
+@cython.cfunc
+def parse_charptr_to_py_int(s: cython.p_char):
+    assert s is not cython.NULL, "byte string value is NULL"
+    return atoi(s)  # note: atoi() has no error detection!
+\end{verbatim}
+\end{frame}
+\begin{frame}[label=cython---other-libraries]{Cython - other libraries}
+\begin{itemize}
+\item You can also import from other libraries, e.g.
+\begin{itemize}
+\item \alert{\emph{from cython.cimports.libc.math import sin}}
+\end{itemize}
+\item Some libraries (like math) are not automatically linked - you will
+have to add linking information to your \alert{\emph{setup.py}} file
+\end{itemize}
+\end{frame}
+\begin{frame}[label=cython---external-libraries]{Cython - external libraries}
+\begin{itemize}
+\item Using other external libraries isn't quite so seamless
+\item You will need to write a \alert{\emph{.pxd}} file to wrap the details from the
+header file for your external library
+\item You then will need to write a Python wrapper class to encapsulate the
+calls to the C code
+\end{itemize}
+\end{frame}
+\begin{frame}[label=cython---cqueue-pxd-file,fragile]{Cython - cqueue pxd file}
+ \begin{verbatim}
+cdef extern from "c-algorithms/src/queue.h":
+    ctypedef struct Queue:
+        pass
+    ctypedef void* QueueValue
+    Queue* queue_new()
+    void queue_free(Queue* queue)
+    int queue_push_head(Queue* queue, QueueValue data)
+    QueueValue  queue_pop_head(Queue* queue)
+    QueueValue queue_peek_head(Queue* queue)
+    int queue_push_tail(Queue* queue, QueueValue data)
+    QueueValue queue_pop_tail(Queue* queue)
+    QueueValue queue_peek_tail(Queue* queue)
+    bint queue_is_empty(Queue* queue)
+\end{verbatim}
+\end{frame}
+\begin{frame}[label=cython---wrapper-class-for-a-queue,fragile]{Cython - wrapper class for a queue}
+ \begin{verbatim}
+from cython.cimports import cqueue
+
+@cython.cclass
+class Queue:
+    _c_queue: cython.pointer[cqueue.Queue]
+
+    def __cinit__(self):
+        self._c_queue = cqueue.queue_new()
+\end{verbatim}
+\end{frame}
+\begin{frame}[label=cython---strings]{Cython - strings}
+\begin{itemize}
+\item Strings prove to be a bit of a mess
+\item Cython supports 4 types: \emph{bytes}, \emph{str}, \emph{unicode} and \emph{basestring}
+\item Involves a decoding/encoding step when going back and forth between
+Python and C
+\end{itemize}
+\end{frame}
+\begin{frame}[label=cython---memory-management]{Cython - memory management}
+\begin{itemize}
+\item Memory management on the Python side is a non-issue
+\item Objects are auto-created, and then cleaned up by the garbage collector
+\item Most simple objects move into C by being assigned to the stack
+\item Sometimes, you need to manually assign heap space for larger or more
+complex objects
+\end{itemize}
+\end{frame}
+\begin{frame}[label=cython---using-numpy]{Cython - using numpy}
+\begin{itemize}
+\item You are able to use numpy data types, especially arrays
+\item This allows faster access and indexing
+\item \alert{\emph{ndarray}} allows near direct C-like access to data within numpy
+arrays
+\end{itemize}
+\end{frame}
+\begin{frame}[label=cython---parallelization]{Cython - parallelization}
+\begin{itemize}
+\item You can write code that uses OpenMP threaded parallelization
+\item This side-steps the GIL, so you get true concurrent parallel code
+\item This means that you can't directly use Python objects, you need to
+move completely into C
+\item Your C compiler needs to support OpenMP (most do)
+\end{itemize}
+\end{frame}
+\begin{frame}[label=cython---c-options]{Cython - C++ options}
+\begin{itemize}
+\item There is also the ability to use C++
+\item The \alert{\emph{cython.cimports.libcpp}} sub-module provides for lots of C++
+imports, like vectors
+\item This requires a native part of the module, specific to your
+infrastructure
+\end{itemize}
+\end{frame}
+\begin{frame}[label=cython---pure-python]{Cython - pure Python}
+\begin{itemize}
+\item You may not have the ability to use a C compiler, but still want some
+performance help
+\item Cython allows you to statically type your code, along with other
+cythonic functionality
+\item You can use an augmenting \alert{\emph{.pxd}} file to cythonize your \alert{\emph{.py}} file
+\item You can explicitly mark code as needing or not needing the GIL - this
+helps the interpreter run parallel threads
+\end{itemize}
+\end{frame}
+\begin{frame}[label=boost-y-binding-1---pybind11]{Boost-y binding 1 - pybind11}
+\begin{itemize}
+\item There is a \alert{\emph{Boost.Python}} library - unfortunately you have to use
+\alert{\emph{Boost}}
+\item \alert{\emph{pybind11}} provides a much smaller and focused library to pull C++
+into Python
+\item Allows for C++ types, function calls, data structures, classes, etc
+\end{itemize}
+\end{frame}
+\begin{frame}[label=pybind11---installation,fragile]{pybind11 - installation}
+ \begin{itemize}
+\item You can install \alert{\emph{pybind11}} through pip:
+\end{itemize}
+
+\begin{verbatim}
+pip install pybind11
+\end{verbatim}
+
+\begin{itemize}
+\item You also need a C++ compiler, along with the development package for
+Python
+\item You also need a build system (cmake, meson, setuptools)
+\end{itemize}
+\end{frame}
+\begin{frame}[label=pybind11---boilerplate,fragile]{pybind11 - boilerplate}
+ \begin{itemize}
+\item You will likely need the following two lines at the top of any of your
+C++ source code files
+\end{itemize}
+
+\begin{verbatim}
+#include <pybind11/pybind11.h>
+
+namespace py = pybind11;
+\end{verbatim}
+
+\begin{itemize}
+\item Now you can add binding code to your C++ source files
+\end{itemize}
+\end{frame}
+\begin{frame}[label=pybind11---example-file,fragile]{pybind11 - example file}
+ \begin{verbatim}
+#include <pybind11/pybind11.h>
+
+int add(int i, int j) {
+    return i + j;
+}
+
+PYBIND11_MODULE(example, m) {
+    m.doc() = "pybind11 example plugin"; //optional module doc
+
+    m.def("add", &add, "A function that adds two numbers");
+}
+\end{verbatim}
+\end{frame}
+\begin{frame}[label=pybind11---building,fragile]{pybind11 - building}
+ \begin{itemize}
+\item Since \alert{\emph{pybind11}} is based off of Boost, then it is also a
+header-only package
+\item This means that you don't need to link to any extra library
+\item Building is done through compilation
+\end{itemize}
+
+\begin{verbatim}
+$ c++ -O3 -Wall -shared -std=c++11 \\
+   -fPIC $(python3 -m pybind11 --includes) example.cpp \\
+   -o example$(python3-config --extension-suffix)
+\end{verbatim}
+
+\begin{itemize}
+\item You can now import the compiled module in Python the usual way
+\end{itemize}
+\end{frame}
+\begin{frame}[label=pybind11---keyword-arguments,fragile]{pybind11 - keyword arguments}
+ \begin{itemize}
+\item In the exaple, the arguments are positional
+\item You need to add some code to allow for keyword arguments
+\end{itemize}
+
+\begin{verbatim}
+m.def("add", &add, "A function which adds two numbers",
+      py::arg("i"), py::arg("j"));
+\end{verbatim}
+\end{frame}
+\begin{frame}[label=pybind11---exporting-variables,fragile]{pybind11 - exporting variables}
+ \begin{verbatim}
+PYBIND11_MODULE(example, m) {
+    m.attr("the_answer") = 42;
+    py::object world = py::cast("World");
+    m.attr("what") = world;
+}
+\end{verbatim}
+
+\begin{verbatim}
+>>> import example
+>>> example.the_answer
+42
+>>> example.what
+'World'
+\end{verbatim}
+\end{frame}
+\begin{frame}[label=boost-y-binding-2---nanobind]{Boost-y binding 2 - Nanobind}
+\begin{itemize}
+\item \alert{\emph{nanobind}} is another Boost-y module, by the same person who wrote
+\alert{\emph{pybind11}}
+\item \alert{\emph{nanobind}} is even smaller, providing a subset of C++ functionality
+for your Python code
+\end{itemize}
+\end{frame}
+\begin{frame}[label=nanobind---installation,fragile]{nanobind - installation}
+ \begin{itemize}
+\item Like everything else today, you can install using pip:
+\end{itemize}
+
+\begin{verbatim}
+pip install nanobind
+\end{verbatim}
+
+\begin{itemize}
+\item You will also need a C++ compiler
+\item \alert{\emph{nanobind}} supports various build systems (cmake, meson, bazel)
+\end{itemize}
+\end{frame}
+\begin{frame}[label=nanobind---basics,fragile]{nanobind - basics}
+ \begin{itemize}
+\item A basic module looks like
+\end{itemize}
+
+\begin{verbatim}
+#include <nanobind/nanobind.h>
+
+int add(int a, int b) { return a + b; }
+
+NB_MODULE(my_ext, m) {
+    m.def("add", &add);
+}
+\end{verbatim}
+
+\begin{itemize}
+\item Building is through a \alert{\emph{CMakeLists.txt}}
+\end{itemize}
+\end{frame}
+\begin{frame}[label=nanobind---cmake-general,fragile]{nanobind - cmake general}
+ \begin{verbatim}
+cmake_minimum_required(VERSION 3.15...3.27)
+# Replace 'my_project' with the name of your project
+project(my_project)
+
+if (CMAKE_VERSION VERSION_LESS 3.18)
+  set(DEV_MODULE Development)
+else()
+  set(DEV_MODULE Development.Module)
+endif()
+
+find_package(Python 3.8 COMPONENTS Interpreter
+             ${DEV_MODULE} REQUIRED)
+\end{verbatim}
+\end{frame}
+\begin{frame}[label=nanobind---cmake-specifics,fragile]{nanobind - cmake specifics}
+ \begin{verbatim}
+# Detect the installed nanobind package and import it
+# into CMake
+execute_process(
+  COMMAND "${Python_EXECUTABLE}" -m nanobind --cmake_dir
+  OUTPUT_STRIP_TRAILING_WHITESPACE OUTPUT_VARIABLE
+  nanobind_ROOT)
+find_package(nanobind CONFIG REQUIRED)
+\end{verbatim}
+
+\begin{verbatim}
+nanobind_add_module(my_ext my_ext.cpp)
+\end{verbatim}
+\end{frame}
+\begin{frame}[label=nanobind---example,fragile]{nanobind - example}
+ \begin{verbatim}
+#include <nanobind/nanobind.h>
+
+namespace nb = nanobind;
+using namespace nb::literals;
+
+int add(int a, int b = 1) { return a + b; }
+
+NB_MODULE(my_ext, m) {
+    m.def("add", &add, "a"_a, "b"_a = 1,
+      "This function adds two numbers and increments if only
+          one is provided.");
+}
+\end{verbatim}
+\end{frame}
+\begin{frame}[label=cffi]{CFFI}
+\begin{itemize}
+\item CFFI (C Foreign Function Interface) for Python is a more raw library
+\item Unlike systems like Cython, CFFI doesn't add extra syntax
+\item You just need to know C and Python
+\end{itemize}
+\end{frame}
+\begin{frame}[label=cffi---installation,fragile]{CFFI - installation}
+ \begin{itemize}
+\item Installation can be done through pip:
+\end{itemize}
+
+\begin{verbatim}
+pip install cffi
+\end{verbatim}
+
+\begin{itemize}
+\item Includes a library (libffi) that can be messy to setup correctly on
+some platforms
+\end{itemize}
+\end{frame}
+\begin{frame}[label=cffi---basics]{CFFI - basics}
+\begin{itemize}
+\item You start with an \alert{\emph{FFI()}} object
+\item You use the \emph{cdef()} method to provide C declarations
+\item You use the \emph{set\textunderscore source()} method to define the Python extension
+module, along with the associated C code
+\item You use the \emph{compile()} method to generate the compiled library
+\item You can then import this library like any other Python module
+\end{itemize}
+\end{frame}
+\begin{frame}[label=cffi---example,fragile]{CFFI - example}
+ \begin{verbatim}
+from cffi import FFI
+ffibuilder = FFI()
+
+ffibuilder.cdef("""
+    float pi_approx(int n);
+""")
+
+ffibuilder.set_source("_pi_cffi",
+"""
+     #include "pi.h"   // the C header of the library
+""",
+     libraries=['piapprox'])   # library name, for the linker
+
+if __name__ == "__main__":
+    ffibuilder.compile(verbose=True)
+\end{verbatim}
+\end{frame}
+\begin{frame}[label=cffi---setup.py,fragile]{CFFI - setup.py}
+ \begin{verbatim}
+from setuptools import setup
+
+setup(
+    ...
+    setup_requires=["cffi>=1.0.0"],
+    cffi_modules=["piapprox_build:ffibuilder"],
+    install_requires=["cffi>=1.0.0"],
+)
+\end{verbatim}
+\end{frame}
+\begin{frame}[label=cffi---modes-of-use]{CFFI - modes of use}
+\begin{itemize}
+\item ABI - Application Binary Interface
+\item API - Application Programming Interface
+\item in-line - everything is setup everytime you import your code
+\item out-of-line - there is a separate step that compiles your code for
+import
+\end{itemize}
+\end{frame}
+\begin{frame}[label=cffi---abi-in-line,fragile]{CFFI - ABI, in-line}
+ \begin{verbatim}
+from cffi import FFI
+ffi = FFI()
+ffi.cdef("""
+    int printf(const char *format, ...);
+""")
+# loads the entire C namespace
+C = ffi.dlopen(None)
+# equivalent to C code: char arg[] = "world";
+arg = ffi.new("char[]", b"world")
+C.printf(b"hi there, %s.\n", arg)
+\end{verbatim}
+\end{frame}
+\begin{frame}[label=cffi---api-out-of-line---1,fragile]{CFFI - API, out-of-line - 1}
+ \begin{verbatim}
+from cffi import FFI
+ffibuilder = FFI()
+
+ffibuilder.cdef("int foo(int *, int *, int);")
+ffibuilder.set_source("_example",
+r"""
+    static int foo(int *buffer_in,
+           int *buffer_out, int x)
+    {
+    /* some algorithm that is seriously
+    faster in C than in Python */
+    }
+""")
+if __name__ == "__main__":
+    ffibuilder.compile(verbose=True)
+\end{verbatim}
+\end{frame}
+\begin{frame}[label=cffi---api-out-of-line---2,fragile]{CFFI - API, out-of-line - 2}
+ \begin{verbatim}
+from _example import ffi, lib
+
+buffer_in = ffi.new("int[]", 1000)
+# initialize buffer_in here...
+
+# easier to do all buffer allocations
+# in Python and pass them to C,
+# even for output-only arguments
+buffer_out = ffi.new("int[]", 1000)
+
+result = lib.foo(buffer_in, buffer_out, 1000)
+\end{verbatim}
+\end{frame}
+\begin{frame}[label=hpy]{HPy}
+\begin{itemize}
+\item Technically still alpha (version 0.9.0)
+\item An attempt at modernizing how to incorporate C into Python
+\item It is much more like the C/API
+\end{itemize}
+\end{frame}
+\begin{frame}[label=hpy---installation,fragile]{HPy - installation}
+ \begin{itemize}
+\item Installation is through pip:
+\end{itemize}
+
+\begin{verbatim}
+pip install hpy
+\end{verbatim}
+
+\begin{itemize}
+\item You need a C compiler
+\item You actually write C source code and compile it into a library that
+can be imported into Python
+\end{itemize}
+\end{frame}
+\begin{frame}[label=swig---not-just-for-python]{swig - not just for Python}
+\begin{itemize}
+\item \alert{\emph{swig}} (Simplified Wrapper and Interface Generator) builds scripting
+language interfaces to C and C++
+\item Works for languages like Python, Tcl, Perl and Guile
+\end{itemize}
+\end{frame}
+\begin{frame}[label=swig---installation]{swig - installation}
+\begin{itemize}
+\item swig is not part of the Python community
+\item You can install it from source
+\item Check your platform package manager to see if it is already there
+\end{itemize}
+\end{frame}
+\begin{frame}[label=swig---basics]{swig - basics}
+\begin{itemize}
+\item You write the C source code in its own file
+\item You create an interface file to declare what C functions are available
+\item Calling \alert{\emph{swig}} generates the needed wrapper C code
+\item You then need to compile the C ocde and link it together into a shared
+library
+\item This can then be imported into Python
+\end{itemize}
+\end{frame}
+\begin{frame}[label=pyo3---a-rust-option]{pyO3 - a Rust option}
+\begin{itemize}
+\item Rust is more of a platform than C or C++
+\item This requires more tooling to develop code
+\item pyO3 can be used to call Rust in Python, or Python in Rust
+\item Packages managed at \url{https://crates.io}
+\item Searching for ``science'' gives 656 crates, environment is still being
+built out
+\end{itemize}
+\end{frame}
+\begin{frame}[label=pyo3---installation,fragile]{pyO3 - installation}
+ \begin{itemize}
+\item The easiest way is to use \alert{\emph{maturin}} inside a virtual environment to
+initialize a project
+\end{itemize}
+
+\begin{verbatim}
+pip install maturin
+maturin init --bindings pyo3
+\end{verbatim}
+
+\begin{itemize}
+\item This creates several project files, the most important of which are
+\alert{\emph{Cargo.toml}} and \alert{\emph{src/lib.rs}}
+\end{itemize}
+\end{frame}
+\begin{frame}[label=pyo3---cargo.toml,fragile]{pyO3 - Cargo.toml}
+ \begin{verbatim}
+[package]
+name = "string_sum"
+version = "0.1.0"
+edition = "2021"
+
+[lib]
+# The name of the native library.
+name = "string_sum"
+# "cdylib" is necessary to produce a shared library for
+# Python to import from.
+crate-type = ["cdylib"]
+
+[dependencies]
+pyo3 = { version = "0.25.0", features = ["extension-module"] }
+\end{verbatim}
+\end{frame}
+\begin{frame}[label=pyo3---lib.rs,fragile]{pyO3 - lib.rs}
+ \begin{verbatim}
+use pyo3::prelude::*;
+/// Formats the sum of two numbers as string.
+#[pyfunction]
+fn sum_as_string(a: usize, b: usize) -> PyResult<String> {
+    Ok((a + b).to_string())
+}
+/// A Python module implemented in Rust.
+/// The name of this function must match
+/// the `lib.name` setting in the `Cargo.toml`,
+/// else Python will not be able to import the module.
+#[pymodule]
+fn string_sum(m: &Bound<'_, PyModule>) -> PyResult<()> {
+    m.add_function(wrap_pyfunction!(sum_as_string, m)?)?;
+    Ok(())
+}
+\end{verbatim}
+\end{frame}
+\begin{frame}[label=pyo3---building,fragile]{pyO3 - building}
+ \begin{itemize}
+\item To build code, use
+\end{itemize}
+
+\begin{verbatim}
+maturin develop
+\end{verbatim}
+
+\begin{itemize}
+\item This will build the library and install it into the virtual
+environment that we are currently in
+\end{itemize}
+\end{frame}
+\begin{frame}[label=pyo3---functions]{pyO3 - functions}
+\begin{itemize}
+\item As we saw in a previous slide, you can decorate a function in Rust so
+that it can be used in Python
+\item \alert{\emph{pyO3}} actually creates a C wrapper that acts as an intermediate
+layer between Rust and Python
+\item Most of the same concerns and functionalities from solutions like
+Cython also exist here
+\item The same ability to avoid the GIL is provided through \alert{\emph{pyO3}}
+\end{itemize}
+\end{frame}
+\begin{frame}[label=pyo3---example,fragile]{pyO3 - example}
+ \begin{verbatim}
+use pyo3::prelude::*;
+
+#[pyfunction]
+fn double(x: usize) -> usize {
+    x * 2
+}
+
+#[pymodule]
+fn my_extension(m: &Bound<'_, PyModule>) -> PyResult<()> {
+    m.add_function(wrap_pyfunction!(double, m)?)
+}
+\end{verbatim}
+\end{frame}
+\begin{frame}[label=pyo3---shorthand,fragile]{pyO3 - shorthand}
+ \begin{verbatim}
+use pyo3::prelude::*;
+
+#[pymodule]
+fn my_extension(m: &Bound<'_, PyModule>) -> PyResult<()> {
+    #[pyfn(m)]
+    fn double(x: usize) -> usize {
+    x * 2
+    }
+
+    Ok(())
+}
+\end{verbatim}
+\end{frame}
+\begin{frame}[label=pyo3---parallelism]{pyO3 - parallelism}
+\begin{itemize}
+\item Since the Rust code is running outside of Python, it can take
+advantage of true parallelism
+\item There is a call (\alert{\emph{Python::allow\textunderscore threads}}) that temporarily releases
+the GIL and allows other threads within Python to continue running
+\end{itemize}
+\end{frame}
+\begin{frame}[label=conclusion]{Conclusion}
+\begin{itemize}
+\item If you have started your project in Python, there are lots of ways of
+incrementally adding other languages for performance
+\item If you have started in your code in C/C++ or some other language,
+there are lots of options to wrap your code in Python to make it
+easier to share
+\end{itemize}
+\end{frame}
+\begin{frame}[label=resources]{Resources}
+\begin{itemize}
+\item \url{https://numba.pydata.org}
+\item \url{https://cython.org}
+\item \url{https://github.com/pybind/pybind11}
+\item \url{https://github.com/wjakob/nanobind}
+\item \url{https://github.com/python-cffi/cffi}
+\item \url{https://hpyproject.org}
+\item \url{https://www.swig.org}
+\item \url{https://github.com/PyO3/pyo3}
+\end{itemize}
+\end{frame}
+\end{document}
