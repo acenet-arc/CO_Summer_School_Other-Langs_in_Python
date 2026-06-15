@@ -1,0 +1,151 @@
+================================================================================
+                    CYTHON MATRIX MULTIPLICATION EXERCISE
+                              START HERE
+================================================================================
+
+Dear Student,
+
+I've created a complete educational exercise to teach you Cython optimization.
+Below is what you need to know to get started.
+
+================================================================================
+WHAT YOU'LL LEARN
+================================================================================
+
+✓ How to write Cython (.pyx) files
+✓ Type declarations for speed (cdef, typed memoryviews)
+✓ Performance decorators (@cython.boundscheck, @cython.wraparound)
+✓ Multi-core parallelization with OpenMP
+✓ Benchmarking and comparing implementations
+✓ How each optimization improves performance
+
+================================================================================
+THE ASSIGNMENT
+================================================================================
+
+In the file "matrix_multiply.pyx" you will complete 7 TODO items to build
+increasingly optimized versions of matrix multiplication:
+
+  1. TODO 1 - Memoryview declarations (optional, shows concept)
+  2. TODO 2 - Create result array (REQUIRED)
+  3. TODO 3 - Multiplication operation (REQUIRED) 
+  4. TODO 4 - Declare loop variables (REQUIRED)
+  5. TODO 5 - Temporary accumulator (ALREADY DONE - shows pattern)
+  6. TODO 6 - Parallel execution (REQUIRED)
+  7. TODO 7 - Block multiplication (OPTIONAL CHALLENGE)
+
+================================================================================
+YOUR FILES
+================================================================================
+
+START HERE:
+  • 00_START_HERE.txt ..................... This file
+  • CYTHON_QUICKSTART.py ................. Run to see overview (python3 CYTHON_QUICKSTART.py)
+  • CYTHON_EXERCISE_GUIDE.md ............. MAIN GUIDE - read this first!
+
+FILES TO WORK WITH:
+  • matrix_multiply.pyx .................. The file you'll edit (fill in TODOs here!)
+  • setup.py ............................ Compilation configuration (don't edit)
+  • test_cython_matrix.py ............... Testing script to verify your code
+
+REFERENCE FILES:
+  • README_CYTHON.txt ................... Quick reference for concepts
+  • CYTHON_EXERCISE_SUMMARY.txt ......... Summary of all materials
+
+================================================================================
+QUICK START - 5 STEPS
+================================================================================
+
+STEP 1: Install required packages
+  $ pip install cython numpy
+
+STEP 2: Read the exercise guide
+  $ less CYTHON_EXERCISE_GUIDE.md
+  (Use arrow keys to navigate, 'q' to quit)
+
+STEP 3: Edit matrix_multiply.pyx
+  Complete the 7 TODO items based on hints in the guide:
+  - TODO 2: Create result array
+  - TODO 3: Add multiplication operation
+  - TODO 4: Declare variables as C ints
+  - TODO 6: Add parallelization with prange()
+
+STEP 4: Compile your code
+  $ python3 setup.py build_ext --inplace
+  
+  (If this fails, check the troubleshooting section in CYTHON_EXERCISE_GUIDE.md)
+
+STEP 5: Test and compare performance
+  $ python3 test_cython_matrix.py
+  
+  You should see timing comparisons between different implementations!
+
+================================================================================
+WHAT TO EXPECT
+================================================================================
+
+Your goal is to create 3 working implementations:
+
+1. matrix_multiply_python()
+   - Basic Cython with type hints
+   - ~500ms for 500×500 matrix
+
+2. matrix_multiply_optimized() 
+   - With temporary accumulator for better cache efficiency
+   - ~100ms for 500×500 matrix (5x faster!)
+
+3. matrix_multiply_parallel()
+   - With OpenMP parallelization
+   - ~50ms for 500×500 matrix (10x faster on multi-core!)
+
+Even NumPy baseline (~5ms) is faster, but notice how each optimization
+compounds and how simple it is to achieve 10x speedups!
+
+================================================================================
+NEED HELP?
+================================================================================
+
+✓ Confused about a TODO?
+  → Read CYTHON_EXERCISE_GUIDE.md - each TODO has hints and explanations
+
+✓ Compilation error?
+  → Check "Troubleshooting" section in CYTHON_EXERCISE_GUIDE.md
+  → Common issue: "No module named 'matrix_multiply'"
+     → Solution: Run "python3 setup.py build_ext --inplace"
+
+✓ Want to understand Cython better?
+  → See "Key Cython Concepts" table in CYTHON_EXERCISE_GUIDE.md
+  → Official docs: https://cython.readthedocs.io/
+
+✓ Need quick reference?
+  → See README_CYTHON.txt for quick syntax examples
+
+================================================================================
+BONUS CHALLENGES
+================================================================================
+
+After completing the required TODOs, try these:
+
+• TODO 7: Implement block matrix multiplication
+• Profile your code to find bottlenecks
+• Try different block sizes and see which is fastest
+• Extend to 3D array operations
+• Compare with Strassen algorithm
+• Experiment with different data types (float32 vs float64)
+
+================================================================================
+GETTING STARTED RIGHT NOW
+================================================================================
+
+No more waiting! Here's the exact commands to run:
+
+  1. cd /path/to/code/
+  2. python3 CYTHON_QUICKSTART.py                    # See overview
+  3. less CYTHON_EXERCISE_GUIDE.md                   # Read main guide
+  4. vim matrix_multiply.pyx                         # Edit file
+  5. python3 setup.py build_ext --inplace            # Compile
+  6. python3 test_cython_matrix.py                   # Test!
+
+Good luck! You're learning one of the best ways to make Python fast! 🚀
+
+================================================================================
